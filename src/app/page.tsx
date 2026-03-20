@@ -1,7 +1,7 @@
 export default function Home() {
   return (
-    <main>
+    <section>
       <h1>slen.win</h1>
-    </main>
+    </section>
   );
 }
