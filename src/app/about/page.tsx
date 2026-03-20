@@ -1,0 +1,197 @@
+import {
+  siteConfig,
+  aboutContent,
+  experienceEntries,
+} from "@/content/site";
+
+export default function About() {
+  return (
+    <div className="container">
+      <h1
+        data-testid="about-page-title"
+        style={{ marginBottom: "var(--space-6)" }}
+      >
+        About
+      </h1>
+
+      {/* Intro */}
+      <p
+        style={{
+          color: "var(--color-text-secondary)",
+          fontSize: "var(--text-lg)",
+          lineHeight: 1.8,
+          maxWidth: "40rem",
+          marginBottom: "var(--space-12)",
+        }}
+      >
+        {aboutContent.intro}
+      </p>
+
+      {/* Current Focus */}
+      <section style={{ marginBottom: "var(--space-16)" }}>
+        <h2 style={{ marginBottom: "var(--space-4)" }}>Current Focus</h2>
+        <p
+          style={{
+            color: "var(--color-text-secondary)",
+            lineHeight: 1.7,
+            maxWidth: "40rem",
+          }}
+        >
+          {aboutContent.currentFocus}
+        </p>
+      </section>
+
+      {/* Timeline */}
+      <section
+        data-testid="journey-timeline"
+        style={{ marginBottom: "var(--space-16)" }}
+      >
+        <h2 style={{ marginBottom: "var(--space-8)" }}>Journey</h2>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "var(--space-6)",
+          }}
+        >
+          {experienceEntries.map((entry) => (
+            <div
+              key={`${entry.company}-${entry.period}`}
+              style={{
+                padding: "var(--space-6)",
+                background: "var(--color-bg-elevated)",
+                border: "1px solid var(--color-border-light)",
+                borderRadius: "var(--radius-md)",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "baseline",
+                  flexWrap: "wrap",
+                  gap: "var(--space-2)",
+                  marginBottom: "var(--space-2)",
+                }}
+              >
+                <h3 style={{ fontSize: "var(--text-lg)" }}>{entry.company}</h3>
+                <span
+                  className="mono"
+                  style={{
+                    fontSize: "var(--text-xs)",
+                    color: "var(--color-text-muted)",
+                  }}
+                >
+                  {entry.period}
+                </span>
+              </div>
+              <p
+                className="mono"
+                style={{
+                  fontSize: "var(--text-sm)",
+                  color: "var(--color-steel)",
+                  marginBottom: "var(--space-3)",
+                }}
+              >
+                {entry.role}
+              </p>
+              <p
+                style={{
+                  fontSize: "var(--text-sm)",
+                  color: "var(--color-text-secondary)",
+                  lineHeight: 1.6,
+                }}
+              >
+                {entry.description}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Contact */}
+      <section style={{ marginBottom: "var(--space-16)" }}>
+        <h2 style={{ marginBottom: "var(--space-6)" }}>Get in Touch</h2>
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "var(--space-4)",
+          }}
+        >
+          <a
+            href={`mailto:${siteConfig.email}`}
+            data-testid="contact-email-link"
+            style={{
+              display: "inline-flex",
+              padding: "var(--space-3) var(--space-6)",
+              background: "var(--color-text)",
+              color: "var(--color-bg)",
+              fontFamily: "var(--font-mono)",
+              fontSize: "var(--text-sm)",
+              fontWeight: 600,
+              borderRadius: "var(--radius-md)",
+              textDecoration: "none",
+            }}
+          >
+            Email me
+          </a>
+          <a
+            href="/resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-testid="about-resume-download"
+            style={{
+              display: "inline-flex",
+              padding: "var(--space-3) var(--space-6)",
+              border: "1px solid var(--color-border)",
+              fontFamily: "var(--font-mono)",
+              fontSize: "var(--text-sm)",
+              borderRadius: "var(--radius-md)",
+              textDecoration: "none",
+              color: "var(--color-text-secondary)",
+            }}
+          >
+            Download Resume
+          </a>
+          <a
+            href="https://github.com/ThyDrSlen"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-testid="social-link-github"
+            style={{
+              display: "inline-flex",
+              padding: "var(--space-3) var(--space-6)",
+              border: "1px solid var(--color-border)",
+              fontFamily: "var(--font-mono)",
+              fontSize: "var(--text-sm)",
+              borderRadius: "var(--radius-md)",
+              textDecoration: "none",
+              color: "var(--color-text-secondary)",
+            }}
+          >
+            GitHub
+          </a>
+          <a
+            href="https://www.linkedin.com/in/fabrizio-corrales/"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-testid="social-link-linkedin"
+            style={{
+              display: "inline-flex",
+              padding: "var(--space-3) var(--space-6)",
+              border: "1px solid var(--color-border)",
+              fontFamily: "var(--font-mono)",
+              fontSize: "var(--text-sm)",
+              borderRadius: "var(--radius-md)",
+              textDecoration: "none",
+              color: "var(--color-text-secondary)",
+            }}
+          >
+            LinkedIn
+          </a>
+        </div>
+      </section>
+    </div>
+  );
+}
