@@ -1,0 +1,112 @@
+import Link from "next/link";
+import { caseStudies } from "@/content/case-studies";
+
+export default function WorkIndex() {
+  return (
+    <div className="container">
+      <h1 data-testid="work-page-title" style={{ marginBottom: "var(--space-4)" }}>
+        Work
+      </h1>
+      <p
+        style={{
+          color: "var(--color-text-secondary)",
+          marginBottom: "var(--space-12)",
+          maxWidth: "40rem",
+        }}
+      >
+        Selected projects spanning product engineering, systems automation, and
+        enterprise platform work.
+      </p>
+
+      <div
+        data-testid="work-grid"
+        style={{
+          display: "grid",
+          gap: "var(--space-6)",
+        }}
+      >
+        {caseStudies.map((cs) => (
+          <Link
+            key={cs.slug}
+            href={`/work/${cs.slug}`}
+            data-testid={`case-study-card-${cs.slug}`}
+            style={{
+              display: "block",
+              padding: "var(--space-8)",
+              background: "var(--color-bg-elevated)",
+              border: "1px solid var(--color-border-light)",
+              borderRadius: "var(--radius-lg)",
+              textDecoration: "none",
+              transition: "border-color var(--duration-fast) var(--easing)",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "var(--space-3)",
+                marginBottom: "var(--space-3)",
+                flexWrap: "wrap",
+              }}
+            >
+              <h2 style={{ fontSize: "var(--text-xl)" }}>{cs.title}</h2>
+              {cs.disclosure.anonymizationLevel === "anonymized" && (
+                <span className="steel-badge">Anonymized</span>
+              )}
+              {cs.slug === "form-factor" && (
+                <span className="accent-badge">Flagship</span>
+              )}
+            </div>
+
+            <p
+              className="mono"
+              style={{
+                fontSize: "var(--text-xs)",
+                color: "var(--color-text-muted)",
+                marginBottom: "var(--space-3)",
+              }}
+            >
+              {cs.role} &middot; {cs.period}
+            </p>
+
+            <p
+              style={{
+                color: "var(--color-text-secondary)",
+                fontSize: "var(--text-sm)",
+                lineHeight: 1.6,
+                marginBottom: "var(--space-4)",
+              }}
+            >
+              {cs.summary}
+            </p>
+
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: "var(--space-2)",
+              }}
+            >
+              {cs.techStack.map((tech) => (
+                <span
+                  key={tech}
+                  className="mono"
+                  style={{
+                    fontSize: "var(--text-xs)",
+                    padding: "var(--space-1) var(--space-2)",
+                    background: "var(--color-bg)",
+                    border: "1px solid var(--color-border)",
+                    borderRadius: "var(--radius-sm)",
+                    color: "var(--color-text-muted)",
+                  }}
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+}
