@@ -1,12 +1,34 @@
+import type { Metadata } from "next";
 import {
   siteConfig,
   aboutContent,
   experienceEntries,
 } from "@/content/site";
 
+export const metadata: Metadata = {
+  title: "About",
+  description: aboutContent.intro.slice(0, 155),
+  alternates: { canonical: "/about" },
+};
+
 export default function About() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: siteConfig.name,
+    url: siteConfig.url,
+    email: siteConfig.email,
+    jobTitle: "Software Engineer",
+    sameAs: siteConfig.socialLinks
+      .filter((l) => l.platform !== "email")
+      .map((l) => l.url),
+  };
   return (
     <div className="container">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <h1
         data-testid="about-page-title"
         style={{ marginBottom: "var(--space-6)" }}

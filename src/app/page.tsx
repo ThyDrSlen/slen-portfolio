@@ -3,10 +3,25 @@ import { heroContent, proofRailItems, siteConfig } from "@/content/site";
 import { getFeaturedCaseStudies } from "@/content/case-studies";
 
 export default function Home() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: siteConfig.name,
+    url: siteConfig.url,
+    email: siteConfig.email,
+    jobTitle: "Software Engineer",
+    sameAs: siteConfig.socialLinks
+      .filter((l) => l.platform !== "email")
+      .map((l) => l.url),
+  };
   const featured = getFeaturedCaseStudies();
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Hero */}
       <section className="section" style={{ paddingTop: "var(--space-16)" }}>
         <div className="container">

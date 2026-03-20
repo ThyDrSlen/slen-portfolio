@@ -1,5 +1,13 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { caseStudies } from "@/content/case-studies";
+
+export const metadata: Metadata = {
+  title: "Work",
+  description:
+    "Selected projects spanning product engineering, systems automation, and enterprise platform work.",
+  alternates: { canonical: "/work" },
+};
 
 export default function WorkIndex() {
   return (

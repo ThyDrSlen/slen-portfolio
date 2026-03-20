@@ -1,12 +1,34 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import {
   getCaseStudyBySlug,
   getAllSlugs,
 } from "@/content/case-studies";
+import { siteConfig } from "@/content/site";
 
 export function generateStaticParams() {
   return getAllSlugs().map((slug) => ({ slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const cs = getCaseStudyBySlug(slug);
+  if (!cs) return {};
+  return {
+    title: cs.title,
+    description: cs.summary,
+    alternates: { canonical: `/work/${cs.slug}` },
+    openGraph: {
+      title: `${cs.title} | ${siteConfig.name}`,
+      description: cs.summary,
+      type: "article",
+    },
+  };
 }
 
 export default async function CaseStudyPage({
@@ -21,8 +43,24 @@ export default async function CaseStudyPage({
     notFound();
   }
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    name: cs.title,
+    description: cs.summary,
+    author: {
+      "@type": "Person",
+      name: siteConfig.name,
+    },
+    url: `${siteConfig.url}/work/${cs.slug}`,
+  };
+
   return (
     <article className="container" data-testid="case-study-page">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Hero */}
       <section
         data-testid="case-study-hero"

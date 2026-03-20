@@ -1,7 +1,7 @@
 module.exports = {
   ci: {
     collect: {
-      url: ["http://localhost:3000/"],
+      url: ["http://localhost:3000/", "http://localhost:3000/work/form-factor"],
       startServerCommand: "pnpm build && pnpm start",
       startServerReadyPattern: "Ready in",
       numberOfRuns: 1,
