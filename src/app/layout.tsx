@@ -3,6 +3,7 @@ import { Space_Grotesk, IBM_Plex_Mono } from "next/font/google";
 import { Header } from "@/components/shell/Header";
 import { Footer } from "@/components/shell/Footer";
 import { SkipLink } from "@/components/shell/SkipLink";
+import { MatrixRain } from "@/components/shell/MatrixRain";
 import { siteConfig } from "@/content/site";
 import "./globals.css";
 
@@ -59,6 +60,8 @@ export default function RootLayout({
       className={`${spaceGrotesk.variable} ${ibmPlexMono.variable}`}
     >
       <body>
+        <MatrixRain />
+        <div className="scanline" aria-hidden="true" />
         <SkipLink />
         <Header />
         <main id="main-content" className="site-main">

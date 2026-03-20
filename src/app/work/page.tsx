@@ -38,15 +38,7 @@ export default function WorkIndex() {
             key={cs.slug}
             href={`/work/${cs.slug}`}
             data-testid={`case-study-card-${cs.slug}`}
-            style={{
-              display: "block",
-              padding: "var(--space-8)",
-              background: "var(--color-bg-elevated)",
-              border: "1px solid var(--color-border-light)",
-              borderRadius: "var(--radius-lg)",
-              textDecoration: "none",
-              transition: "border-color var(--duration-fast) var(--easing)",
-            }}
+            className="matrix-card"
           >
             <div
               style={{
@@ -102,7 +94,7 @@ export default function WorkIndex() {
                   style={{
                     fontSize: "var(--text-xs)",
                     padding: "var(--space-1) var(--space-2)",
-                    background: "var(--color-bg)",
+                    background: "var(--color-bg-surface)",
                     border: "1px solid var(--color-border)",
                     borderRadius: "var(--radius-sm)",
                     color: "var(--color-text-muted)",

@@ -81,7 +81,7 @@ export default function About() {
               key={`${entry.company}-${entry.period}`}
               style={{
                 padding: "var(--space-6)",
-                background: "var(--color-bg-elevated)",
+                background: "var(--color-bg-surface)",
                 border: "1px solid var(--color-border-light)",
                 borderRadius: "var(--radius-md)",
               }}

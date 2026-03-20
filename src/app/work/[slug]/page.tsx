@@ -115,7 +115,7 @@ export default async function CaseStudyPage({
               style={{
                 fontSize: "var(--text-xs)",
                 padding: "var(--space-1) var(--space-2)",
-                background: "var(--color-bg-elevated)",
+                background: "var(--color-bg-surface)",
                 border: "1px solid var(--color-border)",
                 borderRadius: "var(--radius-sm)",
                 color: "var(--color-text-muted)",
@@ -133,7 +133,7 @@ export default async function CaseStudyPage({
           data-testid="case-study-disclaimer"
           style={{
             padding: "var(--space-6)",
-            background: "var(--color-bg-elevated)",
+            background: "var(--color-bg-surface)",
             border: "1px solid var(--color-border)",
             borderRadius: "var(--radius-md)",
             marginBottom: "var(--space-12)",
@@ -249,7 +249,7 @@ export default async function CaseStudyPage({
               key={i}
               style={{
                 padding: "var(--space-6)",
-                background: "var(--color-bg-elevated)",
+                background: "var(--color-bg-surface)",
                 border: "1px solid var(--color-border-light)",
                 borderRadius: "var(--radius-md)",
                 marginBottom: "var(--space-4)",

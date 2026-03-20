@@ -1,8 +1,11 @@
 import Link from "next/link";
 import { heroContent, proofRailItems, siteConfig } from "@/content/site";
 import { getFeaturedCaseStudies } from "@/content/case-studies";
+import { TypingTest } from "@/components/TypingTest";
 
 export default function Home() {
+  const featured = getFeaturedCaseStudies();
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Person",
@@ -14,7 +17,6 @@ export default function Home() {
       .filter((l) => l.platform !== "email")
       .map((l) => l.url),
   };
-  const featured = getFeaturedCaseStudies();
 
   return (
     <>
@@ -22,6 +24,7 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+
       {/* Hero */}
       <section className="section" style={{ paddingTop: "var(--space-16)" }}>
         <div className="container">
@@ -29,15 +32,21 @@ export default function Home() {
             className="mono"
             style={{
               fontSize: "var(--text-sm)",
-              color: "var(--color-text-muted)",
+              color: "var(--color-accent)",
               marginBottom: "var(--space-4)",
-              letterSpacing: "0.05em",
+              letterSpacing: "0.1em",
               textTransform: "uppercase",
+              textShadow: "0 0 10px var(--color-accent-glow)",
             }}
           >
-            Portfolio
+            &gt; portfolio.init()
           </p>
-          <h1 data-testid="hero-headline">{heroContent.headline}</h1>
+          <h1
+            data-testid="hero-headline"
+            style={{ color: "var(--color-text)" }}
+          >
+            {heroContent.headline}
+          </h1>
           <p
             data-testid="hero-subhead"
             style={{
@@ -55,6 +64,7 @@ export default function Home() {
               display: "flex",
               gap: "var(--space-4)",
               marginTop: "var(--space-8)",
+              flexWrap: "wrap",
             }}
           >
             <Link
@@ -65,7 +75,7 @@ export default function Home() {
                 alignItems: "center",
                 gap: "var(--space-2)",
                 padding: "var(--space-3) var(--space-6)",
-                background: "var(--color-text)",
+                background: "var(--color-accent)",
                 color: "var(--color-bg)",
                 fontFamily: "var(--font-mono)",
                 fontSize: "var(--text-sm)",
@@ -91,7 +101,7 @@ export default function Home() {
                 color: "var(--color-text-secondary)",
               }}
             >
-              Get in touch
+              get_in_touch()
             </a>
           </div>
         </div>
@@ -107,8 +117,8 @@ export default function Home() {
               gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
               gap: "var(--space-6)",
               padding: "var(--space-8) 0",
-              borderTop: "1px solid var(--color-border-light)",
-              borderBottom: "1px solid var(--color-border-light)",
+              borderTop: "1px solid var(--color-border)",
+              borderBottom: "1px solid var(--color-border)",
             }}
           >
             {proofRailItems.map((item) => (
@@ -119,6 +129,7 @@ export default function Home() {
                     fontSize: "var(--text-sm)",
                     fontWeight: 600,
                     marginBottom: "var(--space-1)",
+                    color: "var(--color-accent)",
                   }}
                 >
                   {item.label}
@@ -137,10 +148,23 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Typing Test */}
+      <section className="section">
+        <div className="container">
+          <TypingTest />
+        </div>
+      </section>
+
       {/* Featured Case Studies */}
       <section className="section">
         <div className="container">
-          <h2 style={{ marginBottom: "var(--space-8)" }}>Selected Work</h2>
+          <h2 style={{ marginBottom: "var(--space-8)" }}>
+            <span className="mono glow" style={{ fontSize: "var(--text-sm)", fontWeight: 400 }}>
+              ~/work
+            </span>
+            <br />
+            Selected Work
+          </h2>
           <div
             data-testid="featured-case-studies"
             style={{
@@ -153,15 +177,7 @@ export default function Home() {
                 key={cs.slug}
                 href={`/work/${cs.slug}`}
                 data-testid={`case-study-card-${cs.slug}`}
-                style={{
-                  display: "block",
-                  padding: "var(--space-8)",
-                  background: "var(--color-bg-elevated)",
-                  border: "1px solid var(--color-border-light)",
-                  borderRadius: "var(--radius-lg)",
-                  textDecoration: "none",
-                  transition: "border-color var(--duration-fast) var(--easing)",
-                }}
+                className="matrix-card"
               >
                 <div
                   style={{
@@ -210,7 +226,7 @@ export default function Home() {
                       style={{
                         fontSize: "var(--text-xs)",
                         padding: "var(--space-1) var(--space-2)",
-                        background: "var(--color-bg)",
+                        background: "var(--color-bg-surface)",
                         border: "1px solid var(--color-border)",
                         borderRadius: "var(--radius-sm)",
                         color: "var(--color-text-muted)",
@@ -259,7 +275,7 @@ export default function Home() {
               style={{
                 display: "inline-flex",
                 padding: "var(--space-3) var(--space-6)",
-                background: "var(--color-text)",
+                background: "var(--color-accent)",
                 color: "var(--color-bg)",
                 fontFamily: "var(--font-mono)",
                 fontSize: "var(--text-sm)",
@@ -268,7 +284,7 @@ export default function Home() {
                 textDecoration: "none",
               }}
             >
-              View all work
+              ls ./work
             </Link>
             <a
               href="/resume.pdf"
@@ -285,7 +301,7 @@ export default function Home() {
                 color: "var(--color-text-secondary)",
               }}
             >
-              Resume
+              cat resume.pdf
             </a>
             <a
               href={`mailto:${siteConfig.email}`}
@@ -300,7 +316,7 @@ export default function Home() {
                 color: "var(--color-text-secondary)",
               }}
             >
-              Email me
+              mail -s &quot;hey&quot;
             </a>
           </div>
         </div>
