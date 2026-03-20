@@ -1,0 +1,15 @@
+T3 QA: Valid structured content passes schema tests
+=====================================================
+pnpm test -- --run src/test/content-schema.test.ts exits 0 ✓
+All three required slugs validated ✓
+Site config validates ✓
+Palo Alto requires anonymized + disclaimer ✓
+
+T3 QA: Invalid content fixture fails loudly
+=============================================
+pnpm test -- --run src/test/content-schema-invalid.test.ts exits 0 ✓
+Missing slug rejected ✓
+Missing proofLinks rejected ✓
+Missing outcomes rejected ✓
+Missing email rejected ✓
+Invalid slug rejected ✓
