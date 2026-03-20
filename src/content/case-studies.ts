@@ -5,33 +5,36 @@ export const caseStudies: CaseStudy[] = [
     slug: "form-factor",
     title: "Form Factor",
     summary:
-      "A mobile fitness app that uses computer vision to deliver real-time exercise form feedback — built from zero to shipped product.",
+      "A mobile fitness app that uses ARKit body tracking and Apple HealthKit to deliver real-time exercise form analysis — built from zero to shipped product.",
     role: "Founder & Lead Engineer",
-    period: "2024 – Present",
+    period: "Sept 2025 – Present",
     techStack: [
       "React Native",
       "Expo",
       "TypeScript",
       "Supabase",
+      "Postgres",
       "ARKit",
-      "OpenAI",
+      "Apple HealthKit",
     ],
     problem:
-      "Most people working out alone have no reliable way to check their exercise form. Bad form leads to injury and stalled progress, but personal trainers are expensive and inaccessible.",
+      "Most people working out alone have no reliable way to check their exercise form. Bad form leads to injury and stalled progress, but personal trainers are expensive and inaccessible. Existing fitness apps track reps and calories but ignore the quality of movement.",
     approach:
-      "Built a mobile-first app using Expo and React Native that captures real-time body pose data through ARKit, processes it against biomechanical models, and delivers instant corrective feedback. Integrated Supabase for auth, data persistence, and real-time sync. Used OpenAI for natural language coaching cues.",
+      "Built a mobile-first app using Expo and React Native that integrates Apple HealthKit to sync heart-rate, step, and body-composition data from Apple Watch into workout logs. Used ARKit body tracking to record joint and pose metrics for real-time form analysis. Designed backend schemas and structured logging in Supabase/Postgres to store health and pose data reliably and support debugging and future ML features.",
     constraints: [
-      "Solo developer shipping across iOS and backend",
-      "Real-time CV processing on consumer hardware",
-      "Privacy-first approach to body/movement data",
+      "Solo developer shipping across iOS client and backend",
+      "Real-time CV processing on consumer mobile hardware",
+      "Privacy-first approach to body/movement and health data",
+      "Backend schema design for both current use and future ML pipeline",
     ],
     outcomes: [
-      "Shipped a working product with real-time form analysis",
-      "Built end-to-end: mobile client, backend services, ML pipeline integration",
+      "Shipped a working product with real-time form analysis via ARKit body tracking",
+      "Integrated Apple HealthKit to sync watch data into workout logs",
+      "Built end-to-end: mobile client, backend schemas, health data pipeline",
       "Maintained a steady release cadence as a solo developer",
     ],
     reflection:
-      "Form Factor proved I can take a product from concept to shipping code on my own. The hardest part wasn't any single technology — it was making architectural decisions across mobile, backend, and ML with no team to delegate to. Every tradeoff was mine to own.",
+      "Form Factor proved I can take a product from concept to shipping code on my own. The hardest part wasn't any single technology — it was making architectural decisions across mobile, backend, and health data with no team to delegate to. Every tradeoff was mine to own, from schema design for future ML features to privacy constraints on body tracking data.",
     proofLinks: [
       {
         label: "GitHub Repository",
@@ -42,8 +45,9 @@ export const caseStudies: CaseStudy[] = [
       anonymizationLevel: "none",
       allowedClaims: [
         "Solo-built mobile app",
-        "Real-time form feedback",
-        "Expo/React Native/TypeScript/Supabase stack",
+        "ARKit body tracking for form analysis",
+        "Apple HealthKit integration",
+        "React Native/Expo/TypeScript/Supabase stack",
         "Shipped product with release cadence",
       ],
       forbiddenClaims: [],
@@ -55,28 +59,29 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     slug: "orwell-scraper",
-    title: "Orwell Scraper",
+    title: "Orwell Web Scraper",
     summary:
-      "An async web scraper built with Playwright and aiohttp that handles pacing, proxy rotation, and anti-detection for reliable large-scale data collection.",
+      "An async scraping pipeline resilient to blocking and churn, maintaining access on ~90% of runs and producing 26k labeled assets for downstream classification.",
     role: "Solo Developer",
-    period: "2024",
+    period: "July 2023",
     techStack: ["Python", "Playwright", "aiohttp", "asyncio"],
     problem:
-      "Collecting structured data from dynamic, JavaScript-heavy web pages at scale requires more than simple HTTP requests. Rate limiting, bot detection, and page rendering make naive approaches brittle and unreliable.",
+      "Collecting structured data from dynamic, JavaScript-heavy web pages at scale requires more than simple HTTP requests. Rate limiting, bot detection, and page rendering make naive approaches brittle. The goal was to produce a large, labeled dataset for downstream classification work.",
     approach:
-      "Designed an async scraping pipeline using Playwright for browser automation and aiohttp for lightweight HTTP work. Implemented pacing controls, proxy rotation, and anti-detection patterns to maintain reliability without overwhelming target servers. Structured the output for downstream consumption.",
+      "Designed an async scraping pipeline using Playwright for browser automation and aiohttp for lightweight HTTP work. Built resilience against blocking and site churn through pacing controls, proxy rotation, and anti-detection patterns. Structured the output as labeled assets ready for downstream classification pipelines.",
     constraints: [
-      "Must handle JavaScript-rendered content",
-      "Must respect rate limits and avoid detection",
-      "Must produce clean, structured output",
+      "Must handle JavaScript-rendered content reliably",
+      "Must maintain access despite blocking and site churn",
+      "Must produce clean, labeled output for downstream ML use",
     ],
     outcomes: [
-      "Built a reliable async scraping pipeline with configurable pacing",
+      "Built an async scraping pipeline maintaining access on ~90% of runs",
+      "Produced 26,000 labeled assets for downstream classification",
       "Implemented proxy rotation and anti-detection without external services",
-      "Demonstrated systems thinking applied to infrastructure-level automation",
+      "Demonstrated systems thinking applied to data collection infrastructure",
     ],
     reflection:
-      "This project sits in the portfolio not because of scale, but because it demonstrates the kind of systems thinking I bring to every problem. Scraping well is an engineering challenge: concurrency, error recovery, and respecting constraints. The same discipline applies to production services.",
+      "This project sits in the portfolio not because of scale, but because it demonstrates the kind of systems thinking I bring to every problem. Reliable data collection is an engineering challenge: concurrency, error recovery, resilience against churn, and producing clean output under adversarial conditions. The same discipline applies to production services.",
     proofLinks: [
       {
         label: "GitHub Repository",
@@ -87,9 +92,10 @@ export const caseStudies: CaseStudy[] = [
       anonymizationLevel: "none",
       allowedClaims: [
         "Async scraping pipeline",
+        "~90% access rate",
+        "26k labeled assets",
         "Playwright + aiohttp",
         "Proxy rotation and anti-detection",
-        "Structured output",
       ],
       forbiddenClaims: [],
       allowedAssetTypes: ["diagram", "text-block"],
@@ -102,26 +108,37 @@ export const caseStudies: CaseStudy[] = [
     slug: "palo-alto",
     title: "Enterprise Platform Engineering",
     summary:
-      "Platform engineering on large-scale cybersecurity systems at a leading enterprise security company — anonymized to protect proprietary details.",
-    role: "Software Engineer",
-    period: "2024 – Present",
-    techStack: ["TypeScript", "Python", "Cloud Infrastructure", "CI/CD"],
+      "Backend-focused platform engineering on scalable distributed systems at Palo Alto Networks (ADEM) — building Go services, CI feedback acceleration, and operational analytics.",
+    role: "Software Engineer (ADEM)",
+    period: "Aug 2024 – Present",
+    techStack: [
+      "Go",
+      "gRPC",
+      "Protobuf",
+      "Kubernetes",
+      "BigQuery",
+      "Grafana",
+      "CI/CD",
+      "Python",
+    ],
     problem:
-      "Enterprise cybersecurity platforms serve thousands of organizations and must balance velocity with reliability, security, and compliance at every layer. Contributing meaningfully requires understanding complex, interconnected systems and making changes that don't break what's already working.",
+      "Enterprise cybersecurity platforms serve thousands of organizations and must balance velocity with reliability at every layer. Pre-merge testing was slow, production incidents were hard to reproduce in CI, and developer feedback loops needed acceleration without sacrificing release confidence.",
     approach:
-      "Contributed to platform-level engineering across frontend and backend systems. Worked within established architectural patterns while identifying opportunities to improve developer experience, test coverage, and deployment confidence. Collaborated across teams to ship features that served both internal engineering needs and external customer requirements.",
+      "Built a production Go-based distributed agent simulator and end-to-end test harness for microservices. Designed deterministic validation pipelines and golden test datasets to reproduce production incidents in CI. Replayed production-shaped traffic with randomized timing to surface latency regressions early. Designed an agentic internal platform (MCP server) orchestrating PagerDuty, Grafana, BigQuery, GitLab, Jira, and Confluence for automated incident triage.",
     constraints: [
       "Large-scale distributed systems with strict reliability requirements",
       "Cross-team coordination across multiple engineering organizations",
       "Security and compliance considerations in every change",
+      "Must improve CI signal without increasing feedback time",
     ],
     outcomes: [
-      "Contributed to platform improvements serving enterprise customers",
-      "Worked across the stack in a large, complex codebase",
-      "Demonstrated ability to operate effectively in a high-stakes enterprise environment",
+      "Improved pre-merge issue detection by ~20% and reduced feedback time from 4 min to 3 min",
+      "Reproduced ~85% of recent production incidents in CI, reducing flaky failures by ~30%",
+      "Surfaced p95/p99 latency regressions ~2 weeks earlier, catching ~10 performance regressions before release",
+      "Reduced manual QA by ~40% and prevented ~5 post-merge regressions per quarter",
     ],
     reflection:
-      "Working at this scale taught me that the hardest part of enterprise engineering isn't writing code — it's understanding the blast radius of every change, communicating across teams, and maintaining velocity without introducing risk. This experience is deliberately anonymized because the value is in what I learned, not what I can screenshot.",
+      "Working at this scale taught me that the hardest part of enterprise engineering isn't writing code — it's understanding the blast radius of every change, communicating across teams, and maintaining velocity without introducing risk. Building the agentic MCP platform for incident triage showed me how internal tooling can have outsized impact when it reduces cognitive load during high-pressure moments.",
     proofLinks: [
       {
         label: "LinkedIn Profile",
@@ -131,34 +148,32 @@ export const caseStudies: CaseStudy[] = [
     disclosure: {
       anonymizationLevel: "anonymized",
       allowedClaims: [
-        "Software engineer at Palo Alto Networks",
-        "Platform engineering on large-scale systems",
+        "Software Engineer at Palo Alto Networks (ADEM)",
+        "Go-based distributed agent simulator",
+        "CI feedback acceleration and deterministic validation",
+        "Agentic MCP platform for incident triage",
         "Cross-team collaboration",
-        "Enterprise cybersecurity domain",
+        "Approximate improvement percentages from resume",
       ],
       forbiddenClaims: [
-        "Internal product names or codenames",
+        "Internal product UI screenshots",
         "Customer names or logos",
-        "Internal UI screenshots",
-        "Specific metrics or revenue figures",
-        "Proprietary architecture details",
-        "Internal tooling names",
+        "Specific revenue or ARR figures",
+        "Proprietary architecture diagrams",
+        "Internal tooling names beyond generic descriptions",
+        "Confidential incident details",
       ],
       allowedAssetTypes: ["diagram", "text-block"],
       requiresDisclaimer: true,
-      proofLinks: [
-        "https://www.linkedin.com/in/fabrizio-corrales/",
-      ],
+      proofLinks: ["https://www.linkedin.com/in/fabrizio-corrales/"],
     },
     disclaimer:
-      "This case study is intentionally anonymized. Specific product names, customer details, internal metrics, and proprietary architecture are omitted to respect confidentiality. The focus is on the engineering challenges, approach, and professional growth — not on exposing protected information.",
+      "This case study describes work at Palo Alto Networks using publicly available information from my resume and LinkedIn. Specific product UIs, customer details, internal metrics beyond what's on my resume, and proprietary architecture are omitted to respect confidentiality. The focus is on engineering challenges, approach, and measurable outcomes.",
     featured: true,
   },
 ];
 
-export function getCaseStudyBySlug(
-  slug: string
-): CaseStudy | undefined {
+export function getCaseStudyBySlug(slug: string): CaseStudy | undefined {
   return caseStudies.find((cs) => cs.slug === slug);
 }
 
