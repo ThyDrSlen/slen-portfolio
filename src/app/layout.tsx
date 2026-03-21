@@ -4,8 +4,12 @@ import { Header } from "@/components/shell/Header";
 import { Footer } from "@/components/shell/Footer";
 import { SkipLink } from "@/components/shell/SkipLink";
 import { MatrixRain } from "@/components/shell/MatrixRain";
+import { BootSequence } from "@/components/shell/BootSequence";
+import { CursorTrail } from "@/components/shell/CursorTrail";
+import { SubwayStatusBar } from "@/components/shell/SubwayStatusBar";
 import { siteConfig } from "@/content/site";
 import "./globals.css";
+import "./matrix-effects.css";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-display",
@@ -60,6 +64,8 @@ export default function RootLayout({
       className={`${spaceGrotesk.variable} ${ibmPlexMono.variable}`}
     >
       <body>
+        <BootSequence />
+        <CursorTrail />
         <MatrixRain />
         <div className="scanline" aria-hidden="true" />
         <SkipLink />
@@ -68,6 +74,7 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
+        <SubwayStatusBar />
       </body>
     </html>
   );

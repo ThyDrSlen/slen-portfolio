@@ -1,0 +1,155 @@
+/* ── Matrix Card: Enhanced Hover Effects ── */
+
+.matrix-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.matrix-card::before,
+.matrix-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--duration-fast) var(--easing);
+}
+
+.matrix-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── A. Border Glow Pulse ── */
+
+.matrix-card:hover {
+  animation: card-glow-pulse 2s ease-in-out infinite;
+}
+
+/* ── B. Mini Matrix Rain (::before) ── */
+
+.matrix-card::before {
+  z-index: 0;
+  background-image: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 18px,
+      var(--color-accent) 18px,
+      var(--color-accent) 19px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 28px,
+      var(--color-accent-glow) 28px,
+      var(--color-accent-glow) 29px
+    );
+  background-size: 29px 200px;
+  mask-image: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.06) 0%,
+    rgba(0, 0, 0, 0.12) 30%,
+    rgba(0, 0, 0, 0.04) 60%,
+    rgba(0, 0, 0, 0.1) 80%,
+    rgba(0, 0, 0, 0.02) 100%
+  );
+}
+
+.matrix-card:hover::before {
+  opacity: 1;
+}
+
+/* ── C. Glitch Flash (::after) ── */
+
+.matrix-card::after {
+  z-index: 2;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--color-accent-glow) 15%,
+    transparent 25%,
+    transparent 75%,
+    var(--color-accent-glow) 85%,
+    transparent 100%
+  );
+  mix-blend-mode: screen;
+}
+
+.matrix-card:hover::after {
+  opacity: 0.4;
+}
+
+/* ── D + E. Animated effects: reduced-motion aware ── */
+
+@media (prefers-reduced-motion: no-preference) {
+  .matrix-card::before {
+    animation: matrix-rain-scroll 4s linear infinite;
+    animation-play-state: paused;
+  }
+
+  .matrix-card:hover::before {
+    animation-play-state: running;
+  }
+
+  .matrix-card:hover::after {
+    animation: card-glitch 150ms steps(1) 1;
+  }
+
+  .matrix-card:hover {
+    animation: card-glow-pulse 2s ease-in-out infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .matrix-card:hover {
+    animation: none;
+  }
+}
+
+/* ── Keyframes ── */
+
+@keyframes card-glow-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 20px var(--color-accent-glow),
+      inset 0 0 20px var(--color-accent-glow);
+  }
+  50% {
+    box-shadow: 0 0 30px var(--color-accent-glow-strong),
+      0 0 60px var(--color-accent-glow),
+      inset 0 0 30px var(--color-accent-glow-strong);
+  }
+}
+
+@keyframes matrix-rain-scroll {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 0 -200px;
+  }
+}
+
+@keyframes card-glitch {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  20% {
+    transform: translate(2px, 0);
+    opacity: 0.6;
+  }
+  40% {
+    transform: translate(-1px, 0);
+    opacity: 0.3;
+  }
+  60% {
+    transform: translate(1px, 0);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+}
