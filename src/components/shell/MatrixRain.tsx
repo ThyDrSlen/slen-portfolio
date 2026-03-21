@@ -60,7 +60,7 @@ export function MatrixRain() {
         if (y > canvas.height && Math.random() > 0.975) {
           drops[i] = 0;
         }
-        drops[i] += 0.5 + Math.random() * 0.5;
+        drops[i] += 0.15 + Math.random() * 0.2;
       }
 
       animationId = requestAnimationFrame(draw);
