@@ -23,12 +23,12 @@ const ibmPlexMono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
-    default: `${siteConfig.name} — Software Engineer`,
+    default: `${siteConfig.name} | Software Engineer`,
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
   openGraph: {
-    title: `${siteConfig.name} — Software Engineer`,
+    title: `${siteConfig.name} | Software Engineer`,
     description: siteConfig.description,
     url: siteConfig.url,
     siteName: siteConfig.name,
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: `${siteConfig.name} — Software Engineer`,
+    title: `${siteConfig.name} | Software Engineer`,
     description: siteConfig.description,
   },
   robots: {

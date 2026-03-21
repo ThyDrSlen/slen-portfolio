@@ -4,7 +4,7 @@ export const siteConfig: SiteConfig = {
   name: "Fabrizio Corrales",
   title: "Slen Portfolio",
   description:
-    "Portfolio of Fabrizio Corrales — backend-focused software engineer building scalable distributed systems, developer tooling, and platform capabilities.",
+    "Portfolio of Fabrizio Corrales. Backend-focused software engineer building scalable distributed systems, developer tooling, and platform capabilities.",
   url: "https://slen.win",
   email: "drslen9@gmail.com",
   socialLinks: [
@@ -80,9 +80,9 @@ export const heroContent = {
 
 export const aboutContent = {
   intro:
-    "I'm a backend-focused software engineer with a non-traditional path — from Hunter College to the Marcy Lab School fellowship to enterprise platform engineering at Palo Alto Networks. I build scalable distributed systems, developer tooling, and experimentation-friendly platform capabilities. I care about shipping things that work at scale and proving it with measurable outcomes.",
+    "I'm a backend-focused software engineer with a non-traditional path: Hunter College to the Marcy Lab School fellowship to enterprise platform engineering at Palo Alto Networks. I build scalable distributed systems, developer tooling, and experimentation-friendly platform capabilities. I care about shipping things that work at scale and proving it with measurable outcomes.",
   currentFocus:
-    "Currently building Go services, CI feedback acceleration, and operational analytics at Palo Alto Networks (ADEM), while shipping Form Factor — a mobile fitness app with real-time ARKit body tracking and Apple HealthKit integration.",
+    "Currently building Go services, CI feedback acceleration, and operational analytics at Palo Alto Networks (ADEM), while shipping Form Factor, a mobile fitness app with real-time ARKit body tracking and Apple HealthKit integration.",
 };
 
 export const proofRailItems = [

@@ -5,7 +5,7 @@ export const caseStudies: CaseStudy[] = [
     slug: "form-factor",
     title: "Form Factor",
     summary:
-      "A mobile fitness app that uses ARKit body tracking and Apple HealthKit to deliver real-time exercise form analysis — built from zero to shipped product.",
+      "A mobile fitness app that uses ARKit body tracking and Apple HealthKit to deliver real-time exercise form analysis, built from zero to shipped product.",
     role: "Founder & Lead Engineer",
     period: "Sept 2025 – Present",
     techStack: [
@@ -34,7 +34,7 @@ export const caseStudies: CaseStudy[] = [
       "Maintained a steady release cadence as a solo developer",
     ],
     reflection:
-      "Form Factor proved I can take a product from concept to shipping code on my own. The hardest part wasn't any single technology — it was making architectural decisions across mobile, backend, and health data with no team to delegate to. Every tradeoff was mine to own, from schema design for future ML features to privacy constraints on body tracking data.",
+      "Form Factor proved I can take a product from concept to shipping code on my own. The hardest part wasn't any single technology. It was making architectural decisions across mobile, backend, and health data with no team to delegate to. Every tradeoff was mine to own, from schema design for future ML features to privacy constraints on body tracking data.",
     proofLinks: [
       {
         label: "GitHub Repository",
@@ -108,7 +108,7 @@ export const caseStudies: CaseStudy[] = [
     slug: "palo-alto",
     title: "Enterprise Platform Engineering",
     summary:
-      "Backend-focused platform engineering on scalable distributed systems at Palo Alto Networks (ADEM) — building Go services, CI feedback acceleration, and operational analytics.",
+      "Backend-focused platform engineering on scalable distributed systems at Palo Alto Networks (ADEM). Building Go services, CI feedback acceleration, and operational analytics.",
     role: "Software Engineer (ADEM)",
     period: "Aug 2024 – Present",
     techStack: [
@@ -138,7 +138,7 @@ export const caseStudies: CaseStudy[] = [
       "Reduced manual QA by ~40% and prevented ~5 post-merge regressions per quarter",
     ],
     reflection:
-      "Working at this scale taught me that the hardest part of enterprise engineering isn't writing code — it's understanding the blast radius of every change, communicating across teams, and maintaining velocity without introducing risk. Building the agentic MCP platform for incident triage showed me how internal tooling can have outsized impact when it reduces cognitive load during high-pressure moments.",
+      "Working at this scale taught me that the hardest part of enterprise engineering isn't writing code. It's understanding the blast radius of every change, communicating across teams, and maintaining velocity without introducing risk. Building the agentic MCP platform for incident triage showed me how internal tooling can have outsized impact when it reduces cognitive load during high-pressure moments.",
     proofLinks: [
       {
         label: "LinkedIn Profile",
