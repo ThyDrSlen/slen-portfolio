@@ -87,8 +87,8 @@ export const subwayConfig = {
     "shipping Go services @ PANW",
     "based in bay area",
   ],
-  lineColor: "#0039A6",
-  lineName: "A",
+  lineColor: "#FF6319",
+  lineName: "F",
   cycleIntervalMs: 5000,
 } as const;
 
