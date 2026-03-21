@@ -184,3 +184,19 @@ export function getFeaturedCaseStudies(): CaseStudy[] {
 export function getAllSlugs(): string[] {
   return caseStudies.map((cs) => cs.slug);
 }
+
+export function getAdjacentCaseStudies(slug: string): {
+  previous: CaseStudy | null;
+  next: CaseStudy | null;
+} {
+  const index = caseStudies.findIndex((cs) => cs.slug === slug);
+
+  if (index === -1) {
+    return { previous: null, next: null };
+  }
+
+  return {
+    previous: caseStudies[index - 1] ?? null,
+    next: caseStudies[index + 1] ?? null,
+  };
+}

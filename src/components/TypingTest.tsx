@@ -22,6 +22,9 @@ const WORD_LISTS = {
   ],
 };
 
+const WPM_MIN_ELAPSED = 2;
+const PB_STORAGE_KEY = "typing-test-pb";
+
 function shuffleWords(count: number): string[] {
   const words = [...WORD_LISTS.code];
   for (let i = words.length - 1; i > 0; i--) {
@@ -29,6 +32,39 @@ function shuffleWords(count: number): string[] {
     [words[i], words[j]] = [words[j], words[i]];
   }
   return words.slice(0, count);
+}
+
+function getWpmRating(wpm: number): { label: string; color: string } {
+  if (wpm >= 120) return { label: "legendary", color: "#ff0" };
+  if (wpm >= 90) return { label: "speed demon", color: "#0f0" };
+  if (wpm >= 70) return { label: "blazing", color: "var(--color-accent)" };
+  if (wpm >= 50) return { label: "solid", color: "var(--color-accent-dim)" };
+  if (wpm >= 30) return { label: "warming up", color: "var(--color-text-secondary)" };
+  return { label: "keep practicing", color: "var(--color-text-muted)" };
+}
+
+function readPersonalBest(): number {
+  if (typeof window === "undefined") return 0;
+  try {
+    const stored = localStorage.getItem(PB_STORAGE_KEY);
+    const parsed = stored ? parseInt(stored, 10) : 0;
+    return Number.isFinite(parsed) ? parsed : 0;
+  } catch {
+    return 0;
+  }
+}
+
+function writePersonalBest(wpm: number): void {
+  try {
+    localStorage.setItem(PB_STORAGE_KEY, String(wpm));
+  } catch {
+  }
+}
+
+function getTimerColor(fraction: number): string {
+  if (fraction <= 0.167) return "var(--color-error)";
+  if (fraction <= 0.333) return "#cc8800";
+  return "var(--color-accent)";
 }
 
 export function TypingTest() {
@@ -46,13 +82,16 @@ export function TypingTest() {
   const [totalChars, setTotalChars] = useState(0);
   const [elapsed, setElapsed] = useState(0);
   const [charStates, setCharStates] = useState<("correct" | "incorrect" | "pending")[][]>([]);
+  const [personalBest, setPersonalBest] = useState(0);
+  const [isNewRecord, setIsNewRecord] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const timerRef = useRef<ReturnType<typeof setInterval>>(undefined);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Derived values (no effect needed)
   const accuracy = totalChars > 0 ? Math.round((correctChars / totalChars) * 100) : 100;
   const wpm = elapsed > 0 && correctChars > 0 ? Math.round(correctChars / 5 / (elapsed / 60)) : 0;
+  const displayWpm = elapsed >= WPM_MIN_ELAPSED ? wpm : null;
+  const timerFraction = started ? Math.max(0, (TIME_LIMIT - elapsed) / TIME_LIMIT) : 1;
 
   const initTest = useCallback(() => {
     const newWords = shuffleWords(WORD_COUNT);
@@ -67,12 +106,25 @@ export function TypingTest() {
     setCorrectChars(0);
     setTotalChars(0);
     setElapsed(0);
+    setIsNewRecord(false);
     if (timerRef.current) clearInterval(timerRef.current);
   }, []);
 
   useEffect(() => {
     initTest();
+    setPersonalBest(readPersonalBest());
   }, [initTest]);
+
+  useEffect(() => {
+    if (finished && wpm > 0) {
+      const pb = readPersonalBest();
+      if (wpm > pb) {
+        writePersonalBest(wpm);
+        setPersonalBest(wpm);
+        setIsNewRecord(true);
+      }
+    }
+  }, [finished, wpm]);
 
   useEffect(() => {
     if (started && !finished) {
@@ -117,7 +169,6 @@ export function TypingTest() {
     if (e.key === " ") {
       e.preventDefault();
       if (charIndex > 0) {
-        // Move to next word
         setWordIndex((prev) => prev + 1);
         setCharIndex(0);
         setInput("");
@@ -166,6 +217,7 @@ export function TypingTest() {
   };
 
   const timeLeft = Math.max(0, Math.ceil(TIME_LIMIT - elapsed));
+  const rating = finished ? getWpmRating(wpm) : null;
 
   return (
     <div
@@ -179,7 +231,7 @@ export function TypingTest() {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          marginBottom: "var(--space-6)",
+          marginBottom: "var(--space-4)",
         }}
       >
         <div style={{ display: "flex", alignItems: "baseline", gap: "var(--space-3)" }}>
@@ -203,6 +255,18 @@ export function TypingTest() {
           >
             {TIME_LIMIT}s &middot; code words
           </span>
+          {personalBest > 0 && !started && (
+            <span
+              className="mono"
+              data-testid="typing-test-pb"
+              style={{
+                fontSize: "var(--text-xs)",
+                color: "var(--color-text-muted)",
+              }}
+            >
+              pb: {personalBest} wpm
+            </span>
+          )}
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: "var(--space-4)" }}>
           <span
@@ -211,10 +275,32 @@ export function TypingTest() {
           >
             {started ? `${timeLeft}s` : `${TIME_LIMIT}s`}
           </span>
-          <button className="typing-reset" onClick={(e) => { e.stopPropagation(); initTest(); setTimeout(() => inputRef.current?.focus(), 0); }}>
+          <button type="button" className="typing-reset" onClick={(e) => { e.stopPropagation(); initTest(); setTimeout(() => inputRef.current?.focus(), 0); }}>
             reset
           </button>
         </div>
+      </div>
+
+      <div
+        data-testid="typing-test-timer-bar"
+        style={{
+          height: "3px",
+          marginBottom: "var(--space-6)",
+          background: "var(--color-border)",
+          borderRadius: "2px",
+          overflow: "hidden",
+        }}
+      >
+        <div
+          style={{
+            height: "100%",
+            width: `${timerFraction * 100}%`,
+            background: getTimerColor(timerFraction),
+            borderRadius: "2px",
+            transition: started ? "width 100ms linear, background-color 300ms ease" : "none",
+            boxShadow: started ? `0 0 8px ${getTimerColor(timerFraction)}` : "none",
+          }}
+        />
       </div>
 
       <input
@@ -240,7 +326,7 @@ export function TypingTest() {
           </p>
         )}
         {words.map((word, wi) => (
-          <span key={wi} style={{ marginRight: "0.75em", display: "inline" }}>
+          <span key={`${word}-${wi}`} style={{ marginRight: "0.75em", display: "inline" }}>
             {word.split("").map((char, ci) => {
               const state = charStates[wi]?.[ci] ?? "pending";
               const isCursor = wi === wordIndex && ci === charIndex && !finished;
@@ -260,20 +346,26 @@ export function TypingTest() {
       {started && !finished && (
         <div className="typing-test-stats">
           <div>
-            <div className="stat-value">
-              {wordIndex}/{words.length}
+            <div className="stat-value" data-testid="typing-test-live-wpm">
+              {displayWpm !== null ? displayWpm : "--"}
             </div>
-            <div className="stat-label">words</div>
+            <div className="stat-label">wpm</div>
           </div>
           <div>
             <div className="stat-value">{accuracy}%</div>
             <div className="stat-label">accuracy</div>
           </div>
+          <div>
+            <div className="stat-value">
+              {wordIndex}/{words.length}
+            </div>
+            <div className="stat-label">words</div>
+          </div>
         </div>
       )}
 
       {finished && (
-        <div className="typing-test-stats">
+        <div className="typing-test-stats" data-testid="typing-test-results">
           <div>
             <div className="stat-value">{wpm}</div>
             <div className="stat-label">wpm</div>
@@ -288,26 +380,54 @@ export function TypingTest() {
             </div>
             <div className="stat-label">words</div>
           </div>
-          {finished && (
-            <div
-              style={{
-                marginLeft: "auto",
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              <button
-                className="typing-reset"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  initTest();
-                  setTimeout(() => inputRef.current?.focus(), 0);
-                }}
+          {rating && (
+            <div>
+              <div
+                className="stat-value"
+                data-testid="typing-test-rating"
+                style={{ color: rating.color, fontSize: "var(--text-lg)" }}
               >
-                try again
-              </button>
+                {rating.label}
+              </div>
+              <div className="stat-label">rating</div>
             </div>
           )}
+          {isNewRecord && (
+            <div
+              data-testid="typing-test-new-record"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                color: "#ff0",
+                fontFamily: "var(--font-mono)",
+                fontSize: "var(--text-sm)",
+                fontWeight: 600,
+                textShadow: "0 0 10px rgba(255, 255, 0, 0.4)",
+                animation: "glow-pulse 1.5s ease-in-out infinite",
+              }}
+            >
+              new record!
+            </div>
+          )}
+          <div
+            style={{
+              marginLeft: "auto",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <button
+              type="button"
+              className="typing-reset"
+              onClick={(e) => {
+                e.stopPropagation();
+                initTest();
+                setTimeout(() => inputRef.current?.focus(), 0);
+              }}
+            >
+              try again
+            </button>
+          </div>
         </div>
       )}
     </div>

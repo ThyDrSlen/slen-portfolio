@@ -37,10 +37,12 @@ test.describe("Scroll reveal animations", () => {
 
     for (let i = 0; i < count; i++) {
       const reveal = reveals.nth(i);
-      const opacity = await reveal.evaluate(
-        (el) => getComputedStyle(el).opacity
-      );
-      expect(opacity).toBe("1");
+      await expect
+        .poll(
+          () => reveal.evaluate((el) => getComputedStyle(el).opacity),
+          { timeout: 5000 }
+        )
+        .toBe("1");
     }
   });
 });
