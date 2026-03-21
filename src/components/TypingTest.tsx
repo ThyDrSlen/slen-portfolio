@@ -2,7 +2,19 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 
-const WORD_LISTS = {
+type WordMode = "code" | "snippets" | "leetcode" | "systems";
+type TimeOption = 15 | 30 | 60;
+
+const WORD_MODES: { key: WordMode; label: string }[] = [
+  { key: "code", label: "code" },
+  { key: "snippets", label: "snippets" },
+  { key: "leetcode", label: "leetcode" },
+  { key: "systems", label: "systems" },
+];
+
+const TIME_OPTIONS: TimeOption[] = [15, 30, 60];
+
+const WORD_LISTS: Record<WordMode, string[]> = {
   code: [
     "function", "const", "return", "async", "await", "import", "export",
     "interface", "type", "class", "extends", "implements", "promise",
@@ -20,13 +32,85 @@ const WORD_LISTS = {
     "shard", "partition", "consensus", "failover", "circuit", "breaker",
     "kubectl", "docker", "grpc", "protobuf", "webhook", "cron", "nginx",
   ],
+  snippets: [
+    "useState", "useEffect", "useRef", "useCallback", "useMemo",
+    "console.log", "JSON.parse", "JSON.stringify", "Object.keys",
+    "Array.from", "Promise.all", "setTimeout", "setInterval",
+    "req.body", "res.json", "app.use", "router.get", "next()",
+    "addEventListener", "querySelector", "createElement",
+    "fs.readFile", "path.join", "http.createServer",
+    "process.env", "module.exports", "require()", "import()",
+    "map()", "filter()", "reduce()", "forEach()", "find()",
+    "Object.assign", "Array.isArray", "Number.parseInt",
+    "String.prototype", "RegExp.test", "Date.now()",
+    "try/catch", "async/await", "for...of", "for...in",
+    "switch/case", "if/else", "do/while", "break/continue",
+    "ctx.params", "ctx.query", "ctx.body", "ctx.status",
+    "db.query", "db.insert", "db.update", "db.delete",
+    "git.commit", "git.push", "git.merge", "git.rebase",
+    "npm.install", "npm.run", "npm.publish", "npm.init",
+    "test.describe", "test.it", "expect()", "assert()",
+    "render()", "screen.getBy", "fireEvent", "waitFor",
+    "fetch(url)", "axios.get", "axios.post", "response.data",
+    "express()", "koa()", "fastify()", "hono()",
+    "prisma.find", "prisma.create", "prisma.update",
+    "zod.object", "zod.string", "zod.number", "zod.parse",
+  ],
+  leetcode: [
+    "two", "pointers", "sliding", "window", "binary", "search",
+    "depth", "first", "breadth", "traversal", "dynamic", "programming",
+    "greedy", "approach", "backtracking", "recursion", "memoization",
+    "topological", "sort", "union", "find", "disjoint", "sets",
+    "prefix", "sum", "kadane", "algorithm", "floyd", "cycle",
+    "tortoise", "hare", "monotonic", "stack", "trie", "insert",
+    "segment", "tree", "fenwick", "range", "query", "update",
+    "dijkstra", "shortest", "path", "bellman", "ford", "kruskal",
+    "minimum", "spanning", "connected", "components", "bipartite",
+    "intervals", "merge", "overlapping", "sweep", "line",
+    "matrix", "rotation", "spiral", "order", "diagonal",
+    "linked", "list", "reverse", "palindrome", "detection",
+    "substring", "subsequence", "longest", "common", "increasing",
+    "knapsack", "coin", "change", "climbing", "stairs",
+    "permutations", "combinations", "subsets", "generate",
+    "inorder", "preorder", "postorder", "level", "zigzag",
+    "serialize", "deserialize", "lowest", "ancestor",
+    "heap", "priority", "median", "kth", "largest", "smallest",
+    "hashmap", "frequency", "counter", "anagram", "grouping",
+    "bit", "manipulation", "xor", "complement", "counting",
+  ],
+  systems: [
+    "load", "balancer", "reverse", "proxy", "gateway",
+    "write-ahead", "log", "replication", "sharding", "partitioning",
+    "eventual", "consistency", "strong", "linearizable",
+    "consensus", "protocol", "raft", "paxos", "leader", "election",
+    "circuit", "breaker", "retry", "backoff", "exponential",
+    "rate", "limiting", "throttling", "debounce", "quota",
+    "message", "queue", "broker", "consumer", "producer",
+    "pub/sub", "event", "sourcing", "cqrs", "saga", "pattern",
+    "service", "mesh", "sidecar", "envoy", "istio",
+    "container", "orchestration", "kubernetes", "pod", "deployment",
+    "horizontal", "autoscaling", "rolling", "canary", "blue-green",
+    "observability", "tracing", "distributed", "spans", "metrics",
+    "prometheus", "grafana", "alerting", "slo", "sli",
+    "cdn", "edge", "caching", "ttl", "invalidation", "purge",
+    "dns", "resolution", "failover", "health", "check", "heartbeat",
+    "mutual", "tls", "certificate", "rotation", "zero-trust",
+    "idempotency", "exactly-once", "at-least-once", "at-most-once",
+    "database", "index", "b-tree", "lsm", "compaction",
+    "snapshot", "isolation", "mvcc", "deadlock", "prevention",
+    "connection", "pooling", "backpressure", "flow", "control",
+  ],
 };
 
+const WORD_COUNT = 25;
 const WPM_MIN_ELAPSED = 2;
-const PB_STORAGE_KEY = "typing-test-pb";
 
-function shuffleWords(count: number): string[] {
-  const words = [...WORD_LISTS.code];
+function pbKey(mode: WordMode): string {
+  return `typing-test-pb-${mode}`;
+}
+
+function shuffleWords(mode: WordMode, count: number): string[] {
+  const words = [...WORD_LISTS[mode]];
   for (let i = words.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [words[i], words[j]] = [words[j], words[i]];
@@ -43,10 +127,10 @@ function getWpmRating(wpm: number): { label: string; color: string } {
   return { label: "keep practicing", color: "var(--color-text-muted)" };
 }
 
-function readPersonalBest(): number {
+function readPersonalBest(mode: WordMode): number {
   if (typeof window === "undefined") return 0;
   try {
-    const stored = localStorage.getItem(PB_STORAGE_KEY);
+    const stored = localStorage.getItem(pbKey(mode));
     const parsed = stored ? parseInt(stored, 10) : 0;
     return Number.isFinite(parsed) ? parsed : 0;
   } catch {
@@ -54,9 +138,9 @@ function readPersonalBest(): number {
   }
 }
 
-function writePersonalBest(wpm: number): void {
+function writePersonalBest(mode: WordMode, wpm: number): void {
   try {
-    localStorage.setItem(PB_STORAGE_KEY, String(wpm));
+    localStorage.setItem(pbKey(mode), String(wpm));
   } catch {
   }
 }
@@ -67,9 +151,35 @@ function getTimerColor(fraction: number): string {
   return "var(--color-accent)";
 }
 
+const modeButtonStyle = (active: boolean): React.CSSProperties => ({
+  padding: "var(--space-1) var(--space-3)",
+  background: active ? "var(--color-accent)" : "transparent",
+  color: active ? "var(--color-bg)" : "var(--color-text-muted)",
+  border: active ? "1px solid var(--color-accent)" : "1px solid var(--color-border)",
+  borderRadius: "var(--radius-sm)",
+  fontFamily: "var(--font-mono)",
+  fontSize: "var(--text-xs)",
+  cursor: "pointer",
+  transition: "all 150ms ease",
+  fontWeight: active ? 600 : 400,
+});
+
+const timeButtonStyle = (active: boolean): React.CSSProperties => ({
+  padding: "var(--space-1) var(--space-2)",
+  background: "transparent",
+  color: active ? "var(--color-accent)" : "var(--color-text-muted)",
+  border: "none",
+  fontFamily: "var(--font-mono)",
+  fontSize: "var(--text-xs)",
+  cursor: "pointer",
+  fontWeight: active ? 600 : 400,
+  textDecoration: active ? "underline" : "none",
+  textUnderlineOffset: "3px",
+});
+
 export function TypingTest() {
-  const WORD_COUNT = 25;
-  const TIME_LIMIT = 30;
+  const [mode, setMode] = useState<WordMode>("code");
+  const [timeLimit, setTimeLimit] = useState<TimeOption>(30);
 
   const [words, setWords] = useState<string[]>([]);
   const [input, setInput] = useState("");
@@ -91,10 +201,10 @@ export function TypingTest() {
   const accuracy = totalChars > 0 ? Math.round((correctChars / totalChars) * 100) : 100;
   const wpm = elapsed > 0 && correctChars > 0 ? Math.round(correctChars / 5 / (elapsed / 60)) : 0;
   const displayWpm = elapsed >= WPM_MIN_ELAPSED ? wpm : null;
-  const timerFraction = started ? Math.max(0, (TIME_LIMIT - elapsed) / TIME_LIMIT) : 1;
+  const timerFraction = started ? Math.max(0, (timeLimit - elapsed) / timeLimit) : 1;
 
   const initTest = useCallback(() => {
-    const newWords = shuffleWords(WORD_COUNT);
+    const newWords = shuffleWords(mode, WORD_COUNT);
     setWords(newWords);
     setCharStates(newWords.map((w) => w.split("").map(() => "pending")));
     setInput("");
@@ -108,23 +218,23 @@ export function TypingTest() {
     setElapsed(0);
     setIsNewRecord(false);
     if (timerRef.current) clearInterval(timerRef.current);
-  }, []);
+  }, [mode]);
 
   useEffect(() => {
     initTest();
-    setPersonalBest(readPersonalBest());
-  }, [initTest]);
+    setPersonalBest(readPersonalBest(mode));
+  }, [initTest, mode]);
 
   useEffect(() => {
     if (finished && wpm > 0) {
-      const pb = readPersonalBest();
+      const pb = readPersonalBest(mode);
       if (wpm > pb) {
-        writePersonalBest(wpm);
+        writePersonalBest(mode, wpm);
         setPersonalBest(wpm);
         setIsNewRecord(true);
       }
     }
-  }, [finished, wpm]);
+  }, [finished, wpm, mode]);
 
   useEffect(() => {
     if (started && !finished) {
@@ -133,7 +243,7 @@ export function TypingTest() {
         const secs = (now - startTime) / 1000;
         setElapsed(secs);
 
-        if (secs >= TIME_LIMIT) {
+        if (secs >= timeLimit) {
           setFinished(true);
           if (timerRef.current) clearInterval(timerRef.current);
         }
@@ -142,10 +252,21 @@ export function TypingTest() {
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [started, finished, startTime]);
+  }, [started, finished, startTime, timeLimit]);
 
   const handleFocus = () => {
     inputRef.current?.focus();
+  };
+
+  const handleModeChange = (newMode: WordMode) => {
+    if (started) return;
+    setMode(newMode);
+  };
+
+  const handleTimeChange = (newTime: TimeOption) => {
+    if (started) return;
+    setTimeLimit(newTime);
+    initTest();
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -216,7 +337,7 @@ export function TypingTest() {
     }
   };
 
-  const timeLeft = Math.max(0, Math.ceil(TIME_LIMIT - elapsed));
+  const timeLeft = Math.max(0, Math.ceil(timeLimit - elapsed));
   const rating = finished ? getWpmRating(wpm) : null;
 
   return (
@@ -231,7 +352,7 @@ export function TypingTest() {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          marginBottom: "var(--space-4)",
+          marginBottom: "var(--space-3)",
         }}
       >
         <div style={{ display: "flex", alignItems: "baseline", gap: "var(--space-3)" }}>
@@ -245,15 +366,6 @@ export function TypingTest() {
             }}
           >
             typing test
-          </span>
-          <span
-            className="mono"
-            style={{
-              fontSize: "var(--text-xs)",
-              color: "var(--color-text-muted)",
-            }}
-          >
-            {TIME_LIMIT}s &middot; code words
           </span>
           {personalBest > 0 && !started && (
             <span
@@ -273,12 +385,50 @@ export function TypingTest() {
             className="mono glow"
             style={{ fontSize: "var(--text-lg)", fontWeight: 600 }}
           >
-            {started ? `${timeLeft}s` : `${TIME_LIMIT}s`}
+            {started ? `${timeLeft}s` : `${timeLimit}s`}
           </span>
           <button type="button" className="typing-reset" onClick={(e) => { e.stopPropagation(); initTest(); setTimeout(() => inputRef.current?.focus(), 0); }}>
             reset
           </button>
         </div>
+      </div>
+
+      <div
+        data-testid="typing-test-mode-bar"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "var(--space-2)",
+          marginBottom: "var(--space-4)",
+          flexWrap: "wrap",
+          opacity: started ? 0.3 : 1,
+          pointerEvents: started ? "none" : "auto",
+          transition: "opacity 200ms ease",
+        }}
+      >
+        {WORD_MODES.map((m) => (
+          <button
+            type="button"
+            key={m.key}
+            data-testid={`typing-mode-${m.key}`}
+            style={modeButtonStyle(mode === m.key)}
+            onClick={(e) => { e.stopPropagation(); handleModeChange(m.key); }}
+          >
+            {m.label}
+          </button>
+        ))}
+        <span style={{ width: "1px", height: "16px", background: "var(--color-border)", margin: "0 var(--space-2)" }} />
+        {TIME_OPTIONS.map((t) => (
+          <button
+            type="button"
+            key={t}
+            data-testid={`typing-time-${t}`}
+            style={timeButtonStyle(timeLimit === t)}
+            onClick={(e) => { e.stopPropagation(); handleTimeChange(t); }}
+          >
+            {t}s
+          </button>
+        ))}
       </div>
 
       <div
