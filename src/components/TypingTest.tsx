@@ -255,7 +255,22 @@ export function TypingTest() {
         ))}
       </div>
 
-      {(started || finished) && (
+      {started && !finished && (
+        <div className="typing-test-stats">
+          <div>
+            <div className="stat-value">
+              {wordIndex}/{words.length}
+            </div>
+            <div className="stat-label">words</div>
+          </div>
+          <div>
+            <div className="stat-value">{accuracy}%</div>
+            <div className="stat-label">accuracy</div>
+          </div>
+        </div>
+      )}
+
+      {finished && (
         <div className="typing-test-stats">
           <div>
             <div className="stat-value">{wpm}</div>

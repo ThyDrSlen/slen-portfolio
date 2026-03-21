@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import {
   siteConfig,
   aboutContent,
@@ -29,12 +30,39 @@ export default function About() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <h1
-        data-testid="about-page-title"
-        style={{ marginBottom: "var(--space-6)" }}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "var(--space-8)",
+          marginBottom: "var(--space-12)",
+          flexWrap: "wrap",
+        }}
       >
-        About
-      </h1>
+        <Image
+          src="/headshot.jpg"
+          alt="Fabrizio Corrales"
+          width={160}
+          height={213}
+          style={{
+            borderRadius: "var(--radius-lg)",
+            border: "2px solid var(--color-border)",
+            objectFit: "cover",
+            boxShadow: "0 0 20px var(--color-accent-glow)",
+          }}
+        />
+        <div>
+          <h1
+            data-testid="about-page-title"
+            style={{ marginBottom: "var(--space-3)" }}
+          >
+            About
+          </h1>
+          <p className="mono" style={{ color: "var(--color-accent)", fontSize: "var(--text-sm)" }}>
+            Software Engineer @ Palo Alto Networks
+          </p>
+        </div>
+      </div>
 
       {/* Intro */}
       <p

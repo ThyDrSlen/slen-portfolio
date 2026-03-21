@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { heroContent, proofRailItems, siteConfig } from "@/content/site";
 import { getFeaturedCaseStudies } from "@/content/case-studies";
@@ -27,26 +28,35 @@ export default function Home() {
 
       {/* Hero */}
       <section className="section" style={{ paddingTop: "var(--space-16)" }}>
-        <div className="container">
-          <p
-            className="mono"
-            style={{
-              fontSize: "var(--text-sm)",
-              color: "var(--color-accent)",
-              marginBottom: "var(--space-4)",
-              letterSpacing: "0.1em",
-              textTransform: "uppercase",
-              textShadow: "0 0 10px var(--color-accent-glow)",
-            }}
-          >
-            &gt; portfolio.init()
-          </p>
-          <h1
-            data-testid="hero-headline"
-            style={{ color: "var(--color-text)" }}
-          >
-            {heroContent.headline}
-          </h1>
+        <div
+          className="container"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "var(--space-12)",
+            flexWrap: "wrap",
+          }}
+        >
+          <div style={{ flex: "1 1 24rem" }}>
+            <p
+              className="mono"
+              style={{
+                fontSize: "var(--text-sm)",
+                color: "var(--color-accent)",
+                marginBottom: "var(--space-4)",
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+                textShadow: "0 0 10px var(--color-accent-glow)",
+              }}
+            >
+              &gt; portfolio.init()
+            </p>
+            <h1
+              data-testid="hero-headline"
+              style={{ color: "var(--color-text)" }}
+            >
+              {heroContent.headline}
+            </h1>
           <p
             data-testid="hero-subhead"
             style={{
@@ -103,6 +113,22 @@ export default function Home() {
             >
               get_in_touch()
             </a>
+          </div>
+          </div>
+          <div style={{ flex: "0 0 auto" }}>
+            <Image
+              src="/headshot.jpg"
+              alt="Fabrizio Corrales"
+              width={240}
+              height={320}
+              priority
+              style={{
+                borderRadius: "var(--radius-lg)",
+                border: "2px solid var(--color-border)",
+                objectFit: "cover",
+                boxShadow: "0 0 30px var(--color-accent-glow)",
+              }}
+            />
           </div>
         </div>
       </section>
