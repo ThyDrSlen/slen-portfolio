@@ -10,6 +10,7 @@ interface GitHubEvent {
   created_at: string;
   payload: {
     commits?: { sha: string }[];
+    size?: number;
   };
 }
 
@@ -44,7 +45,7 @@ export async function fetchGitHubPulse(
     let totalCommits7d = 0;
     for (const event of pushEvents) {
       const day = event.created_at.split("T")[0];
-      const count = event.payload.commits?.length ?? 0;
+      const count = event.payload.commits?.length ?? event.payload.size ?? 1;
       totalCommits7d += count;
       dayMap.set(day, (dayMap.get(day) ?? 0) + count);
     }
@@ -61,10 +62,12 @@ export async function fetchGitHubPulse(
 
     let streak = 0;
     const sortedDays = [...commitsByDay].reverse();
+    let foundActive = false;
     for (const day of sortedDays) {
       if (day.count > 0) {
+        foundActive = true;
         streak++;
-      } else {
+      } else if (foundActive) {
         break;
       }
     }
