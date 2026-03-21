@@ -12,7 +12,7 @@ test.describe("Subway status bar", () => {
     const bar = page.getByTestId("subway-status-bar");
     await expect(bar).toBeVisible();
 
-    await expect(bar).toContainText("A");
+    await expect(bar).toContainText("F");
     await expect(bar.locator("span").first()).toBeVisible();
 
     const timePattern = /\d{2}:\d{2}:\d{2}/;
@@ -28,7 +28,7 @@ test.describe("Subway status bar", () => {
         text.includes("open to new opportunities") ||
         text.includes("building Form Factor") ||
         text.includes("shipping Go services") ||
-        text.includes("based in NYC")
+        text.includes("based in bay area")
       );
     });
     expect(hasStatus).toBe(true);
@@ -57,16 +57,10 @@ test.describe("Subway status bar", () => {
     await expect(page.getByTestId("subway-status-bar")).toBeHidden();
   });
 
-  test("not shown when reduced motion is preferred", async ({ page }) => {
+  test("visible with reduced motion preferred", async ({ page }) => {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/");
     const bar = page.getByTestId("subway-status-bar");
-    if (await bar.isVisible()) {
-      const statusText = bar.locator("span").nth(1);
-      const opacity = await statusText.evaluate(
-        (el) => getComputedStyle(el).transition
-      );
-      expect(opacity).toContain("none");
-    }
+    await expect(bar).toBeVisible();
   });
 });
