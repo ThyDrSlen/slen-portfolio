@@ -67,8 +67,7 @@ export function CursorTrail() {
         trail.shift();
       }
 
-      ctx.fillStyle = "rgba(10, 10, 10, 0.15)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       for (let i = 0; i < trail.length; i++) {
         const point = trail[i];
