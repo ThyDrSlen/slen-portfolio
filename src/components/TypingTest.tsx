@@ -35,7 +35,7 @@ export function TypingTest() {
   const WORD_COUNT = 25;
   const TIME_LIMIT = 30;
 
-  const [words, setWords] = useState<string[]>(() => shuffleWords(WORD_COUNT));
+  const [words, setWords] = useState<string[]>([]);
   const [input, setInput] = useState("");
   const [wordIndex, setWordIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(0);
@@ -45,9 +45,7 @@ export function TypingTest() {
   const [correctChars, setCorrectChars] = useState(0);
   const [totalChars, setTotalChars] = useState(0);
   const [elapsed, setElapsed] = useState(0);
-  const [charStates, setCharStates] = useState<("correct" | "incorrect" | "pending")[][]>(
-    () => shuffleWords(WORD_COUNT).map((w) => w.split("").map(() => "pending"))
-  );
+  const [charStates, setCharStates] = useState<("correct" | "incorrect" | "pending")[][]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const timerRef = useRef<ReturnType<typeof setInterval>>(undefined);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -71,6 +69,10 @@ export function TypingTest() {
     setElapsed(0);
     if (timerRef.current) clearInterval(timerRef.current);
   }, []);
+
+  useEffect(() => {
+    initTest();
+  }, [initTest]);
 
   useEffect(() => {
     if (started && !finished) {
