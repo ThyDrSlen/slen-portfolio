@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+
+echo "🔍 Running pre-push checks..."
+
+echo "→ Lint"
+pnpm lint || exit 1
+
+echo "→ Typecheck"
+pnpm typecheck || exit 1
+
+echo "→ Unit tests"
+pnpm test -- --run || exit 1
+
+echo "→ Build"
+pnpm build || exit 1
+
+echo "✅ All pre-push checks passed"

@@ -171,6 +171,64 @@ export const caseStudies: CaseStudy[] = [
       "This case study describes work at Palo Alto Networks using publicly available information from my resume and LinkedIn. Specific product UIs, customer details, internal metrics beyond what's on my resume, and proprietary architecture are omitted to respect confidentiality. The focus is on engineering challenges, approach, and measurable outcomes.",
     featured: true,
   },
+  {
+    slug: "portus",
+    title: "Portus",
+    summary:
+      "A Rust daemon that brokers port allocations atomically, preventing collisions between dev servers and AI coding agents via lease-based IPC and an MCP server.",
+    role: "Solo Developer",
+    period: "2025",
+    techStack: [
+      "Rust",
+      "Tokio",
+      "Unix Sockets",
+      "MCP",
+      "TUI (ratatui)",
+      "TOML",
+    ],
+    problem:
+      "Every dev machine has the same fight: multiple services all want port 3000, and whoever starts last loses. It gets worse when AI coding agents like Claude Code and Cursor spin up parallel workspaces that each try to bind the same ports, causing cascading failures that are hard to diagnose and annoying to fix manually.",
+    approach:
+      "Built a background daemon that brokers port allocations atomically. Every service asks Portus for a port before binding. Portus checks availability, records a time-bounded lease, and hands back a guaranteed-unique port. Designed a length-prefixed JSON IPC protocol over Unix sockets for the CLI-to-daemon communication. Added an MCP server so AI agents get native port allocation without any manual coordination. Built a TUI dashboard for real-time monitoring of allocations and listeners.",
+    constraints: [
+      "Must be zero-config — daemon auto-starts on first CLI use",
+      "Must handle concurrent allocation requests atomically",
+      "Must recover gracefully from crashes via lease expiry",
+      "Must work cross-platform (macOS, Linux, Windows)",
+      "Must integrate with AI agents via MCP protocol",
+    ],
+    outcomes: [
+      "Shipped a complete CLI with request, release, confirm, list, scan, kill, run, and dashboard commands",
+      "Built an MCP server exposing 5 tools for native AI agent integration",
+      "Implemented lease-based allocation with auto-expiry and crash recovery via persisted registry",
+      "Built a TUI dashboard for real-time port allocation monitoring",
+      "Designed signal-safe cleanup ensuring leases release on SIGTERM/SIGINT",
+    ],
+    reflection:
+      "Portus came from a real pain point I hit while using AI coding agents. The problem is simple but the solution touches systems programming fundamentals: IPC design, concurrent state management, crash recovery, and cross-platform compatibility. Building the MCP server integration was particularly interesting because it required thinking about how AI agents interact with system resources differently from human developers.",
+    proofLinks: [
+      {
+        label: "GitHub Repository",
+        url: "https://github.com/ThyDrSlen/portus",
+      },
+    ],
+    disclosure: {
+      anonymizationLevel: "none",
+      allowedClaims: [
+        "Rust daemon for port allocation",
+        "MCP server for AI agent integration",
+        "Lease-based IPC protocol",
+        "TUI dashboard",
+        "Cross-platform support",
+        "Signal-safe cleanup",
+      ],
+      forbiddenClaims: [],
+      allowedAssetTypes: ["diagram", "screenshot", "text-block"],
+      requiresDisclaimer: false,
+      proofLinks: ["https://github.com/ThyDrSlen/portus"],
+    },
+    featured: true,
+  },
 ];
 
 export function getCaseStudyBySlug(slug: string): CaseStudy | undefined {
@@ -183,4 +241,20 @@ export function getFeaturedCaseStudies(): CaseStudy[] {
 
 export function getAllSlugs(): string[] {
   return caseStudies.map((cs) => cs.slug);
+}
+
+export function getAdjacentCaseStudies(slug: string): {
+  previous: CaseStudy | null;
+  next: CaseStudy | null;
+} {
+  const index = caseStudies.findIndex((cs) => cs.slug === slug);
+
+  if (index === -1) {
+    return { previous: null, next: null };
+  }
+
+  return {
+    previous: caseStudies[index - 1] ?? null,
+    next: caseStudies[index + 1] ?? null,
+  };
 }

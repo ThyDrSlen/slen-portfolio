@@ -87,19 +87,19 @@ export const aboutContent = {
 
 export const proofRailItems = [
   {
-    label: "Palo Alto Networks",
-    detail: "Software Engineer, enterprise platform engineering",
+    label: "20% better pre-merge detection",
+    detail: "Built CI validation at Palo Alto Networks that surfaced issues before release.",
   },
   {
-    label: "Form Factor",
-    detail: "Shipped mobile product with real-time CV form analysis",
+    label: "85% incident replay in CI",
+    detail: "Designed deterministic validation pipelines that reproduced recent production failures.",
   },
   {
-    label: "Marcy Lab School",
-    detail: "Non-traditional path, board member, 2,000-hour fellowship",
+    label: "26k labeled assets shipped",
+    detail: "Built an async scraping pipeline with resilient access for downstream classification work.",
   },
   {
-    label: "Google SHPE Scholar",
-    detail: "Conference scholarship recipient",
+    label: "Solo-built Form Factor",
+    detail: "Shipped a mobile product using ARKit body tracking and Apple HealthKit integration.",
   },
 ];

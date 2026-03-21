@@ -33,7 +33,7 @@ export const disclosureMatrixSchema = z.object({
 });
 
 export const caseStudySchema = z.object({
-  slug: z.enum(["form-factor", "orwell-scraper", "palo-alto"]),
+  slug: z.enum(["form-factor", "orwell-scraper", "palo-alto", "portus"]),
   title: z.string().min(1),
   summary: z.string().min(10),
   role: z.string().min(1),

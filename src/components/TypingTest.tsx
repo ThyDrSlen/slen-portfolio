@@ -2,7 +2,19 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 
-const WORD_LISTS = {
+type WordMode = "code" | "snippets" | "leetcode" | "systems";
+type TimeOption = 15 | 30 | 60;
+
+const WORD_MODES: { key: WordMode; label: string }[] = [
+  { key: "code", label: "code" },
+  { key: "snippets", label: "snippets" },
+  { key: "leetcode", label: "leetcode" },
+  { key: "systems", label: "systems" },
+];
+
+const TIME_OPTIONS: TimeOption[] = [15, 30, 60];
+
+const WORD_LISTS: Record<WordMode, string[]> = {
   code: [
     "function", "const", "return", "async", "await", "import", "export",
     "interface", "type", "class", "extends", "implements", "promise",
@@ -20,10 +32,85 @@ const WORD_LISTS = {
     "shard", "partition", "consensus", "failover", "circuit", "breaker",
     "kubectl", "docker", "grpc", "protobuf", "webhook", "cron", "nginx",
   ],
+  snippets: [
+    "useState", "useEffect", "useRef", "useCallback", "useMemo",
+    "console.log", "JSON.parse", "JSON.stringify", "Object.keys",
+    "Array.from", "Promise.all", "setTimeout", "setInterval",
+    "req.body", "res.json", "app.use", "router.get", "next()",
+    "addEventListener", "querySelector", "createElement",
+    "fs.readFile", "path.join", "http.createServer",
+    "process.env", "module.exports", "require()", "import()",
+    "map()", "filter()", "reduce()", "forEach()", "find()",
+    "Object.assign", "Array.isArray", "Number.parseInt",
+    "String.prototype", "RegExp.test", "Date.now()",
+    "try/catch", "async/await", "for...of", "for...in",
+    "switch/case", "if/else", "do/while", "break/continue",
+    "ctx.params", "ctx.query", "ctx.body", "ctx.status",
+    "db.query", "db.insert", "db.update", "db.delete",
+    "git.commit", "git.push", "git.merge", "git.rebase",
+    "npm.install", "npm.run", "npm.publish", "npm.init",
+    "test.describe", "test.it", "expect()", "assert()",
+    "render()", "screen.getBy", "fireEvent", "waitFor",
+    "fetch(url)", "axios.get", "axios.post", "response.data",
+    "express()", "koa()", "fastify()", "hono()",
+    "prisma.find", "prisma.create", "prisma.update",
+    "zod.object", "zod.string", "zod.number", "zod.parse",
+  ],
+  leetcode: [
+    "two", "pointers", "sliding", "window", "binary", "search",
+    "depth", "first", "breadth", "traversal", "dynamic", "programming",
+    "greedy", "approach", "backtracking", "recursion", "memoization",
+    "topological", "sort", "union", "find", "disjoint", "sets",
+    "prefix", "sum", "kadane", "algorithm", "floyd", "cycle",
+    "tortoise", "hare", "monotonic", "stack", "trie", "insert",
+    "segment", "tree", "fenwick", "range", "query", "update",
+    "dijkstra", "shortest", "path", "bellman", "ford", "kruskal",
+    "minimum", "spanning", "connected", "components", "bipartite",
+    "intervals", "merge", "overlapping", "sweep", "line",
+    "matrix", "rotation", "spiral", "order", "diagonal",
+    "linked", "list", "reverse", "palindrome", "detection",
+    "substring", "subsequence", "longest", "common", "increasing",
+    "knapsack", "coin", "change", "climbing", "stairs",
+    "permutations", "combinations", "subsets", "generate",
+    "inorder", "preorder", "postorder", "level", "zigzag",
+    "serialize", "deserialize", "lowest", "ancestor",
+    "heap", "priority", "median", "kth", "largest", "smallest",
+    "hashmap", "frequency", "counter", "anagram", "grouping",
+    "bit", "manipulation", "xor", "complement", "counting",
+  ],
+  systems: [
+    "load", "balancer", "reverse", "proxy", "gateway",
+    "write-ahead", "log", "replication", "sharding", "partitioning",
+    "eventual", "consistency", "strong", "linearizable",
+    "consensus", "protocol", "raft", "paxos", "leader", "election",
+    "circuit", "breaker", "retry", "backoff", "exponential",
+    "rate", "limiting", "throttling", "debounce", "quota",
+    "message", "queue", "broker", "consumer", "producer",
+    "pub/sub", "event", "sourcing", "cqrs", "saga", "pattern",
+    "service", "mesh", "sidecar", "envoy", "istio",
+    "container", "orchestration", "kubernetes", "pod", "deployment",
+    "horizontal", "autoscaling", "rolling", "canary", "blue-green",
+    "observability", "tracing", "distributed", "spans", "metrics",
+    "prometheus", "grafana", "alerting", "slo", "sli",
+    "cdn", "edge", "caching", "ttl", "invalidation", "purge",
+    "dns", "resolution", "failover", "health", "check", "heartbeat",
+    "mutual", "tls", "certificate", "rotation", "zero-trust",
+    "idempotency", "exactly-once", "at-least-once", "at-most-once",
+    "database", "index", "b-tree", "lsm", "compaction",
+    "snapshot", "isolation", "mvcc", "deadlock", "prevention",
+    "connection", "pooling", "backpressure", "flow", "control",
+  ],
 };
 
-function shuffleWords(count: number): string[] {
-  const words = [...WORD_LISTS.code];
+const WORD_COUNT = 25;
+const WPM_MIN_ELAPSED = 2;
+
+function pbKey(mode: WordMode): string {
+  return `typing-test-pb-${mode}`;
+}
+
+function shuffleWords(mode: WordMode, count: number): string[] {
+  const words = [...WORD_LISTS[mode]];
   for (let i = words.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [words[i], words[j]] = [words[j], words[i]];
@@ -31,11 +118,70 @@ function shuffleWords(count: number): string[] {
   return words.slice(0, count);
 }
 
-export function TypingTest() {
-  const WORD_COUNT = 25;
-  const TIME_LIMIT = 30;
+function getWpmRating(wpm: number): { label: string; color: string } {
+  if (wpm >= 120) return { label: "legendary", color: "#ff0" };
+  if (wpm >= 90) return { label: "speed demon", color: "#0f0" };
+  if (wpm >= 70) return { label: "blazing", color: "var(--color-accent)" };
+  if (wpm >= 50) return { label: "solid", color: "var(--color-accent-dim)" };
+  if (wpm >= 30) return { label: "warming up", color: "var(--color-text-secondary)" };
+  return { label: "keep practicing", color: "var(--color-text-muted)" };
+}
 
-  const [words, setWords] = useState<string[]>(() => shuffleWords(WORD_COUNT));
+function readPersonalBest(mode: WordMode): number {
+  if (typeof window === "undefined") return 0;
+  try {
+    const stored = localStorage.getItem(pbKey(mode));
+    const parsed = stored ? parseInt(stored, 10) : 0;
+    return Number.isFinite(parsed) ? parsed : 0;
+  } catch {
+    return 0;
+  }
+}
+
+function writePersonalBest(mode: WordMode, wpm: number): void {
+  try {
+    localStorage.setItem(pbKey(mode), String(wpm));
+  } catch {
+  }
+}
+
+function getTimerColor(fraction: number): string {
+  if (fraction <= 0.167) return "var(--color-error)";
+  if (fraction <= 0.333) return "#cc8800";
+  return "var(--color-accent)";
+}
+
+const modeButtonStyle = (active: boolean): React.CSSProperties => ({
+  padding: "var(--space-1) var(--space-3)",
+  background: active ? "var(--color-accent)" : "transparent",
+  color: active ? "var(--color-bg)" : "var(--color-text-muted)",
+  border: active ? "1px solid var(--color-accent)" : "1px solid var(--color-border)",
+  borderRadius: "var(--radius-sm)",
+  fontFamily: "var(--font-mono)",
+  fontSize: "var(--text-xs)",
+  cursor: "pointer",
+  transition: "all 150ms ease",
+  fontWeight: active ? 600 : 400,
+});
+
+const timeButtonStyle = (active: boolean): React.CSSProperties => ({
+  padding: "var(--space-1) var(--space-2)",
+  background: "transparent",
+  color: active ? "var(--color-accent)" : "var(--color-text-muted)",
+  border: "none",
+  fontFamily: "var(--font-mono)",
+  fontSize: "var(--text-xs)",
+  cursor: "pointer",
+  fontWeight: active ? 600 : 400,
+  textDecoration: active ? "underline" : "none",
+  textUnderlineOffset: "3px",
+});
+
+export function TypingTest() {
+  const [mode, setMode] = useState<WordMode>("code");
+  const [timeLimit, setTimeLimit] = useState<TimeOption>(30);
+
+  const [words, setWords] = useState<string[]>([]);
   const [input, setInput] = useState("");
   const [wordIndex, setWordIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(0);
@@ -45,19 +191,20 @@ export function TypingTest() {
   const [correctChars, setCorrectChars] = useState(0);
   const [totalChars, setTotalChars] = useState(0);
   const [elapsed, setElapsed] = useState(0);
-  const [charStates, setCharStates] = useState<("correct" | "incorrect" | "pending")[][]>(
-    () => shuffleWords(WORD_COUNT).map((w) => w.split("").map(() => "pending"))
-  );
+  const [charStates, setCharStates] = useState<("correct" | "incorrect" | "pending")[][]>([]);
+  const [personalBest, setPersonalBest] = useState(0);
+  const [isNewRecord, setIsNewRecord] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const timerRef = useRef<ReturnType<typeof setInterval>>(undefined);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Derived values (no effect needed)
   const accuracy = totalChars > 0 ? Math.round((correctChars / totalChars) * 100) : 100;
   const wpm = elapsed > 0 && correctChars > 0 ? Math.round(correctChars / 5 / (elapsed / 60)) : 0;
+  const displayWpm = elapsed >= WPM_MIN_ELAPSED ? wpm : null;
+  const timerFraction = started ? Math.max(0, (timeLimit - elapsed) / timeLimit) : 1;
 
   const initTest = useCallback(() => {
-    const newWords = shuffleWords(WORD_COUNT);
+    const newWords = shuffleWords(mode, WORD_COUNT);
     setWords(newWords);
     setCharStates(newWords.map((w) => w.split("").map(() => "pending")));
     setInput("");
@@ -69,8 +216,28 @@ export function TypingTest() {
     setCorrectChars(0);
     setTotalChars(0);
     setElapsed(0);
+    setIsNewRecord(false);
+    setPersonalBest(readPersonalBest(mode));
     if (timerRef.current) clearInterval(timerRef.current);
-  }, []);
+  }, [mode]);
+
+  useEffect(() => {
+    requestAnimationFrame(() => {
+      initTest();
+    });
+  }, [initTest]);
+
+  useEffect(() => {
+    if (!finished || wpm <= 0) return;
+    const pb = readPersonalBest(mode);
+    if (wpm > pb) {
+      writePersonalBest(mode, wpm);
+      requestAnimationFrame(() => {
+        setPersonalBest(wpm);
+        setIsNewRecord(true);
+      });
+    }
+  }, [finished, wpm, mode]);
 
   useEffect(() => {
     if (started && !finished) {
@@ -79,7 +246,7 @@ export function TypingTest() {
         const secs = (now - startTime) / 1000;
         setElapsed(secs);
 
-        if (secs >= TIME_LIMIT) {
+        if (secs >= timeLimit) {
           setFinished(true);
           if (timerRef.current) clearInterval(timerRef.current);
         }
@@ -88,10 +255,21 @@ export function TypingTest() {
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [started, finished, startTime]);
+  }, [started, finished, startTime, timeLimit]);
 
   const handleFocus = () => {
     inputRef.current?.focus();
+  };
+
+  const handleModeChange = (newMode: WordMode) => {
+    if (started) return;
+    setMode(newMode);
+  };
+
+  const handleTimeChange = (newTime: TimeOption) => {
+    if (started) return;
+    setTimeLimit(newTime);
+    initTest();
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -115,7 +293,6 @@ export function TypingTest() {
     if (e.key === " ") {
       e.preventDefault();
       if (charIndex > 0) {
-        // Move to next word
         setWordIndex((prev) => prev + 1);
         setCharIndex(0);
         setInput("");
@@ -163,7 +340,8 @@ export function TypingTest() {
     }
   };
 
-  const timeLeft = Math.max(0, Math.ceil(TIME_LIMIT - elapsed));
+  const timeLeft = Math.max(0, Math.ceil(timeLimit - elapsed));
+  const rating = finished ? getWpmRating(wpm) : null;
 
   return (
     <div
@@ -177,7 +355,7 @@ export function TypingTest() {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          marginBottom: "var(--space-6)",
+          marginBottom: "var(--space-3)",
         }}
       >
         <div style={{ display: "flex", alignItems: "baseline", gap: "var(--space-3)" }}>
@@ -192,27 +370,90 @@ export function TypingTest() {
           >
             typing test
           </span>
-          <span
-            className="mono"
-            style={{
-              fontSize: "var(--text-xs)",
-              color: "var(--color-text-muted)",
-            }}
-          >
-            {TIME_LIMIT}s &middot; code words
-          </span>
+          {personalBest > 0 && !started && (
+            <span
+              className="mono"
+              data-testid="typing-test-pb"
+              style={{
+                fontSize: "var(--text-xs)",
+                color: "var(--color-text-muted)",
+              }}
+            >
+              pb: {personalBest} wpm
+            </span>
+          )}
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: "var(--space-4)" }}>
           <span
             className="mono glow"
             style={{ fontSize: "var(--text-lg)", fontWeight: 600 }}
           >
-            {started ? `${timeLeft}s` : `${TIME_LIMIT}s`}
+            {started ? `${timeLeft}s` : `${timeLimit}s`}
           </span>
-          <button className="typing-reset" onClick={(e) => { e.stopPropagation(); initTest(); setTimeout(() => inputRef.current?.focus(), 0); }}>
+          <button type="button" className="typing-reset" onClick={(e) => { e.stopPropagation(); initTest(); setTimeout(() => inputRef.current?.focus(), 0); }}>
             reset
           </button>
         </div>
+      </div>
+
+      <div
+        data-testid="typing-test-mode-bar"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "var(--space-2)",
+          marginBottom: "var(--space-4)",
+          flexWrap: "wrap",
+          opacity: started ? 0.3 : 1,
+          pointerEvents: started ? "none" : "auto",
+          transition: "opacity 200ms ease",
+        }}
+      >
+        {WORD_MODES.map((m) => (
+          <button
+            type="button"
+            key={m.key}
+            data-testid={`typing-mode-${m.key}`}
+            style={modeButtonStyle(mode === m.key)}
+            onClick={(e) => { e.stopPropagation(); handleModeChange(m.key); }}
+          >
+            {m.label}
+          </button>
+        ))}
+        <span style={{ width: "1px", height: "16px", background: "var(--color-border)", margin: "0 var(--space-2)" }} />
+        {TIME_OPTIONS.map((t) => (
+          <button
+            type="button"
+            key={t}
+            data-testid={`typing-time-${t}`}
+            style={timeButtonStyle(timeLimit === t)}
+            onClick={(e) => { e.stopPropagation(); handleTimeChange(t); }}
+          >
+            {t}s
+          </button>
+        ))}
+      </div>
+
+      <div
+        data-testid="typing-test-timer-bar"
+        style={{
+          height: "3px",
+          marginBottom: "var(--space-6)",
+          background: "var(--color-border)",
+          borderRadius: "2px",
+          overflow: "hidden",
+        }}
+      >
+        <div
+          style={{
+            height: "100%",
+            width: `${timerFraction * 100}%`,
+            background: getTimerColor(timerFraction),
+            borderRadius: "2px",
+            transition: started ? "width 100ms linear, background-color 300ms ease" : "none",
+            boxShadow: started ? `0 0 8px ${getTimerColor(timerFraction)}` : "none",
+          }}
+        />
       </div>
 
       <input
@@ -238,7 +479,7 @@ export function TypingTest() {
           </p>
         )}
         {words.map((word, wi) => (
-          <span key={wi} style={{ marginRight: "0.75em", display: "inline" }}>
+          <span key={`${word}-${wi}`} style={{ marginRight: "0.75em", display: "inline" }}>
             {word.split("").map((char, ci) => {
               const state = charStates[wi]?.[ci] ?? "pending";
               const isCursor = wi === wordIndex && ci === charIndex && !finished;
@@ -258,20 +499,26 @@ export function TypingTest() {
       {started && !finished && (
         <div className="typing-test-stats">
           <div>
-            <div className="stat-value">
-              {wordIndex}/{words.length}
+            <div className="stat-value" data-testid="typing-test-live-wpm">
+              {displayWpm !== null ? displayWpm : "--"}
             </div>
-            <div className="stat-label">words</div>
+            <div className="stat-label">wpm</div>
           </div>
           <div>
             <div className="stat-value">{accuracy}%</div>
             <div className="stat-label">accuracy</div>
           </div>
+          <div>
+            <div className="stat-value">
+              {wordIndex}/{words.length}
+            </div>
+            <div className="stat-label">words</div>
+          </div>
         </div>
       )}
 
       {finished && (
-        <div className="typing-test-stats">
+        <div className="typing-test-stats" data-testid="typing-test-results">
           <div>
             <div className="stat-value">{wpm}</div>
             <div className="stat-label">wpm</div>
@@ -286,26 +533,54 @@ export function TypingTest() {
             </div>
             <div className="stat-label">words</div>
           </div>
-          {finished && (
-            <div
-              style={{
-                marginLeft: "auto",
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              <button
-                className="typing-reset"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  initTest();
-                  setTimeout(() => inputRef.current?.focus(), 0);
-                }}
+          {rating && (
+            <div>
+              <div
+                className="stat-value"
+                data-testid="typing-test-rating"
+                style={{ color: rating.color, fontSize: "var(--text-lg)" }}
               >
-                try again
-              </button>
+                {rating.label}
+              </div>
+              <div className="stat-label">rating</div>
             </div>
           )}
+          {isNewRecord && (
+            <div
+              data-testid="typing-test-new-record"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                color: "#ff0",
+                fontFamily: "var(--font-mono)",
+                fontSize: "var(--text-sm)",
+                fontWeight: 600,
+                textShadow: "0 0 10px rgba(255, 255, 0, 0.4)",
+                animation: "glow-pulse 1.5s ease-in-out infinite",
+              }}
+            >
+              new record!
+            </div>
+          )}
+          <div
+            style={{
+              marginLeft: "auto",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <button
+              type="button"
+              className="typing-reset"
+              onClick={(e) => {
+                e.stopPropagation();
+                initTest();
+                setTimeout(() => inputRef.current?.focus(), 0);
+              }}
+            >
+              try again
+            </button>
+          </div>
         </div>
       )}
     </div>

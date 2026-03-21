@@ -3,6 +3,9 @@ import Link from "next/link";
 import { heroContent, proofRailItems, siteConfig } from "@/content/site";
 import { getFeaturedCaseStudies } from "@/content/case-studies";
 import { TypingTest } from "@/components/TypingTest";
+import { InteractiveTerminal } from "@/components/home/InteractiveTerminal";
+import { GitHubCommitPulse } from "@/components/home/GitHubCommitPulse";
+import { Reveal } from "@/components/motion/Reveal";
 
 export default function Home() {
   const featured = getFeaturedCaseStudies();
@@ -133,7 +136,9 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Proof Rail */}
+      <InteractiveTerminal />
+
+      <Reveal>
       <section className="section">
         <div className="container">
           <div
@@ -173,15 +178,23 @@ export default function Home() {
           </div>
         </div>
       </section>
+      </Reveal>
 
-      {/* Typing Test */}
+      <Reveal delay={100}>
+      <section className="section">
+        <div className="container">
+          <GitHubCommitPulse />
+        </div>
+      </section>
+      </Reveal>
+
       <section className="section">
         <div className="container">
           <TypingTest />
         </div>
       </section>
 
-      {/* Featured Case Studies */}
+      <Reveal delay={200}>
       <section className="section">
         <div className="container">
           <h2 style={{ marginBottom: "var(--space-8)" }}>
@@ -267,6 +280,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      </Reveal>
 
       {/* CTA */}
       <section className="section">

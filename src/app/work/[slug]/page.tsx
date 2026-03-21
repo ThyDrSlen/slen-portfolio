@@ -4,6 +4,7 @@ import Link from "next/link";
 import {
   getCaseStudyBySlug,
   getAllSlugs,
+  getAdjacentCaseStudies,
 } from "@/content/case-studies";
 import { siteConfig } from "@/content/site";
 
@@ -43,6 +44,8 @@ export default async function CaseStudyPage({
     notFound();
   }
 
+  const { previous, next } = getAdjacentCaseStudies(cs.slug);
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "CreativeWork",
@@ -61,6 +64,30 @@ export default async function CaseStudyPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <nav
+        data-testid="case-study-breadcrumbs"
+        aria-label="Breadcrumb"
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "var(--space-2)",
+          marginBottom: "var(--space-8)",
+          fontFamily: "var(--font-mono)",
+          fontSize: "var(--text-xs)",
+          color: "var(--color-text-muted)",
+        }}
+      >
+        <Link href="/" style={{ color: "var(--color-text-muted)", textDecoration: "none" }}>
+          home
+        </Link>
+        <span>/</span>
+        <Link href="/work" style={{ color: "var(--color-text-muted)", textDecoration: "none" }}>
+          work
+        </Link>
+        <span>/</span>
+        <span style={{ color: "var(--color-accent)" }}>{cs.title}</span>
+      </nav>
+
       {/* Hero */}
       <section
         data-testid="case-study-hero"
@@ -379,10 +406,74 @@ export default async function CaseStudyPage({
         </p>
       </section>
 
-      {/* Back to Work */}
+      <section
+        data-testid="case-study-pagination"
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+          gap: "var(--space-4)",
+          marginBottom: "var(--space-8)",
+        }}
+      >
+        {previous ? (
+          <Link
+            href={`/work/${previous.slug}`}
+            data-testid="case-study-prev-link"
+            className="matrix-card"
+          >
+            <p
+              className="mono"
+              style={{
+                fontSize: "var(--text-xs)",
+                color: "var(--color-text-muted)",
+                marginBottom: "var(--space-2)",
+                textTransform: "uppercase",
+                letterSpacing: "0.08em",
+              }}
+            >
+              Previous project
+            </p>
+            <h3 style={{ marginBottom: "var(--space-2)" }}>{previous.title}</h3>
+            <p style={{ color: "var(--color-text-secondary)", fontSize: "var(--text-sm)" }}>
+              {previous.summary}
+            </p>
+          </Link>
+        ) : (
+          <div />
+        )}
+
+        {next ? (
+          <Link
+            href={`/work/${next.slug}`}
+            data-testid="case-study-next-link"
+            className="matrix-card"
+          >
+            <p
+              className="mono"
+              style={{
+                fontSize: "var(--text-xs)",
+                color: "var(--color-text-muted)",
+                marginBottom: "var(--space-2)",
+                textTransform: "uppercase",
+                letterSpacing: "0.08em",
+              }}
+            >
+              Next project
+            </p>
+            <h3 style={{ marginBottom: "var(--space-2)" }}>{next.title}</h3>
+            <p style={{ color: "var(--color-text-secondary)", fontSize: "var(--text-sm)" }}>
+              {next.summary}
+            </p>
+          </Link>
+        ) : (
+          <div />
+        )}
+      </section>
+
       <div style={{ marginBottom: "var(--space-12)" }}>
         <Link
           href="/work"
+          data-testid="case-study-back-link"
           style={{
             display: "inline-flex",
             alignItems: "center",
