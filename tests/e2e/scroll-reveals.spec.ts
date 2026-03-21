@@ -1,0 +1,46 @@
+import { test, expect } from "@playwright/test";
+
+test.describe("Scroll reveal animations", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/");
+    await page.getByTestId("boot-sequence").waitFor({ state: "hidden", timeout: 5000 });
+  });
+
+  test("reveal wrappers exist on the page", async ({ page }) => {
+    const reveals = page.getByTestId("reveal");
+    const count = await reveals.count();
+    expect(count).toBeGreaterThanOrEqual(1);
+  });
+
+  test("sections become visible after scrolling into view", async ({
+    page,
+  }) => {
+    const proofRail = page.getByTestId("proof-rail");
+    await proofRail.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(800);
+    await expect(proofRail).toBeVisible();
+
+    const caseStudies = page.getByTestId("featured-case-studies");
+    await caseStudies.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(800);
+    await expect(caseStudies).toBeVisible();
+  });
+
+  test("reduced motion shows content immediately without animation", async ({
+    page,
+  }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto("/");
+
+    const reveals = page.getByTestId("reveal");
+    const count = await reveals.count();
+
+    for (let i = 0; i < count; i++) {
+      const reveal = reveals.nth(i);
+      const opacity = await reveal.evaluate(
+        (el) => getComputedStyle(el).opacity
+      );
+      expect(opacity).toBe("1");
+    }
+  });
+});

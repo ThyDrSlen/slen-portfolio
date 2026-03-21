@@ -1,16 +1,18 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 
 export function useSessionFlag(key: string): [boolean, () => void] {
-  const [flagged, setFlagged] = useState(() => {
-    if (typeof window === "undefined") return false;
+  const [flagged, setFlagged] = useState(false);
+
+  useEffect(() => {
     try {
-      return sessionStorage.getItem(key) === "1";
+      if (sessionStorage.getItem(key) === "1") {
+        setFlagged(true);
+      }
     } catch {
-      return false;
     }
-  });
+  }, [key]);
 
   const setFlag = useCallback(() => {
     try {
