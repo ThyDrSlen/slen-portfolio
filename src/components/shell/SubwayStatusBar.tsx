@@ -82,26 +82,6 @@ export function SubwayStatusBar() {
     >
       <span
         style={{
-          display: "inline-flex",
-          alignItems: "center",
-          justifyContent: "center",
-          width: 22,
-          height: 22,
-          borderRadius: "50%",
-          background: subwayConfig.lineColor,
-          color: "#fff",
-          fontWeight: 700,
-          fontSize: "0.7rem",
-          lineHeight: 1,
-          flexShrink: 0,
-          letterSpacing: "0.02em",
-        }}
-      >
-        {subwayConfig.lineName}
-      </span>
-
-      <span
-        style={{
           flex: 1,
           color: "var(--color-text-secondary)",
           opacity: fading ? 0 : 1,

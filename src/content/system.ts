@@ -85,7 +85,7 @@ export const subwayConfig = {
     "open to new opportunities",
     "building Form Factor",
     "shipping Go services @ PANW",
-    "based in NYC",
+    "based in bay area",
   ],
   lineColor: "#0039A6",
   lineName: "A",
