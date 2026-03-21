@@ -14,7 +14,7 @@ test.describe("Terminal navigation and advanced input", () => {
     const input = page.getByTestId("terminal-input");
     await input.fill("cd about");
 
-    const [response] = await Promise.all([
+    await Promise.all([
       page.waitForURL("**/about", { timeout: 5000 }),
       page.keyboard.press("Enter"),
     ]);

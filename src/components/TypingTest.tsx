@@ -217,22 +217,25 @@ export function TypingTest() {
     setTotalChars(0);
     setElapsed(0);
     setIsNewRecord(false);
+    setPersonalBest(readPersonalBest(mode));
     if (timerRef.current) clearInterval(timerRef.current);
   }, [mode]);
 
   useEffect(() => {
-    initTest();
-    setPersonalBest(readPersonalBest(mode));
-  }, [initTest, mode]);
+    requestAnimationFrame(() => {
+      initTest();
+    });
+  }, [initTest]);
 
   useEffect(() => {
-    if (finished && wpm > 0) {
-      const pb = readPersonalBest(mode);
-      if (wpm > pb) {
-        writePersonalBest(mode, wpm);
+    if (!finished || wpm <= 0) return;
+    const pb = readPersonalBest(mode);
+    if (wpm > pb) {
+      writePersonalBest(mode, wpm);
+      requestAnimationFrame(() => {
         setPersonalBest(wpm);
         setIsNewRecord(true);
-      }
+      });
     }
   }, [finished, wpm, mode]);
 

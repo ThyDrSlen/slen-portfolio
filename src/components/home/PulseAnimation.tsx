@@ -46,7 +46,7 @@ export function PulseAnimation({
       "(prefers-reduced-motion: reduce)"
     ).matches;
     if (prefersReduced) {
-      setDrawn(true);
+      requestAnimationFrame(() => setDrawn(true));
       return;
     }
     const raf = requestAnimationFrame(() => setDrawn(true));

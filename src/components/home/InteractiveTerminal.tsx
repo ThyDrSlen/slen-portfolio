@@ -72,11 +72,15 @@ export function InteractiveTerminal() {
   const [completionIndex, setCompletionIndex] = useState(0);
   const [completionSeed, setCompletionSeed] = useState("");
   const [isCursorVisible, setIsCursorVisible] = useState(true);
-  const startedAtRef = useRef(Date.now());
+  const startedAtRef = useRef(0);
   const outputRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const completions = useMemo(() => getCompletions(input, state), [input, state]);
+
+  useEffect(() => {
+    startedAtRef.current = Date.now();
+  }, []);
 
   useEffect(() => {
     const node = outputRef.current;

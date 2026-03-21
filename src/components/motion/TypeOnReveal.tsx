@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useState, createElement } from "react";
+import { useCallback, useEffect, useState, createElement } from "react";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { motionConfig } from "@/content/system";
 
@@ -19,14 +19,17 @@ export function TypeOnReveal({
   className,
   style,
 }: TypeOnRevealProps) {
-  const ref = useRef<HTMLElement>(null);
+  const [el, setEl] = useState<HTMLElement | null>(null);
   const [charCount, setCharCount] = useState(0);
   const [started, setStarted] = useState(false);
   const [cursorVisible, setCursorVisible] = useState(true);
   const prefersReducedMotion = usePrefersReducedMotion();
 
+  const callbackRef = useCallback((node: HTMLElement | null) => {
+    setEl(node);
+  }, []);
+
   useEffect(() => {
-    const el = ref.current;
     if (!el || prefersReducedMotion) return;
 
     const observer = new IntersectionObserver(
@@ -41,7 +44,7 @@ export function TypeOnReveal({
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, [prefersReducedMotion]);
+  }, [el, prefersReducedMotion]);
 
   useEffect(() => {
     if (!started || prefersReducedMotion) return;
@@ -76,7 +79,7 @@ export function TypeOnReveal({
 
   return createElement(
     tag,
-    { ref, className, style },
+    { ref: callbackRef, className, style },
     text.slice(0, charCount),
     cursor,
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useSyncExternalStore } from "react";
 import { useSessionFlag } from "@/hooks/useSessionFlag";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { subwayConfig } from "@/content/system";
@@ -17,20 +17,17 @@ function getNycTime(): string {
   return timeFormatter.format(new Date());
 }
 
+function subscribeClock(callback: () => void) {
+  const id = setInterval(callback, 1000);
+  return () => clearInterval(id);
+}
+
 export function SubwayStatusBar() {
   const [dismissed, dismiss] = useSessionFlag("subway-dismissed");
   const prefersReducedMotion = usePrefersReducedMotion();
   const [messageIndex, setMessageIndex] = useState(0);
   const [fading, setFading] = useState(false);
-  const [nycTime, setNycTime] = useState("");
-
-  useEffect(() => {
-    setNycTime(getNycTime());
-    const id = setInterval(() => {
-      setNycTime(getNycTime());
-    }, 1000);
-    return () => clearInterval(id);
-  }, []);
+  const nycTime = useSyncExternalStore(subscribeClock, getNycTime, () => "");
 
   useEffect(() => {
     if (prefersReducedMotion) return;
