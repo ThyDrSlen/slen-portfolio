@@ -9,7 +9,6 @@ interface TrailPoint {
   timestamp: number;
 }
 
-const CURSOR_CLASS = "cursor-trail-active";
 const MAX_POINTS = 20;
 const LIFETIME = 500;
 
@@ -32,7 +31,7 @@ export function CursorTrail() {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) return;
 
     let animationId: number;
@@ -42,12 +41,14 @@ export function CursorTrail() {
     let mouseActive = false;
 
     const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
+      canvas.style.width = `${window.innerWidth}px`;
+      canvas.style.height = `${window.innerHeight}px`;
+      ctx.scale(dpr, dpr);
     };
     resize();
-
-    document.documentElement.classList.add(CURSOR_CLASS);
 
     const onMouseMove = (e: MouseEvent) => {
       mouseX = e.clientX;
@@ -68,6 +69,9 @@ export function CursorTrail() {
       }
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      ctx.shadowBlur = 0;
+      ctx.shadowColor = "transparent";
 
       for (let i = 0; i < trail.length; i++) {
         const point = trail[i];
@@ -98,10 +102,10 @@ export function CursorTrail() {
         ctx.shadowColor = "#00ff41";
         ctx.fillStyle = "#00ff41";
         ctx.fill();
-
-        ctx.shadowBlur = 0;
-        ctx.shadowColor = "transparent";
       }
+
+      ctx.shadowBlur = 0;
+      ctx.shadowColor = "transparent";
 
       animationId = requestAnimationFrame(render);
     };
@@ -114,37 +118,22 @@ export function CursorTrail() {
       cancelAnimationFrame(animationId);
       document.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("resize", resize);
-      document.documentElement.classList.remove(CURSOR_CLASS);
     };
   }, [isDesktop, prefersReducedMotion]);
 
   if (prefersReducedMotion || !isDesktop) return null;
 
   return (
-    <>
-      <style>{`
-        .${CURSOR_CLASS},
-        .${CURSOR_CLASS} * {
-          cursor: none !important;
-        }
-        .${CURSOR_CLASS} input,
-        .${CURSOR_CLASS} textarea,
-        .${CURSOR_CLASS} button,
-        .${CURSOR_CLASS} a,
-        .${CURSOR_CLASS} select {
-          cursor: auto !important;
-        }
-      `}</style>
-      <canvas
-        ref={canvasRef}
-        aria-hidden="true"
-        style={{
-          position: "fixed",
-          inset: 0,
-          zIndex: 9998,
-          pointerEvents: "none",
-        }}
-      />
-    </>
+    <canvas
+      ref={canvasRef}
+      aria-hidden="true"
+      style={{
+        position: "fixed",
+        inset: 0,
+        zIndex: 10,
+        pointerEvents: "none",
+        background: "transparent",
+      }}
+    />
   );
 }
