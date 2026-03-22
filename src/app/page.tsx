@@ -306,6 +306,7 @@ export default function Home() {
             style={{
               display: "flex",
               justifyContent: "center",
+              alignItems: "center",
               gap: "var(--space-4)",
               flexWrap: "wrap",
             }}

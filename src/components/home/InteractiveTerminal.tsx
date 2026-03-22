@@ -211,7 +211,7 @@ export function InteractiveTerminal() {
   };
 
   return (
-    <section className="section" style={{ paddingTop: "var(--space-16)" }}>
+    <section className="section" style={{ paddingTop: "5rem" }}>
       <div className="container">
         <div
           data-testid="interactive-terminal"
