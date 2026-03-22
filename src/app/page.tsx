@@ -136,9 +136,7 @@ export default function Home() {
         </div>
       </section>
 
-      <div style={{ marginTop: "var(--space-12)" }}>
-        <InteractiveTerminal />
-      </div>
+      <InteractiveTerminal />
 
       <Reveal>
       <section className="section">
