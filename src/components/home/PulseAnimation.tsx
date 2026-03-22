@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { type GitHubPulseData } from "@/lib/github";
+
+type DayData = { date: string; count: number };
 
 function buildPoints(
-  commitsByDay: GitHubPulseData["commitsByDay"],
+  commitsByDay: DayData[],
   width: number,
   height: number,
   padX: number,
@@ -23,7 +24,7 @@ function buildPoints(
 export function PulseAnimation({
   commitsByDay,
 }: {
-  commitsByDay: GitHubPulseData["commitsByDay"];
+  commitsByDay: DayData[];
 }) {
   const W = 400;
   const H = 120;

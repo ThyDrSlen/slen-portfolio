@@ -7,6 +7,8 @@ import { MatrixRain } from "@/components/shell/MatrixRain";
 import { BootSequence } from "@/components/shell/BootSequence";
 import { CursorTrail } from "@/components/shell/CursorTrail";
 import { SubwayStatusBar } from "@/components/shell/SubwayStatusBar";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { siteConfig } from "@/content/site";
 import "./globals.css";
 import "./matrix-effects.css";
@@ -75,6 +77,8 @@ export default function RootLayout({
         </main>
         <Footer />
         <SubwayStatusBar />
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
