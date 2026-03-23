@@ -229,7 +229,7 @@ export function InteractiveTerminal() {
               alignItems: "center",
               justifyContent: "space-between",
               gap: "var(--space-4)",
-              padding: "var(--space-4) var(--space-6)",
+              padding: "var(--space-2) var(--space-4)",
               borderBottom: "1px solid var(--color-border)",
               background: "linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01))",
             }}
@@ -265,7 +265,7 @@ export function InteractiveTerminal() {
             style={{
               maxHeight: "28rem",
               overflowY: "auto",
-              padding: "var(--space-3) var(--space-6)",
+              padding: "var(--space-2) var(--space-4)",
               fontFamily: "var(--font-mono)",
               fontSize: "var(--text-sm)",
               lineHeight: 1.7,
