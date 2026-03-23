@@ -97,6 +97,6 @@ export const motionConfig = {
   typewriterCharDelayMs: 30,
   staggerDelayMs: 80,
   countUpDurationMs: 1200,
-  bootLineDelayMs: 200,
-  bootTotalDurationMs: 2500,
+  bootLineDelayMs: 350,
+  bootTotalDurationMs: 4000,
 } as const;
