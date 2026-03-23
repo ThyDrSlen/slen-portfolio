@@ -29,7 +29,7 @@ export const siteConfig: SiteConfig = {
 export const experienceEntries: ExperienceEntry[] = [
   {
     company: "Palo Alto Networks",
-    role: "Software Engineer (ADEM)",
+    role: "Software Engineer",
     period: "Aug 2024 – Present",
     description:
       "Backend-focused platform engineering on scalable distributed systems, developer tooling, and experimentation-friendly platform capabilities.",
@@ -82,7 +82,7 @@ export const aboutContent = {
   intro:
     "I'm a backend-focused software engineer with a non-traditional path: Hunter College to the Marcy Lab School fellowship to enterprise platform engineering at Palo Alto Networks. I build scalable distributed systems, developer tooling, and experimentation-friendly platform capabilities. I care about shipping things that work at scale and proving it with measurable outcomes.",
   currentFocus:
-    "Currently building Go services, CI feedback acceleration, and operational analytics at Palo Alto Networks (ADEM), while shipping Form Factor, a mobile fitness app with real-time ARKit body tracking and Apple HealthKit integration.",
+    "Currently building Go services, CI feedback acceleration, and operational analytics at Palo Alto Networks, while shipping Form Factor, a mobile fitness app with real-time ARKit body tracking and Apple HealthKit integration.",
 };
 
 export const proofRailItems = [

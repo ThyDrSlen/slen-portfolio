@@ -165,6 +165,7 @@ export default function About() {
         <div
           style={{
             display: "flex",
+            alignItems: "center",
             flexWrap: "wrap",
             gap: "var(--space-4)",
           }}

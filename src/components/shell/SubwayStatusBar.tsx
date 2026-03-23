@@ -90,8 +90,9 @@ export function SubwayStatusBar() {
           borderRadius: "50%",
           background: subwayConfig.lineColor,
           color: "#fff",
+          fontFamily: "Helvetica, Arial, sans-serif",
           fontWeight: 700,
-          fontSize: "0.7rem",
+          fontSize: "0.8rem",
           lineHeight: 1,
           flexShrink: 0,
         }}

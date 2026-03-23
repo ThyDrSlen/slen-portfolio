@@ -136,9 +136,7 @@ export default function Home() {
         </div>
       </section>
 
-      <div style={{ marginTop: "var(--space-12)" }}>
-        <InteractiveTerminal />
-      </div>
+      <InteractiveTerminal />
 
       <Reveal>
       <section className="section">
@@ -308,6 +306,7 @@ export default function Home() {
             style={{
               display: "flex",
               justifyContent: "center",
+              alignItems: "center",
               gap: "var(--space-4)",
               flexWrap: "wrap",
             }}

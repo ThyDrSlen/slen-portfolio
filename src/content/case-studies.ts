@@ -108,8 +108,8 @@ export const caseStudies: CaseStudy[] = [
     slug: "palo-alto",
     title: "Enterprise Platform Engineering",
     summary:
-      "Backend-focused platform engineering on scalable distributed systems at Palo Alto Networks (ADEM). Building Go services, CI feedback acceleration, and operational analytics.",
-    role: "Software Engineer (ADEM)",
+      "Backend-focused platform engineering on scalable distributed systems at Palo Alto Networks. Building Go services, CI feedback acceleration, and operational analytics.",
+    role: "Software Engineer",
     period: "Aug 2024 – Present",
     techStack: [
       "Go",
@@ -148,7 +148,7 @@ export const caseStudies: CaseStudy[] = [
     disclosure: {
       anonymizationLevel: "anonymized",
       allowedClaims: [
-        "Software Engineer at Palo Alto Networks (ADEM)",
+        "Software Engineer at Palo Alto Networks",
         "Go-based distributed agent simulator",
         "CI feedback acceleration and deterministic validation",
         "Agentic MCP platform for incident triage",

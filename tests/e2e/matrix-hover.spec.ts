@@ -24,13 +24,13 @@ test.describe("Matrix card hover effects", () => {
     );
 
     await card.hover();
-    await page.waitForTimeout(500);
 
-    const boxShadowAfter = await card.evaluate(
-      (el) => getComputedStyle(el).boxShadow
-    );
-
-    expect(boxShadowAfter).not.toBe(boxShadowBefore);
+    await expect
+      .poll(
+        () => card.evaluate((el) => getComputedStyle(el).boxShadow),
+        { timeout: 3000 }
+      )
+      .not.toBe(boxShadowBefore);
   });
 
   test("card has pseudo-elements for rain and glitch effects", async ({

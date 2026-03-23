@@ -57,7 +57,7 @@ export const virtualFs: Record<string, string | Record<string, string>> = {
     "orwell-scraper":
       "Orwell Web Scraper — Async scraping pipeline, 26k labeled assets, ~90% access rate. Python, Playwright, aiohttp.",
     "palo-alto":
-      "Enterprise Platform Engineering — Go services, CI feedback acceleration, agentic MCP platform at Palo Alto Networks (ADEM).",
+      "Enterprise Platform Engineering — Go services, CI feedback acceleration, agentic MCP platform at Palo Alto Networks.",
     "portus":
       "Portus — Rust daemon for port collision prevention. Lease-based IPC, MCP server for AI agents, TUI dashboard.",
   },
@@ -97,6 +97,6 @@ export const motionConfig = {
   typewriterCharDelayMs: 30,
   staggerDelayMs: 80,
   countUpDurationMs: 1200,
-  bootLineDelayMs: 200,
-  bootTotalDurationMs: 2500,
+  bootLineDelayMs: 275,
+  bootTotalDurationMs: 3200,
 } as const;
