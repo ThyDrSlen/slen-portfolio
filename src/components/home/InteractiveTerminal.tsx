@@ -265,7 +265,7 @@ export function InteractiveTerminal() {
             style={{
               maxHeight: "28rem",
               overflowY: "auto",
-              padding: "var(--space-5)",
+              padding: "var(--space-6) var(--space-8)",
               fontFamily: "var(--font-mono)",
               fontSize: "var(--text-sm)",
               lineHeight: 1.7,
