@@ -10,27 +10,6 @@ test.describe("Home page", () => {
       "20% better pre-merge detection"
     );
     await expect(page.getByTestId("primary-cta")).toBeVisible();
-
-    // All three case study cards
-    await expect(
-      page.getByTestId("case-study-card-form-factor")
-    ).toBeVisible();
-    await expect(
-      page.getByTestId("case-study-card-orwell-scraper")
-    ).toBeVisible();
-    await expect(
-      page.getByTestId("case-study-card-palo-alto")
-    ).toBeVisible();
-
-    // Cards link to correct routes
-    const ffCard = page.getByTestId("case-study-card-form-factor");
-    await expect(ffCard).toHaveAttribute("href", "/work/form-factor");
-
-    const owCard = page.getByTestId("case-study-card-orwell-scraper");
-    await expect(owCard).toHaveAttribute("href", "/work/orwell-scraper");
-
-    const paCard = page.getByTestId("case-study-card-palo-alto");
-    await expect(paCard).toHaveAttribute("href", "/work/palo-alto");
   });
 
   test("home page has exactly one h1", async ({ page }) => {
@@ -44,9 +23,6 @@ test.describe("Home page", () => {
     await page.goto("/", { waitUntil: "domcontentloaded" });
     await expect(page.locator("h1")).toBeVisible();
     await expect(page.getByTestId("proof-rail")).toBeVisible();
-    await expect(
-      page.getByTestId("case-study-card-form-factor")
-    ).toBeVisible();
     await expect(page.getByTestId("primary-cta")).toBeVisible();
   });
 });

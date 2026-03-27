@@ -79,7 +79,7 @@ export function TypeOnReveal({
 
   return createElement(
     tag,
-    { ref: callbackRef, className, style },
+    { ref: callbackRef, className, style, "aria-label": text },
     text.slice(0, charCount),
     cursor,
   );
