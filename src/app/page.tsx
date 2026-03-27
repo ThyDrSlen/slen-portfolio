@@ -1,14 +1,20 @@
 import Image from "next/image";
 import Link from "next/link";
-import { heroContent, proofRailItems, siteConfig } from "@/content/site";
-import { getFeaturedCaseStudies } from "@/content/case-studies";
+import {
+  heroContent,
+  proofRailItems,
+  siteConfig,
+  skillCategories,
+  lookingFor,
+} from "@/content/site";
 import { TypingTest } from "@/components/TypingTest";
 import { InteractiveTerminal } from "@/components/home/InteractiveTerminal";
 import { GitHubCommitPulse } from "@/components/home/GitHubCommitPulse";
 import { Reveal } from "@/components/motion/Reveal";
+import { CountUpMetric } from "@/components/motion/CountUpMetric";
+import { TypeOnReveal } from "@/components/motion/TypeOnReveal";
 
 export default function Home() {
-  const featured = getFeaturedCaseStudies();
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -29,8 +35,7 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      {/* Hero */}
-      <section className="section" style={{ paddingTop: "var(--space-16)" }}>
+      <section style={{ paddingTop: "var(--space-16)", marginBottom: "var(--space-12)" }}>
         <div
           className="container"
           style={{
@@ -60,63 +65,63 @@ export default function Home() {
             >
               {heroContent.headline}
             </h1>
-          <p
-            data-testid="hero-subhead"
-            style={{
-              fontSize: "var(--text-lg)",
-              color: "var(--color-text-secondary)",
-              maxWidth: "40rem",
-              marginTop: "var(--space-6)",
-              lineHeight: 1.7,
-            }}
-          >
-            {heroContent.subhead}
-          </p>
-          <div
-            style={{
-              display: "flex",
-              gap: "var(--space-4)",
-              marginTop: "var(--space-8)",
-              flexWrap: "wrap",
-            }}
-          >
-            <Link
-              href={heroContent.cta.href}
-              data-testid="primary-cta"
+            <p
+              data-testid="hero-subhead"
               style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "var(--space-2)",
-                padding: "var(--space-3) var(--space-6)",
-                background: "var(--color-accent)",
-                color: "var(--color-bg)",
-                fontFamily: "var(--font-mono)",
-                fontSize: "var(--text-sm)",
-                fontWeight: 600,
-                borderRadius: "var(--radius-md)",
-                textDecoration: "none",
-              }}
-            >
-              {heroContent.cta.label} &rarr;
-            </Link>
-            <a
-              href={`mailto:${siteConfig.email}`}
-              data-testid="contact-email-link"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                padding: "var(--space-3) var(--space-6)",
-                border: "1px solid var(--color-border)",
-                fontFamily: "var(--font-mono)",
-                fontSize: "var(--text-sm)",
-                borderRadius: "var(--radius-md)",
-                textDecoration: "none",
+                fontSize: "var(--text-lg)",
                 color: "var(--color-text-secondary)",
+                maxWidth: "40rem",
+                marginTop: "var(--space-6)",
+                lineHeight: 1.7,
               }}
             >
-              get_in_touch()
-            </a>
-          </div>
+              {heroContent.subhead}
+            </p>
+            <div
+              style={{
+                display: "flex",
+                gap: "var(--space-4)",
+                marginTop: "var(--space-8)",
+                flexWrap: "wrap",
+              }}
+            >
+              <Link
+                href={heroContent.cta.href}
+                data-testid="primary-cta"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "var(--space-2)",
+                  padding: "var(--space-3) var(--space-6)",
+                  background: "var(--color-accent)",
+                  color: "var(--color-bg)",
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "var(--text-sm)",
+                  fontWeight: 600,
+                  borderRadius: "var(--radius-md)",
+                  textDecoration: "none",
+                }}
+              >
+                {heroContent.cta.label} &rarr;
+              </Link>
+              <a
+                href={`mailto:${siteConfig.email}`}
+                data-testid="contact-email-link"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  padding: "var(--space-3) var(--space-6)",
+                  border: "1px solid var(--color-border)",
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "var(--text-sm)",
+                  borderRadius: "var(--radius-md)",
+                  textDecoration: "none",
+                  color: "var(--color-text-secondary)",
+                }}
+              >
+                get_in_touch()
+              </a>
+            </div>
           </div>
           <div style={{ flex: "0 0 auto" }}>
             <Image
@@ -136,232 +141,229 @@ export default function Home() {
         </div>
       </section>
 
-      <InteractiveTerminal />
-
       <Reveal>
-      <section className="section">
-        <div className="container">
-          <div
-            data-testid="proof-rail"
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-              gap: "var(--space-6)",
-              padding: "var(--space-8) 0",
-              borderTop: "1px solid var(--color-border)",
-              borderBottom: "1px solid var(--color-border)",
-            }}
-          >
-            {proofRailItems.map((item) => (
-              <div key={item.label}>
-                <p
-                  className="mono"
-                  style={{
-                    fontSize: "var(--text-sm)",
-                    fontWeight: 600,
-                    marginBottom: "var(--space-1)",
-                    color: "var(--color-accent)",
-                  }}
-                >
-                  {item.label}
-                </p>
-                <p
-                  style={{
-                    fontSize: "var(--text-sm)",
-                    color: "var(--color-text-muted)",
-                  }}
-                >
-                  {item.detail}
-                </p>
-              </div>
-            ))}
+        <section style={{ marginBottom: "var(--space-12)" }}>
+          <div className="container">
+            <div
+              data-testid="proof-rail"
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+                gap: "var(--space-6)",
+                padding: "var(--space-8) 0",
+                borderTop: "1px solid var(--color-border)",
+                borderBottom: "1px solid var(--color-border)",
+              }}
+            >
+              {proofRailItems.map((item) => (
+                <div key={item.label}>
+                  {item.metric && (
+                    <p
+                      className="mono"
+                      style={{
+                        fontSize: "var(--text-2xl)",
+                        fontWeight: 600,
+                        marginBottom: "var(--space-1)",
+                        color: "var(--color-accent)",
+                        textShadow: "0 0 10px var(--color-accent-glow)",
+                      }}
+                    >
+                      <CountUpMetric
+                        target={item.metric.value}
+                        suffix={item.metric.suffix}
+                      />
+                    </p>
+                  )}
+                  <p
+                    className="mono"
+                    style={{
+                      fontSize: "var(--text-sm)",
+                      fontWeight: 600,
+                      marginBottom: "var(--space-1)",
+                      color: item.metric
+                        ? "var(--color-text-secondary)"
+                        : "var(--color-accent)",
+                    }}
+                  >
+                    {item.label}
+                  </p>
+                  <p
+                    style={{
+                      fontSize: "var(--text-sm)",
+                      color: "var(--color-text-muted)",
+                    }}
+                  >
+                    {item.detail}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
       </Reveal>
 
       <Reveal delay={100}>
-      <section className="section">
-        <div className="container">
-          <GitHubCommitPulse />
-        </div>
-      </section>
+        <section style={{ marginBottom: "var(--space-16)" }}>
+          <div className="container">
+            <h2 style={{ marginBottom: "var(--space-8)" }}>
+              <span
+                className="mono glow"
+                style={{ fontSize: "var(--text-sm)", fontWeight: 400 }}
+              >
+                ~/skills
+              </span>
+              <br />
+              <TypeOnReveal text="Tech Stack" tag="span" />
+            </h2>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+                gap: "var(--space-6)",
+              }}
+            >
+              {skillCategories.map((cat) => (
+                <div key={cat.label}>
+                  <h3
+                    className="mono"
+                    style={{
+                      fontSize: "var(--text-sm)",
+                      color: "var(--color-accent)",
+                      marginBottom: "var(--space-3)",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.1em",
+                      fontWeight: 600,
+                    }}
+                  >
+                    {cat.label}
+                  </h3>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexWrap: "wrap",
+                      gap: "var(--space-2)",
+                    }}
+                  >
+                    {cat.skills.map((skill) => (
+                      <span
+                        key={skill}
+                        className="mono"
+                        style={{
+                          fontSize: "var(--text-xs)",
+                          padding: "var(--space-1) var(--space-2)",
+                          background: "var(--color-bg-surface)",
+                          border: "1px solid var(--color-border)",
+                          borderRadius: "var(--radius-sm)",
+                          color: "var(--color-text-muted)",
+                        }}
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
       </Reveal>
 
-      <section className="section">
+      <InteractiveTerminal />
+
+      <section style={{ marginBottom: "var(--space-12)" }}>
         <div className="container">
           <TypingTest />
         </div>
       </section>
 
-      <Reveal delay={200}>
-      <section className="section">
-        <div className="container">
-          <h2 style={{ marginBottom: "var(--space-8)" }}>
-            <span className="mono glow" style={{ fontSize: "var(--text-sm)", fontWeight: 400 }}>
-              ~/work
-            </span>
-            <br />
-            Selected Work
-          </h2>
-          <div
-            data-testid="featured-case-studies"
-            style={{
-              display: "grid",
-              gap: "var(--space-6)",
-            }}
-          >
-            {featured.map((cs) => (
-              <Link
-                key={cs.slug}
-                href={`/work/${cs.slug}`}
-                data-testid={`case-study-card-${cs.slug}`}
-                className="matrix-card"
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "var(--space-3)",
-                    marginBottom: "var(--space-3)",
-                  }}
-                >
-                  <h3>{cs.title}</h3>
-                  {cs.disclosure.anonymizationLevel === "anonymized" && (
-                    <span className="steel-badge">Anonymized</span>
-                  )}
-                </div>
-                <p
-                  className="mono"
-                  style={{
-                    fontSize: "var(--text-xs)",
-                    color: "var(--color-text-muted)",
-                    marginBottom: "var(--space-3)",
-                  }}
-                >
-                  {cs.role} &middot; {cs.period}
-                </p>
-                <p
-                  style={{
-                    color: "var(--color-text-secondary)",
-                    fontSize: "var(--text-sm)",
-                    lineHeight: 1.6,
-                  }}
-                >
-                  {cs.summary}
-                </p>
-                <div
-                  style={{
-                    display: "flex",
-                    flexWrap: "wrap",
-                    gap: "var(--space-2)",
-                    marginTop: "var(--space-4)",
-                  }}
-                >
-                  {cs.techStack.slice(0, 5).map((tech) => (
-                    <span
-                      key={tech}
-                      className="mono"
-                      style={{
-                        fontSize: "var(--text-xs)",
-                        padding: "var(--space-1) var(--space-2)",
-                        background: "var(--color-bg-surface)",
-                        border: "1px solid var(--color-border)",
-                        borderRadius: "var(--radius-sm)",
-                        color: "var(--color-text-muted)",
-                      }}
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </Link>
-            ))}
+      <Reveal>
+        <section style={{ marginBottom: "var(--space-12)" }}>
+          <div className="container">
+            <GitHubCommitPulse />
           </div>
-        </div>
-      </section>
+        </section>
       </Reveal>
 
-      {/* CTA */}
-      <section className="section">
-        <div
-          className="container"
-          style={{ textAlign: "center", padding: "var(--space-16) 0" }}
-        >
-          <h2 style={{ marginBottom: "var(--space-4)" }}>
-            Want to work together?
-          </h2>
-          <p
-            style={{
-              color: "var(--color-text-secondary)",
-              marginBottom: "var(--space-8)",
-              maxWidth: "32rem",
-              margin: "0 auto var(--space-8)",
-            }}
-          >
-            I&apos;m open to new opportunities. Check out my work, download my
-            resume, or reach out directly.
-          </p>
+      <Reveal delay={100}>
+        <section style={{ padding: "var(--space-16) 0" }}>
           <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              gap: "var(--space-4)",
-              flexWrap: "wrap",
-            }}
+            className="container"
+            style={{ textAlign: "center" }}
           >
-            <Link
-              href="/work"
+            <h2 style={{ marginBottom: "var(--space-4)" }}>
+              <TypeOnReveal text="Want to work together?" tag="span" />
+            </h2>
+            <p
               style={{
-                display: "inline-flex",
-                padding: "var(--space-3) var(--space-6)",
-                background: "var(--color-accent)",
-                color: "var(--color-bg)",
-                fontFamily: "var(--font-mono)",
-                fontSize: "var(--text-sm)",
-                fontWeight: 600,
-                borderRadius: "var(--radius-md)",
-                textDecoration: "none",
-              }}
-            >
-              ls ./work
-            </Link>
-            <a
-              href="/resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: "inline-flex",
-                padding: "var(--space-3) var(--space-6)",
-                border: "1px solid var(--color-border)",
-                fontFamily: "var(--font-mono)",
-                fontSize: "var(--text-sm)",
-                borderRadius: "var(--radius-md)",
-                textDecoration: "none",
                 color: "var(--color-text-secondary)",
+                maxWidth: "36rem",
+                margin: "0 auto var(--space-8)",
+                lineHeight: 1.7,
               }}
             >
-              cat resume.pdf
-            </a>
-            <a
-              href={`mailto:${siteConfig.email}`}
+              {lookingFor}
+            </p>
+            <div
               style={{
-                display: "inline-flex",
-                padding: "var(--space-3) var(--space-6)",
-                border: "1px solid var(--color-border)",
-                fontFamily: "var(--font-mono)",
-                fontSize: "var(--text-sm)",
-                borderRadius: "var(--radius-md)",
-                textDecoration: "none",
-                color: "var(--color-text-secondary)",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: "var(--space-4)",
+                flexWrap: "wrap",
               }}
             >
-              mail -s &quot;hey&quot;
-            </a>
+              <Link
+                href="/work"
+                style={{
+                  display: "inline-flex",
+                  padding: "var(--space-3) var(--space-6)",
+                  background: "var(--color-accent)",
+                  color: "var(--color-bg)",
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "var(--text-sm)",
+                  fontWeight: 600,
+                  borderRadius: "var(--radius-md)",
+                  textDecoration: "none",
+                }}
+              >
+                ls ./work
+              </Link>
+              <a
+                href="/resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: "inline-flex",
+                  padding: "var(--space-3) var(--space-6)",
+                  border: "1px solid var(--color-border)",
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "var(--text-sm)",
+                  borderRadius: "var(--radius-md)",
+                  textDecoration: "none",
+                  color: "var(--color-text-secondary)",
+                }}
+              >
+                cat resume.pdf
+              </a>
+              <a
+                href={`mailto:${siteConfig.email}`}
+                style={{
+                  display: "inline-flex",
+                  padding: "var(--space-3) var(--space-6)",
+                  border: "1px solid var(--color-border)",
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "var(--text-sm)",
+                  borderRadius: "var(--radius-md)",
+                  textDecoration: "none",
+                  color: "var(--color-text-secondary)",
+                }}
+              >
+                mail -s &quot;hey&quot;
+              </a>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </Reveal>
     </>
   );
 }

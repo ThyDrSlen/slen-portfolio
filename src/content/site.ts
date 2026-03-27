@@ -81,25 +81,65 @@ export const heroContent = {
 export const aboutContent = {
   intro:
     "I'm a backend-focused software engineer with a non-traditional path: Hunter College to the Marcy Lab School fellowship to enterprise platform engineering at Palo Alto Networks. I build scalable distributed systems, developer tooling, and experimentation-friendly platform capabilities. I care about shipping things that work at scale and proving it with measurable outcomes.",
+  introSections: [
+    "I'm a backend-focused software engineer with a non-traditional path — Hunter College to the Marcy Lab School fellowship to enterprise platform engineering at Palo Alto Networks.",
+    "I build scalable distributed systems, developer tooling, and experimentation-friendly platform capabilities. I care about shipping things that work at scale and proving it with measurable outcomes.",
+  ],
   currentFocus:
     "Currently building Go services, CI feedback acceleration, and operational analytics at Palo Alto Networks, while shipping Form Factor, a mobile fitness app with real-time ARKit body tracking and Apple HealthKit integration.",
 };
 
 export const proofRailItems = [
   {
-    label: "20% better pre-merge detection",
-    detail: "Built CI validation at Palo Alto Networks that surfaced issues before release.",
+    metric: { value: 20, suffix: "%" },
+    label: "better pre-merge detection",
+    detail:
+      "Built CI validation at Palo Alto Networks that surfaced issues before release.",
   },
   {
-    label: "85% incident replay in CI",
-    detail: "Designed deterministic validation pipelines that reproduced recent production failures.",
+    metric: { value: 85, suffix: "%" },
+    label: "incident replay in CI",
+    detail:
+      "Designed deterministic validation pipelines that reproduced recent production failures.",
   },
   {
-    label: "26k labeled assets shipped",
-    detail: "Built an async scraping pipeline with resilient access for downstream classification work.",
+    metric: { value: 26, suffix: "k" },
+    label: "labeled assets shipped",
+    detail:
+      "Built an async scraping pipeline with resilient access for downstream classification work.",
   },
   {
+    metric: null,
     label: "Solo-built Form Factor",
-    detail: "Shipped a mobile product using ARKit body tracking and Apple HealthKit integration.",
+    detail:
+      "Shipped a mobile product using ARKit body tracking and Apple HealthKit integration.",
   },
 ];
+
+export const skillCategories = [
+  {
+    label: "Languages",
+    skills: ["Go", "Python", "TypeScript", "Rust", "SQL"],
+  },
+  {
+    label: "Infrastructure",
+    skills: ["Kubernetes", "Docker", "gRPC", "Protobuf", "CI/CD"],
+  },
+  {
+    label: "Data & Observability",
+    skills: ["BigQuery", "Grafana", "Prometheus", "PostgreSQL"],
+  },
+  {
+    label: "Frameworks",
+    skills: [
+      "React Native",
+      "Expo",
+      "Next.js",
+      "Supabase",
+      "Playwright",
+    ],
+  },
+];
+
+export const lookingFor =
+  "I'm looking for backend and platform engineering roles where I can work on distributed systems, developer tooling, and infrastructure at scale. I thrive in environments that value ownership, measurable impact, and shipping things that work under pressure.";

@@ -6,6 +6,7 @@ import { SkipLink } from "@/components/shell/SkipLink";
 import { MatrixRain } from "@/components/shell/MatrixRain";
 import { BootSequence } from "@/components/shell/BootSequence";
 import { CursorTrail } from "@/components/shell/CursorTrail";
+import { HitMarker } from "@/components/shell/HitMarker";
 import { SubwayStatusBar } from "@/components/shell/SubwayStatusBar";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -74,6 +75,7 @@ export default function RootLayout({
       <body>
         <BootSequence />
         <CursorTrail />
+        <HitMarker />
         <MatrixRain />
         <div className="scanline" aria-hidden="true" />
         <SkipLink />

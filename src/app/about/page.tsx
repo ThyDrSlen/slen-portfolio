@@ -4,6 +4,8 @@ import {
   siteConfig,
   aboutContent,
   experienceEntries,
+  lookingFor,
+  skillCategories,
 } from "@/content/site";
 
 export const metadata: Metadata = {
@@ -65,17 +67,40 @@ export default function About() {
       </div>
 
       {/* Intro */}
-      <p
-        style={{
-          color: "var(--color-text-secondary)",
-          fontSize: "var(--text-lg)",
-          lineHeight: 1.8,
-          maxWidth: "40rem",
-          marginBottom: "var(--space-12)",
-        }}
-      >
-        {aboutContent.intro}
-      </p>
+      <div style={{ maxWidth: "40rem", marginBottom: "var(--space-12)" }}>
+        {aboutContent.introSections.map((para) => (
+          <p
+            key={para.slice(0, 30)}
+            style={{
+              color: "var(--color-text-secondary)",
+              fontSize: "var(--text-lg)",
+              lineHeight: 1.8,
+              marginBottom: "var(--space-6)",
+            }}
+          >
+            {para}
+          </p>
+        ))}
+      </div>
+
+      {/* Looking For */}
+      <section style={{ marginBottom: "var(--space-16)" }}>
+        <h2 style={{ marginBottom: "var(--space-4)" }}>What I&apos;m Looking For</h2>
+        <p
+          style={{
+            color: "var(--color-text-secondary)",
+            lineHeight: 1.7,
+            maxWidth: "40rem",
+            padding: "var(--space-6)",
+            background: "var(--color-bg-surface)",
+            border: "1px solid var(--color-border)",
+            borderLeft: "3px solid var(--color-accent)",
+            borderRadius: "var(--radius-md)",
+          }}
+        >
+          {lookingFor}
+        </p>
+      </section>
 
       {/* Current Focus */}
       <section style={{ marginBottom: "var(--space-16)" }}>
@@ -89,6 +114,60 @@ export default function About() {
         >
           {aboutContent.currentFocus}
         </p>
+      </section>
+
+      {/* Tech Stack */}
+      <section style={{ marginBottom: "var(--space-16)" }}>
+        <h2 style={{ marginBottom: "var(--space-8)" }}>Tech Stack</h2>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+            gap: "var(--space-6)",
+          }}
+        >
+          {skillCategories.map((cat) => (
+            <div key={cat.label}>
+              <h3
+                className="mono"
+                style={{
+                  fontSize: "var(--text-sm)",
+                  color: "var(--color-accent)",
+                  marginBottom: "var(--space-3)",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.1em",
+                  fontWeight: 600,
+                }}
+              >
+                {cat.label}
+              </h3>
+              <div
+                style={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  gap: "var(--space-2)",
+                }}
+              >
+                {cat.skills.map((skill) => (
+                  <span
+                    key={skill}
+                    className="mono"
+                    style={{
+                      fontSize: "var(--text-xs)",
+                      padding: "var(--space-1) var(--space-2)",
+                      background: "var(--color-bg-surface)",
+                      border: "1px solid var(--color-border)",
+                      borderRadius: "var(--radius-sm)",
+                      color: "var(--color-text-muted)",
+                    }}
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
       </section>
 
       {/* Timeline */}

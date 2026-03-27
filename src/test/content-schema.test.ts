@@ -51,10 +51,10 @@ describe("Case study schema", () => {
     }
   });
 
-  it("palo alto requires anonymized level and disclaimer", () => {
+  it("palo alto has non-anonymized disclosure with confidentiality disclaimer", () => {
     const paloAlto = caseStudies.find((cs) => cs.slug === "palo-alto");
     expect(paloAlto).toBeDefined();
-    expect(paloAlto!.disclosure.anonymizationLevel).toBe("anonymized");
+    expect(paloAlto!.disclosure.anonymizationLevel).toBe("none");
     expect(paloAlto!.disclosure.requiresDisclaimer).toBe(true);
     expect(paloAlto!.disclaimer).toBeTruthy();
   });

@@ -6,7 +6,7 @@ import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { subwayConfig } from "@/content/system";
 
 const timeFormatter = new Intl.DateTimeFormat("en-US", {
-  timeZone: "America/New_York",
+  timeZone: "America/Los_Angeles",
   hour: "2-digit",
   minute: "2-digit",
   second: "2-digit",
