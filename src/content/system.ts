@@ -79,13 +79,22 @@ export const easterEggs: Record<string, string[]> = {
   nyc: ["The city that never sleeps. Neither does this server."],
 };
 
+/* ── Terminal Hints ── */
+export const terminalHints = [
+  "help",
+  "neofetch",
+  "ls",
+  "cat about",
+  "cat work/portus",
+] as const;
+
 /* ── Subway Status Bar ── */
 export const subwayConfig = {
   statusMessages: [
     "open to new opportunities",
     "building Form Factor",
     "shipping Go services @ PANW",
-    "based in bay area",
+    "nyc roots · bay area based",
   ],
   lineColor: "#FF6319",
   lineName: "F",

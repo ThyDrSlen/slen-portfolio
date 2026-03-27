@@ -9,7 +9,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { terminalConfig } from "@/content/system";
+import { terminalConfig, terminalHints } from "@/content/system";
 import {
   UPTIME_PLACEHOLDER,
   createInitialState,
@@ -355,6 +355,57 @@ export function InteractiveTerminal() {
                 />
               </div>
             </div>
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              gap: "var(--space-2)",
+              padding: "var(--space-2) var(--space-4) var(--space-3)",
+              borderTop: "1px solid var(--color-border)",
+              flexWrap: "wrap",
+            }}
+          >
+            <span
+              className="mono"
+              style={{
+                fontSize: "var(--text-xs)",
+                color: "var(--color-text-muted)",
+                alignSelf: "center",
+                marginRight: "var(--space-1)",
+              }}
+            >
+              try:
+            </span>
+            {terminalHints.map((hint) => (
+              <button
+                key={hint}
+                type="button"
+                onClick={() => applyResult(hint)}
+                className="mono"
+                style={{
+                  fontSize: "var(--text-xs)",
+                  padding: "var(--space-1) var(--space-3)",
+                  background: "transparent",
+                  border: "1px solid var(--color-border)",
+                  borderRadius: "var(--radius-sm)",
+                  color: "var(--color-text-muted)",
+                  cursor: "pointer",
+                  transition:
+                    "border-color var(--duration-fast) var(--easing), color var(--duration-fast) var(--easing)",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = "var(--color-accent-dim)";
+                  e.currentTarget.style.color = "var(--color-accent)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = "var(--color-border)";
+                  e.currentTarget.style.color = "var(--color-text-muted)";
+                }}
+              >
+                {hint}
+              </button>
+            ))}
           </div>
         </div>
       </div>

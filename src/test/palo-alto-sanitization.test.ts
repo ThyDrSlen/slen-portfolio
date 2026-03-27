@@ -4,8 +4,8 @@ import { caseStudies } from "@/content/case-studies";
 describe("Palo Alto sanitization rules", () => {
   const paloAlto = caseStudies.find((cs) => cs.slug === "palo-alto")!;
 
-  it("has anonymized disclosure level", () => {
-    expect(paloAlto.disclosure.anonymizationLevel).toBe("anonymized");
+  it("has non-anonymized disclosure level", () => {
+    expect(paloAlto.disclosure.anonymizationLevel).toBe("none");
   });
 
   it("requires a disclaimer", () => {

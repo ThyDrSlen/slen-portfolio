@@ -20,10 +20,10 @@ test.describe("Scroll reveal animations", () => {
     await page.waitForTimeout(800);
     await expect(proofRail).toBeVisible();
 
-    const caseStudies = page.getByTestId("featured-case-studies");
-    await caseStudies.scrollIntoViewIfNeeded();
+    const terminal = page.getByTestId("interactive-terminal");
+    await terminal.scrollIntoViewIfNeeded();
     await page.waitForTimeout(800);
-    await expect(caseStudies).toBeVisible();
+    await expect(terminal).toBeVisible();
   });
 
   test("reduced motion shows content immediately without animation", async ({
