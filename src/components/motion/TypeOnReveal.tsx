@@ -77,10 +77,24 @@ export function TypeOnReveal({
       })
     : null;
 
+  const srOnly = createElement("span", {
+    style: {
+      position: "absolute",
+      width: "1px",
+      height: "1px",
+      padding: 0,
+      margin: "-1px",
+      overflow: "hidden",
+      clip: "rect(0,0,0,0)",
+      whiteSpace: "nowrap",
+      border: 0,
+    },
+  }, text);
+
   return createElement(
     tag,
-    { ref: callbackRef, className, style, "aria-label": text },
-    text.slice(0, charCount),
-    cursor,
+    { ref: callbackRef, className, style },
+    srOnly,
+    createElement("span", { "aria-hidden": "true" }, text.slice(0, charCount), cursor),
   );
 }

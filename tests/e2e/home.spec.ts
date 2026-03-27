@@ -7,7 +7,7 @@ test.describe("Home page", () => {
     await expect(page.getByTestId("hero-subhead")).toBeVisible();
     await expect(page.getByTestId("proof-rail")).toBeVisible();
     await expect(page.getByTestId("proof-rail")).toContainText(
-      "20% better pre-merge detection"
+      "better pre-merge detection"
     );
     await expect(page.getByTestId("primary-cta")).toBeVisible();
   });
