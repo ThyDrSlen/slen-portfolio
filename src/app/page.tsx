@@ -35,7 +35,7 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <section style={{ paddingTop: "var(--space-16)", marginBottom: "var(--space-12)" }}>
+      <section style={{ paddingTop: "var(--space-16)", marginBottom: "var(--space-8)" }}>
         <div
           className="container"
           style={{
@@ -65,6 +65,17 @@ export default function Home() {
             >
               {heroContent.headline}
             </h1>
+            <p
+              className="mono"
+              style={{
+                fontSize: "var(--text-sm)",
+                color: "var(--color-accent)",
+                marginTop: "var(--space-2)",
+                textShadow: "0 0 10px var(--color-accent-glow)",
+              }}
+            >
+              Software Engineer @ Palo Alto Networks
+            </p>
             <p
               data-testid="hero-subhead"
               style={{
@@ -105,8 +116,9 @@ export default function Home() {
                 {heroContent.cta.label} &rarr;
               </Link>
               <a
-                href={`mailto:${siteConfig.email}`}
-                data-testid="contact-email-link"
+                href="https://www.linkedin.com/in/fabrizio-corrales/"
+                target="_blank"
+                rel="noopener noreferrer"
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
@@ -119,7 +131,7 @@ export default function Home() {
                   color: "var(--color-text-secondary)",
                 }}
               >
-                get_in_touch()
+                LinkedIn
               </a>
             </div>
           </div>
@@ -141,6 +153,8 @@ export default function Home() {
         </div>
       </section>
 
+      <InteractiveTerminal />
+
       <Reveal>
         <section style={{ marginBottom: "var(--space-12)" }}>
           <div className="container">
@@ -161,7 +175,7 @@ export default function Home() {
                     <p
                       className="mono"
                       style={{
-                        fontSize: "var(--text-2xl)",
+                        fontSize: "2.5rem",
                         fontWeight: 600,
                         marginBottom: "var(--space-1)",
                         color: "var(--color-accent)",
@@ -180,9 +194,14 @@ export default function Home() {
                       fontSize: "var(--text-sm)",
                       fontWeight: 600,
                       marginBottom: "var(--space-1)",
-                      color: item.metric
-                        ? "var(--color-text-secondary)"
-                        : "var(--color-accent)",
+                  color: "var(--color-text-secondary)",
+                  ...(item.metric
+                    ? {}
+                    : {
+                        color: "var(--color-accent)",
+                        fontSize: "var(--text-lg)",
+                        textShadow: "0 0 10px var(--color-accent-glow)",
+                      }),
                     }}
                   >
                     {item.label}
@@ -268,7 +287,27 @@ export default function Home() {
         </section>
       </Reveal>
 
-      <InteractiveTerminal />
+      <div
+        className="container"
+        style={{
+          textAlign: "center",
+          padding: "var(--space-8) 0 var(--space-12)",
+        }}
+      >
+        <Link
+          href="/work"
+          className="mono"
+          style={{
+            color: "var(--color-accent)",
+            fontSize: "var(--text-sm)",
+            textDecoration: "none",
+            borderBottom: "1px solid var(--color-accent-dim)",
+            paddingBottom: "var(--space-1)",
+          }}
+        >
+          ~/work &rarr; See the case studies
+        </Link>
+      </div>
 
       <section style={{ marginBottom: "var(--space-12)" }}>
         <div className="container">
