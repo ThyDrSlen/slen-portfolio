@@ -11,6 +11,7 @@ interface TrailPoint {
 
 const MAX_POINTS = 20;
 const LIFETIME = 500;
+const IDLE_GRACE_MS = 100;
 
 function subscribePointer(callback: () => void) {
   const mql = window.matchMedia("(pointer: fine)");
@@ -20,6 +21,14 @@ function subscribePointer(callback: () => void) {
 
 function getPointerSnapshot() {
   return window.matchMedia("(pointer: fine)").matches;
+}
+
+// Frame skip by hardwareConcurrency: 1 (8+ cores), 2 (3–4), 3 (≤2)
+function getFrameSkip(): number {
+  const cores = navigator.hardwareConcurrency ?? 4;
+  if (cores <= 2) return 3;
+  if (cores <= 4) return 2;
+  return 1;
 }
 
 export function CursorTrail() {
@@ -36,11 +45,16 @@ export function CursorTrail() {
     const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) return;
 
-    let animationId: number;
+    let animationId = 0;
+    let rendering = false;
+    let frameCount = 0;
+    const frameSkip = getFrameSkip();
+
     const trail: TrailPoint[] = [];
     let mouseX = 0;
     let mouseY = 0;
     let mouseActive = false;
+    let lastMoveTime = 0;
 
     const resize = () => {
       const dpr = window.devicePixelRatio || 1;
@@ -52,22 +66,23 @@ export function CursorTrail() {
     };
     resize();
 
-    const onMouseMove = (e: MouseEvent) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      mouseActive = true;
-
-      trail.push({ x: mouseX, y: mouseY, timestamp: Date.now() });
-      if (trail.length > MAX_POINTS) {
-        trail.shift();
-      }
-    };
-
     const render = () => {
       const now = Date.now();
 
       while (trail.length > 0 && now - trail[0].timestamp > LIFETIME) {
         trail.shift();
+      }
+
+      if (trail.length === 0 && now - lastMoveTime > LIFETIME + IDLE_GRACE_MS) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        rendering = false;
+        return;
+      }
+
+      frameCount++;
+      if (frameSkip > 1 && frameCount % frameSkip !== 0) {
+        animationId = requestAnimationFrame(render);
+        return;
       }
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -112,9 +127,28 @@ export function CursorTrail() {
       animationId = requestAnimationFrame(render);
     };
 
+    const startRendering = () => {
+      if (rendering) return;
+      rendering = true;
+      animationId = requestAnimationFrame(render);
+    };
+
+    const onMouseMove = (e: MouseEvent) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      mouseActive = true;
+      lastMoveTime = Date.now();
+
+      trail.push({ x: mouseX, y: mouseY, timestamp: lastMoveTime });
+      if (trail.length > MAX_POINTS) {
+        trail.shift();
+      }
+
+      startRendering();
+    };
+
     document.addEventListener("mousemove", onMouseMove);
     window.addEventListener("resize", resize);
-    animationId = requestAnimationFrame(render);
 
     return () => {
       cancelAnimationFrame(animationId);

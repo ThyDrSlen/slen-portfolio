@@ -262,6 +262,10 @@ export function InteractiveTerminal() {
           <div
             data-testid="terminal-output"
             ref={outputRef}
+            role="log"
+            tabIndex={-1}
+            onClick={() => inputRef.current?.focus()}
+            onKeyDown={() => inputRef.current?.focus()}
             style={{
               maxHeight: "28rem",
               overflowY: "auto",
@@ -270,6 +274,7 @@ export function InteractiveTerminal() {
               fontSize: "var(--text-sm)",
               lineHeight: 1.7,
               color: "var(--color-accent)",
+              cursor: "text",
             }}
           >
             {state.output.map((line, index) => (
