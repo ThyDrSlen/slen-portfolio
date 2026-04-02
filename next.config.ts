@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const contentSecurityPolicy = [
   "default-src 'self'",
-  "script-src 'self' https://va.vercel-scripts.com https://vitals.vercel-analytics.com",
+  "script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com https://vitals.vercel-analytics.com",
   "connect-src 'self' https://va.vercel-scripts.com https://vitals.vercel-analytics.com",
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "font-src 'self' https://fonts.gstatic.com",
