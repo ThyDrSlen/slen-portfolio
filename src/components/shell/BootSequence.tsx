@@ -77,19 +77,10 @@ export function BootSequence() {
   if (seen || prefersReducedMotion || unmounted) return null;
 
   return (
-    <div
+    <section
       data-testid="boot-sequence"
       ref={overlayRef}
-      tabIndex={0}
-      role="button"
-      aria-label="Boot sequence overlay. Press any key or click to skip."
-      onClick={dismiss}
-      onKeyDown={(event) => {
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault();
-          dismiss();
-        }
-      }}
+      aria-label="Boot sequence overlay"
       style={{
         position: "fixed",
         inset: 0,
@@ -164,6 +155,6 @@ export function BootSequence() {
         Press any key to skip
       </button>
       <style>{`@keyframes boot-blink { 50% { opacity: 0; } }`}</style>
-    </div>
+    </section>
   );
 }
