@@ -1,4 +1,4 @@
-import type { CaseStudy } from "@/lib/content-schema";
+import { validateCaseStudies, type CaseStudy } from "@/lib/content-schema";
 
 export const caseStudies: CaseStudy[] = [
   {
@@ -370,4 +370,8 @@ export function getAdjacentCaseStudies(slug: string): {
     previous: caseStudies[index - 1] ?? null,
     next: caseStudies[index + 1] ?? null,
   };
+}
+
+if (process.env.NODE_ENV !== "production") {
+  validateCaseStudies(caseStudies);
 }
