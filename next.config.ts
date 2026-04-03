@@ -6,6 +6,8 @@ const contentSecurityPolicy = [
   "connect-src 'self' https://va.vercel-scripts.com https://vitals.vercel-analytics.com",
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "font-src 'self' https://fonts.gstatic.com",
+  "media-src 'self' data: blob:",
+  "img-src 'self' data: blob:",
 ].join("; ");
 
 const nextConfig: NextConfig = {
