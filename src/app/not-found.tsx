@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { type ReactNode, useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
@@ -27,12 +27,12 @@ function buildLines(pathname: string): TermLine[] {
       text: `bash: cd: ${pathname}: No such file or directory`,
     },
     { id: "gap-1", kind: "blank" },
-    { id: "h1", kind: "heading", text: "404 \u2014 path not found" },
+    { id: "h1", kind: "heading", text: "404 — path not found" },
     { id: "gap-2", kind: "blank" },
     {
       id: "desc",
       kind: "text",
-      text: "The route you requested doesn\u2019t resolve.",
+      text: "The route you requested doesn’t resolve.",
     },
     { id: "hint", kind: "text", text: "Try one of these:" },
     { id: "gap-3", kind: "blank" },
@@ -81,86 +81,25 @@ export default function NotFound() {
     return () => timers.forEach(clearTimeout);
   }, [prefersReducedMotion, total]);
 
-  const mono: React.CSSProperties = {
-    fontFamily: "var(--font-mono)",
-    fontSize: "var(--text-sm)",
-    lineHeight: 2,
-  };
-
   return (
-    <section
-      aria-label="Page not found"
-      style={{ display: "flex", justifyContent: "center" }}
-    >
-      <div
-        style={{
-          width: "100%",
-          maxWidth: "48rem",
-          background: "var(--color-bg-elevated)",
-          border: "1px solid var(--color-border)",
-          borderRadius: "var(--radius-lg)",
-          overflow: "hidden",
-        }}
-      >
-        <div
-          aria-hidden="true"
-          style={{
-            height: 1,
-            background:
-              "linear-gradient(90deg, transparent, var(--color-accent), transparent)",
-            opacity: 0.5,
-          }}
-        />
+    <section aria-label="Page not found" className="nf-section">
+      <div className="nf-window">
+        <div aria-hidden="true" className="nf-window-glow" />
 
-        <div
-          aria-hidden="true"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "var(--space-2)",
-            padding: "var(--space-3) var(--space-4)",
-            borderBottom: "1px solid var(--color-border)",
-          }}
-        >
-          <span style={chromeCircle("var(--color-error)")} />
-          <span style={chromeCircle("var(--color-warning)")} />
-          <span style={chromeCircle("var(--color-accent)")} />
-          <span
-            style={{
-              marginLeft: "var(--space-2)",
-              fontFamily: "var(--font-mono)",
-              fontSize: "var(--text-xs)",
-              color: "var(--color-text-muted)",
-            }}
-          >
-            {"bash \u2014 80\u00d724"}
-          </span>
+        <div aria-hidden="true" className="nf-window-chrome">
+          <span className="nf-chrome-circle nf-chrome-circle-error" />
+          <span className="nf-chrome-circle nf-chrome-circle-warning" />
+          <span className="nf-chrome-circle nf-chrome-circle-accent" />
+          <span className="nf-window-title">{"bash — 80×24"}</span>
         </div>
 
-        <div
-          style={{
-            padding: "var(--space-6) var(--space-8)",
-            overflowWrap: "break-word",
-          }}
-        >
+        <div className="nf-body">
           {lines.slice(0, visible).map((line, idx) => {
             const animating = idx === visible - 1 && visible < total;
-            return renderLine(line, animating, pathname, mono);
+            return renderLine(line, animating, pathname);
           })}
         </div>
       </div>
-
-      <style>{`
-        @keyframes nf-blink { 50% { opacity: 0 } }
-        .nf-link {
-          color: var(--color-accent);
-          text-decoration: none;
-          transition: text-shadow var(--duration-fast) var(--easing);
-        }
-        .nf-link:hover {
-          text-shadow: 0 0 10px var(--color-accent-glow);
-        }
-      `}</style>
     </section>
   );
 }
@@ -169,18 +108,15 @@ function renderLine(
   line: TermLine,
   animating: boolean,
   pathname: string,
-  mono: React.CSSProperties,
-): React.ReactNode {
+): ReactNode {
   switch (line.kind) {
     case "blank":
-      return <div key={line.id} style={{ height: "2em" }} />;
+      return <div key={line.id} className="nf-blank" />;
 
     case "command":
       return (
-        <div key={line.id} style={{ ...mono, color: "var(--color-text)" }}>
-          <span style={{ color: "var(--color-accent-dim)" }}>
-            {"visitor@slen.win:~$ "}
-          </span>
+        <div key={line.id} className="nf-line nf-line-command">
+          <span className="nf-prompt-label">{"visitor@slen.win:~$ "}</span>
           {"cd "}
           {pathname}
           {animating && <Blink />}
@@ -189,7 +125,7 @@ function renderLine(
 
     case "error":
       return (
-        <div key={line.id} style={{ ...mono, color: "var(--color-error)" }}>
+        <div key={line.id} className="nf-line nf-line-error">
           {line.text}
           {animating && <Blink />}
         </div>
@@ -197,19 +133,7 @@ function renderLine(
 
     case "heading":
       return (
-        <h1
-          key={line.id}
-          style={{
-            fontFamily: "var(--font-mono)",
-            fontSize: "var(--text-2xl)",
-            fontWeight: 600,
-            lineHeight: 2,
-            color: "var(--color-accent)",
-            textShadow:
-              "0 0 20px var(--color-accent-glow-strong), 0 0 40px var(--color-accent-glow)",
-            letterSpacing: "-0.02em",
-          }}
-        >
+        <h1 key={line.id} className="nf-heading">
           {line.text}
           {animating && <Blink />}
         </h1>
@@ -217,10 +141,7 @@ function renderLine(
 
     case "text":
       return (
-        <div
-          key={line.id}
-          style={{ ...mono, color: "var(--color-text-muted)" }}
-        >
+        <div key={line.id} className="nf-line nf-line-text">
           {line.text}
           {animating && <Blink />}
         </div>
@@ -228,39 +149,20 @@ function renderLine(
 
     case "nav":
       return (
-        <div
-          key={line.id}
-          style={{ ...mono, paddingLeft: "var(--space-4)" }}
-        >
-          <span
-            style={{
-              color: "var(--color-accent-dim)",
-              marginRight: "var(--space-2)",
-            }}
-          >
-            {">"}
-          </span>
+        <div key={line.id} className="nf-line nf-line-nav">
+          <span className="nf-nav-marker">{">"}</span>
           <Link href={line.href} className="nf-link">
             {line.command}
           </Link>
-          <span
-            style={{
-              color: "var(--color-text-muted)",
-              marginLeft: "var(--space-4)",
-            }}
-          >
-            {`\u2014 ${line.label}`}
-          </span>
+          <span className="nf-nav-label">{`— ${line.label}`}</span>
           {animating && <Blink />}
         </div>
       );
 
     case "prompt":
       return (
-        <div key={line.id} style={{ ...mono, color: "var(--color-text)" }}>
-          <span style={{ color: "var(--color-accent-dim)" }}>
-            {"visitor@slen.win:~$ "}
-          </span>
+        <div key={line.id} className="nf-line nf-line-command">
+          <span className="nf-prompt-label">{"visitor@slen.win:~$ "}</span>
           <Blink />
         </div>
       );
@@ -268,28 +170,5 @@ function renderLine(
 }
 
 function Blink() {
-  return (
-    <span
-      aria-hidden="true"
-      style={{
-        display: "inline-block",
-        width: "0.55rem",
-        height: "1em",
-        background: "var(--color-accent)",
-        marginLeft: "0.2rem",
-        verticalAlign: "text-bottom",
-        animation: "nf-blink 1s step-end infinite",
-      }}
-    />
-  );
-}
-
-function chromeCircle(bg: string): React.CSSProperties {
-  return {
-    width: 12,
-    height: 12,
-    borderRadius: "50%",
-    background: bg,
-    opacity: 0.6,
-  };
+  return <span aria-hidden="true" className="nf-blink" />;
 }

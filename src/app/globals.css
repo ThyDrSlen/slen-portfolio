@@ -5,7 +5,7 @@
   --color-bg-elevated: #111111;
   --color-bg-surface: #1a1a1a;
   --color-text: #e0e0e0;
-  --color-text-secondary: #aaaaaa;
+  --color-text-secondary: #b0b0b0;
   --color-text-muted: #999999;
   --color-accent: #00ff41;
   --color-accent-dim: #00cc33;
@@ -111,7 +111,7 @@ body {
   padding-bottom: 40px;
 }
 
-@media (pointer: fine) and (prefers-reduced-motion: no-preference) {
+@media (pointer: fine) and (hover: hover) and (prefers-reduced-motion: no-preference) {
   * {
     cursor: none !important;
   }
@@ -493,4 +493,140 @@ a {
     rgba(0, 0, 0, 0.03) 2px,
     rgba(0, 0, 0, 0.03) 4px
   );
+}
+
+@keyframes nf-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.nf-section {
+  display: flex;
+  justify-content: center;
+}
+
+.nf-window {
+  width: 100%;
+  max-width: 48rem;
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.nf-window-glow {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
+  opacity: 0.5;
+}
+
+.nf-window-chrome {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.nf-chrome-circle {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  opacity: 0.6;
+}
+
+.nf-chrome-circle-error {
+  background: var(--color-error);
+}
+
+.nf-chrome-circle-warning {
+  background: var(--color-warning);
+}
+
+.nf-chrome-circle-accent {
+  background: var(--color-accent);
+}
+
+.nf-window-title {
+  margin-left: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.nf-body {
+  padding: var(--space-6) var(--space-8);
+  overflow-wrap: break-word;
+}
+
+.nf-blank {
+  height: 2em;
+}
+
+.nf-line {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  line-height: 2;
+}
+
+.nf-line-command {
+  color: var(--color-text);
+}
+
+.nf-prompt-label,
+.nf-nav-marker {
+  color: var(--color-accent-dim);
+}
+
+.nf-line-error {
+  color: var(--color-error);
+}
+
+.nf-heading {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xl);
+  font-weight: 600;
+  line-height: 2;
+  color: var(--color-accent);
+  text-shadow: 0 0 20px var(--color-accent-glow-strong),
+    0 0 40px var(--color-accent-glow);
+  letter-spacing: -0.02em;
+}
+
+.nf-line-text,
+.nf-nav-label {
+  color: var(--color-text-muted);
+}
+
+.nf-line-nav {
+  padding-left: var(--space-4);
+}
+
+.nf-nav-marker {
+  margin-right: var(--space-2);
+}
+
+.nf-link {
+  color: var(--color-accent);
+  text-decoration: none;
+  transition: text-shadow var(--duration-fast) var(--easing);
+}
+
+.nf-link:hover {
+  text-shadow: 0 0 10px var(--color-accent-glow);
+}
+
+.nf-nav-label {
+  margin-left: var(--space-4);
+}
+
+.nf-blink {
+  display: inline-block;
+  width: 0.55rem;
+  height: 1em;
+  background: var(--color-accent);
+  margin-left: 0.2rem;
+  vertical-align: text-bottom;
+  animation: nf-blink 1s step-end infinite;
 }
