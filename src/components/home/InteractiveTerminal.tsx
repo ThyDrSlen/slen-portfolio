@@ -2,7 +2,9 @@
 
 import {
   type CSSProperties,
+  type FocusEvent,
   type KeyboardEvent,
+  type MouseEvent,
   useEffect,
   useMemo,
   useReducer,
@@ -64,6 +66,16 @@ function getLineStyle(type: TerminalLine["type"]): CSSProperties {
   return { color: "var(--color-accent)", textShadow: "0 0 10px color-mix(in srgb, var(--color-accent) 30%, transparent)" };
 }
 
+function setHintButtonActiveStyles(button: HTMLButtonElement) {
+  button.style.borderColor = "var(--color-accent-dim)";
+  button.style.color = "var(--color-accent)";
+}
+
+function setHintButtonDefaultStyles(button: HTMLButtonElement) {
+  button.style.borderColor = "var(--color-border)";
+  button.style.color = "var(--color-text-muted)";
+}
+
 export function InteractiveTerminal() {
   const [state, dispatch] = useReducer(reducer, undefined, createMountedState);
   const [input, setInput] = useState("");
@@ -90,7 +102,7 @@ export function InteractiveTerminal() {
     }
 
     node.scrollTop = node.scrollHeight;
-  });
+  }, [state.output.length]);
 
   useEffect(() => {
     const interval = window.setInterval(() => {
@@ -399,13 +411,17 @@ export function InteractiveTerminal() {
                   transition:
                     "border-color var(--duration-fast) var(--easing), color var(--duration-fast) var(--easing)",
                 }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = "var(--color-accent-dim)";
-                  e.currentTarget.style.color = "var(--color-accent)";
+                onMouseEnter={(event: MouseEvent<HTMLButtonElement>) => {
+                  setHintButtonActiveStyles(event.currentTarget);
                 }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = "var(--color-border)";
-                  e.currentTarget.style.color = "var(--color-text-muted)";
+                onMouseLeave={(event: MouseEvent<HTMLButtonElement>) => {
+                  setHintButtonDefaultStyles(event.currentTarget);
+                }}
+                onFocus={(event: FocusEvent<HTMLButtonElement>) => {
+                  setHintButtonActiveStyles(event.currentTarget);
+                }}
+                onBlur={(event: FocusEvent<HTMLButtonElement>) => {
+                  setHintButtonDefaultStyles(event.currentTarget);
                 }}
               >
                 {hint}

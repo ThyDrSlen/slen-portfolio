@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSessionFlag } from "@/hooks/useSessionFlag";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { bootLines, motionConfig } from "@/content/system";
@@ -13,12 +13,37 @@ export function BootSequence() {
   const [visibleCount, setVisibleCount] = useState(0);
   const [fadingOut, setFadingOut] = useState(false);
   const [unmounted, setUnmounted] = useState(false);
+  const overlayRef = useRef<HTMLDivElement>(null);
+
+  const dismiss = () => {
+    setFadingOut(true);
+    setUnmounted(true);
+    setFlag();
+  };
 
   useEffect(() => {
     if (prefersReducedMotion) {
       setFlag();
     }
   }, [prefersReducedMotion, setFlag]);
+
+  useEffect(() => {
+    if (seen || prefersReducedMotion || unmounted) {
+      return;
+    }
+
+    overlayRef.current?.focus();
+
+    const handleKeyDown = () => {
+      dismiss();
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [prefersReducedMotion, seen, unmounted, setFlag]);
 
   useEffect(() => {
     if (seen || prefersReducedMotion) return;
@@ -52,8 +77,10 @@ export function BootSequence() {
   if (seen || prefersReducedMotion || unmounted) return null;
 
   return (
-    <div
+    <section
       data-testid="boot-sequence"
+      ref={overlayRef}
+      aria-label="Boot sequence overlay"
       style={{
         position: "fixed",
         inset: 0,
@@ -70,7 +97,6 @@ export function BootSequence() {
         flexDirection: "column",
         justifyContent: "center",
       }}
-      aria-hidden="true"
     >
       {bootLines.slice(0, visibleCount).map((line, i) => {
         const isSystemReady = line === "System ready.";
@@ -107,7 +133,28 @@ export function BootSequence() {
           </div>
         );
       })}
+      <button
+        type="button"
+        onClick={dismiss}
+        style={{
+          position: "absolute",
+          left: "50%",
+          bottom: "1.5rem",
+          transform: "translateX(-50%)",
+          background: "transparent",
+          border: 0,
+          color: "var(--color-text-muted)",
+          fontFamily: "var(--font-mono)",
+          fontSize: "0.75rem",
+          letterSpacing: "0.08em",
+          textTransform: "uppercase",
+          cursor: "pointer",
+          padding: 0,
+        }}
+      >
+        Press any key to skip
+      </button>
       <style>{`@keyframes boot-blink { 50% { opacity: 0; } }`}</style>
-    </div>
+    </section>
   );
 }
