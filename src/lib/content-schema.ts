@@ -32,6 +32,34 @@ export const disclosureMatrixSchema = z.object({
   proofLinks: z.array(z.url()),
 });
 
+const diagramNodeSchema = z
+  .object({
+    id: z.string(),
+    type: z.string().optional(),
+    position: z.object({
+      x: z.number(),
+      y: z.number(),
+    }),
+    data: z
+      .object({
+        label: z.string(),
+      })
+      .passthrough(),
+  })
+  .passthrough();
+
+const diagramEdgeSchema = z
+  .object({
+    id: z.string(),
+    source: z.string(),
+    target: z.string(),
+    type: z.string().optional(),
+    animated: z.boolean().optional(),
+    label: z.string().optional(),
+    style: z.record(z.string(), z.unknown()).optional(),
+  })
+  .passthrough();
+
 export const caseStudySchema = z.object({
   slug: z.enum(["form-factor", "orwell-scraper", "palo-alto", "portus"]),
   title: z.string().min(1),
@@ -61,6 +89,8 @@ export const caseStudySchema = z.object({
         alt: z.string().optional(),
         content: z.string().optional(),
         caption: z.string().optional(),
+        diagramNodes: z.array(diagramNodeSchema).optional(),
+        diagramEdges: z.array(diagramEdgeSchema).optional(),
       })
     )
     .optional(),
