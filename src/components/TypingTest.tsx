@@ -180,6 +180,7 @@ const timeButtonStyle = (active: boolean): React.CSSProperties => ({
 export function TypingTest() {
   const [mode, setMode] = useState<WordMode>("code");
   const [timeLimit, setTimeLimit] = useState<TimeOption>(30);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
 
   const [words, setWords] = useState<string[]>([]);
   const [input, setInput] = useState("");
@@ -226,6 +227,24 @@ export function TypingTest() {
       initTest();
     });
   }, [initTest]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const mediaQuery = window.matchMedia("(pointer: coarse)");
+    const updateTouchState = () => {
+      setIsTouchDevice(mediaQuery.matches);
+    };
+
+    updateTouchState();
+    mediaQuery.addEventListener("change", updateTouchState);
+
+    return () => {
+      mediaQuery.removeEventListener("change", updateTouchState);
+    };
+  }, []);
 
   useEffect(() => {
     if (!finished || wpm <= 0) return;
@@ -342,6 +361,48 @@ export function TypingTest() {
 
   const timeLeft = Math.max(0, Math.ceil(timeLimit - elapsed));
   const rating = finished ? getWpmRating(wpm) : null;
+
+  if (isTouchDevice) {
+    return (
+      <div
+        className="typing-test"
+        ref={containerRef}
+        data-testid="typing-test"
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "var(--space-3)",
+          }}
+        >
+          <span
+            className="mono"
+            style={{
+              fontSize: "var(--text-xs)",
+              color: "var(--color-accent)",
+              textTransform: "uppercase",
+              letterSpacing: "0.1em",
+            }}
+          >
+            typing test
+          </span>
+        </div>
+
+        <p
+          style={{
+            color: "var(--color-text-muted)",
+            fontSize: "var(--text-sm)",
+            lineHeight: 1.7,
+            margin: 0,
+          }}
+        >
+          This typing test is designed for desktop keyboards. Visit on a computer for the full experience.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -498,7 +559,7 @@ export function TypingTest() {
 
       {started && !finished && (
         <div className="typing-test-stats">
-          <div>
+          <div aria-live="polite" aria-atomic="true">
             <div className="stat-value" data-testid="typing-test-live-wpm">
               {displayWpm !== null ? displayWpm : "--"}
             </div>
@@ -518,7 +579,7 @@ export function TypingTest() {
       )}
 
       {finished && (
-        <div className="typing-test-stats" data-testid="typing-test-results">
+        <div className="typing-test-stats" data-testid="typing-test-results" role="status" aria-live="polite" aria-atomic="true">
           <div>
             <div className="stat-value">{wpm}</div>
             <div className="stat-label">wpm</div>
