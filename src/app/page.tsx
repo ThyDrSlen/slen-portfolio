@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -14,6 +15,34 @@ import { Reveal } from "@/components/motion/Reveal";
 import { CountUpMetric } from "@/components/motion/CountUpMetric";
 import { TypeOnReveal } from "@/components/motion/TypeOnReveal";
 
+function GitHubCommitPulseSkeleton() {
+  return (
+    <>
+      <style>{`
+        .pulse-skeleton {
+          background: var(--color-surface);
+          animation: pulse-skeleton-fade 1.8s ease-in-out infinite;
+        }
+
+        @keyframes pulse-skeleton-fade {
+          0%, 100% { opacity: 0.55; }
+          50% { opacity: 0.9; }
+        }
+      `}</style>
+      <div
+        className="pulse-skeleton"
+        aria-hidden="true"
+        style={{
+          padding: "var(--space-8)",
+          minHeight: "20rem",
+          border: "1px solid var(--color-border)",
+          borderRadius: "var(--radius-lg)",
+        }}
+      />
+    </>
+  );
+}
+
 export default function Home() {
 
   const jsonLd = {
@@ -21,7 +50,6 @@ export default function Home() {
     "@type": "Person",
     name: siteConfig.name,
     url: siteConfig.url,
-    email: siteConfig.email,
     jobTitle: "Software Engineer",
     sameAs: siteConfig.socialLinks
       .filter((l) => l.platform !== "email")
@@ -318,7 +346,9 @@ export default function Home() {
       <Reveal>
         <section style={{ marginBottom: "var(--space-12)" }}>
           <div className="container">
-            <GitHubCommitPulse />
+            <Suspense fallback={<GitHubCommitPulseSkeleton />}>
+              <GitHubCommitPulse />
+            </Suspense>
           </div>
         </section>
       </Reveal>

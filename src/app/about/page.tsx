@@ -20,7 +20,6 @@ export default function About() {
     "@type": "Person",
     name: siteConfig.name,
     url: siteConfig.url,
-    email: siteConfig.email,
     jobTitle: "Software Engineer",
     sameAs: siteConfig.socialLinks
       .filter((l) => l.platform !== "email")
