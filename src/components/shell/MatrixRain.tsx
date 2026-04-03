@@ -18,10 +18,31 @@ export function MatrixRain() {
     if (prefersReducedMotion) return;
 
     let animationId: number;
+    const fontSize = 14;
+    let viewportWidth = 0;
+    let viewportHeight = 0;
+    let columns = 0;
+    let drops: number[] = [];
+
+    const initializeDrops = () => {
+      columns = Math.floor(viewportWidth / fontSize);
+      drops = new Array(columns).fill(0).map(() => Math.random() * -100);
+    };
 
     const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      const dpr = window.devicePixelRatio || 1;
+      viewportWidth = window.innerWidth;
+      viewportHeight = window.innerHeight;
+
+      canvas.width = viewportWidth * dpr;
+      canvas.height = viewportHeight * dpr;
+      canvas.style.width = `${viewportWidth}px`;
+      canvas.style.height = `${viewportHeight}px`;
+
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.scale(dpr, dpr);
+
+      initializeDrops();
     };
     resize();
     window.addEventListener("resize", resize);
@@ -29,13 +50,10 @@ export function MatrixRain() {
     const chars =
       "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ{}[]()<>/\\|;:+=*&^%$#@!~`";
     const charArray = chars.split("");
-    const fontSize = 14;
-    const columns = Math.floor(canvas.width / fontSize);
-    const drops: number[] = new Array(columns).fill(0).map(() => Math.random() * -100);
 
     const draw = () => {
       ctx.fillStyle = "rgba(10, 10, 10, 0.05)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillRect(0, 0, viewportWidth, viewportHeight);
 
       ctx.fillStyle = "#00ff41";
       ctx.font = `${fontSize}px monospace`;
@@ -57,7 +75,7 @@ export function MatrixRain() {
 
         ctx.fillText(char, x, y);
 
-        if (y > canvas.height && Math.random() > 0.975) {
+        if (y > viewportHeight && Math.random() > 0.975) {
           drops[i] = 0;
         }
         drops[i] += 0.15 + Math.random() * 0.2;

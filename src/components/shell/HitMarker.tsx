@@ -18,13 +18,31 @@ export function HitMarker() {
   const [markers, setMarkers] = useState<Marker[]>([]);
   const nextId = useRef(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const timeoutRef = useRef<Map<number, NodeJS.Timeout>>(new Map());
   const prefersReducedMotion = usePrefersReducedMotion();
 
   useEffect(() => {
-    if (prefersReducedMotion) return;
+    if (prefersReducedMotion) {
+      audioRef.current = null;
+      return;
+    }
+
     audioRef.current = new Audio(HIT_SOUND);
     audioRef.current.volume = 0.4;
+
+    return () => {
+      audioRef.current = null;
+    };
   }, [prefersReducedMotion]);
+
+  useEffect(() => {
+    return () => {
+      timeoutRef.current.forEach((timeoutId) => {
+        clearTimeout(timeoutId);
+      });
+      timeoutRef.current.clear();
+    };
+  }, []);
 
   const spawn = useCallback(
     (x: number, y: number) => {
@@ -32,14 +50,17 @@ export function HitMarker() {
       setMarkers((prev) => [...prev, { id, x, y }]);
 
       if (audioRef.current) {
-        const sfx = audioRef.current.cloneNode() as HTMLAudioElement;
-        sfx.volume = 0.4;
-        sfx.play().catch(() => {});
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+        audioRef.current.play().catch(() => {});
       }
 
-      setTimeout(() => {
+      const timeoutId = setTimeout(() => {
         setMarkers((prev) => prev.filter((m) => m.id !== id));
+        timeoutRef.current.delete(id);
       }, MARKER_DURATION_MS);
+
+      timeoutRef.current.set(id, timeoutId);
     },
     [],
   );
