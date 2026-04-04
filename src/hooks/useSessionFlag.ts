@@ -2,10 +2,19 @@
 
 import { useSyncExternalStore, useCallback } from "react";
 
-const listeners = new Set<() => void>();
+const listeners = new Map<string, Set<() => void>>();
 
-function notify() {
-  listeners.forEach((cb) => {
+function getListenersForKey(key: string) {
+  let keyListeners = listeners.get(key);
+  if (!keyListeners) {
+    keyListeners = new Set<() => void>();
+    listeners.set(key, keyListeners);
+  }
+  return keyListeners;
+}
+
+function notify(key: string) {
+  listeners.get(key)?.forEach((cb) => {
     cb();
   });
 }
@@ -13,15 +22,21 @@ function notify() {
 export function useSessionFlag(key: string): [boolean, () => void] {
   const flagged = useSyncExternalStore(
     (callback) => {
-      listeners.add(callback);
+      const keyListeners = getListenersForKey(key);
+      keyListeners.add(callback);
+
       return () => {
-        listeners.delete(callback);
+        keyListeners.delete(callback);
+        if (keyListeners.size === 0) {
+          listeners.delete(key);
+        }
       };
     },
     () => {
       try {
         return sessionStorage.getItem(key) === "1";
-      } catch {
+      } catch (error) {
+        console.warn(`Failed to read session flag \"${key}\"`, error);
         return false;
       }
     },
@@ -31,9 +46,10 @@ export function useSessionFlag(key: string): [boolean, () => void] {
   const setFlag = useCallback(() => {
     try {
       sessionStorage.setItem(key, "1");
-    } catch {
+    } catch (error) {
+      console.warn(`Failed to set session flag \"${key}\"`, error);
     }
-    notify();
+    notify(key);
   }, [key]);
 
   return [flagged, setFlag];
