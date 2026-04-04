@@ -29,6 +29,7 @@ export function CountUpMetric({
   const [current, setCurrent] = useState(0);
   const [started, setStarted] = useState(false);
   const prefersReducedMotion = usePrefersReducedMotion();
+  const rafRef = useRef<number | null>(null);
 
   useEffect(() => {
     const el = ref.current;
@@ -51,7 +52,6 @@ export function CountUpMetric({
   useEffect(() => {
     if (!started || prefersReducedMotion) return;
 
-    let rafId: number;
     let startTime: number | null = null;
 
     const animate = (timestamp: number) => {
@@ -63,12 +63,19 @@ export function CountUpMetric({
       setCurrent(easedValue);
 
       if (progress < 1) {
-        rafId = requestAnimationFrame(animate);
+        rafRef.current = requestAnimationFrame(animate);
+      } else {
+        rafRef.current = null;
       }
     };
 
-    rafId = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(rafId);
+    rafRef.current = requestAnimationFrame(animate);
+    return () => {
+      if (rafRef.current !== null) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
+      }
+    };
   }, [started, target, duration, prefersReducedMotion]);
 
   const displayValue = prefersReducedMotion ? target : current;

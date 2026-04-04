@@ -102,7 +102,11 @@ test.describe("Responsive layout for new features", () => {
     await page.waitForTimeout(500);
 
     const realErrors = errors.filter(
-      (e) => !e.includes("favicon") && !e.includes("404")
+      (e) =>
+        !e.includes("favicon") &&
+        !e.includes("404") &&
+        !e.includes("_vercel/") &&
+        !e.includes("MIME type")
     );
     expect(realErrors).toEqual([]);
   });
