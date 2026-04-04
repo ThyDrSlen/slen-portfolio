@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 type DayData = { date: string; count: number };
 
@@ -32,6 +33,7 @@ export function PulseAnimation({
   const PAD_Y = 16;
   const [drawn, setDrawn] = useState(false);
   const lineRef = useRef<SVGPolylineElement>(null);
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   const points = buildPoints(commitsByDay, W, H, PAD_X, PAD_Y);
   const polyline = points.map((p) => `${p.x},${p.y}`).join(" ");
@@ -43,16 +45,14 @@ export function PulseAnimation({
   }, 0);
 
   useEffect(() => {
-    const prefersReduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-    if (prefersReduced) {
+    if (prefersReducedMotion) {
       requestAnimationFrame(() => setDrawn(true));
       return;
     }
+
     const raf = requestAnimationFrame(() => setDrawn(true));
     return () => cancelAnimationFrame(raf);
-  }, []);
+  }, [prefersReducedMotion]);
 
   return (
     <svg

@@ -49,7 +49,8 @@ function computeWindow(events: GitHubEvent[], days: Range) {
   return { commitsByDay, total, streak };
 }
 
-const rangeButtonStyle = (active: boolean): React.CSSProperties => ({
+function rangeButtonStyle(active: boolean): React.CSSProperties {
+  return {
   padding: "var(--space-1) var(--space-2)",
   background: "transparent",
   color: active ? "var(--color-accent)" : "var(--color-text-muted)",
@@ -60,7 +61,8 @@ const rangeButtonStyle = (active: boolean): React.CSSProperties => ({
   fontWeight: active ? 600 : 400,
   textDecoration: active ? "underline" : "none",
   textUnderlineOffset: "3px",
-});
+  };
+}
 
 export function PulseDashboard({
   events,
