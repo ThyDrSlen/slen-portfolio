@@ -60,10 +60,7 @@ export default async function CaseStudyPage({
 
   return (
     <article className="container" data-testid="case-study-page">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
       <nav
         data-testid="case-study-breadcrumbs"
         aria-label="Breadcrumb"
@@ -140,8 +137,11 @@ export default async function CaseStudyPage({
               key={tech}
               className="mono"
               style={{
+                display: "inline-flex",
+                alignItems: "center",
                 fontSize: "var(--text-xs)",
-                padding: "var(--space-1) var(--space-2)",
+                minHeight: 44,
+                padding: "0 var(--space-3)",
                 background: "var(--color-bg-surface)",
                 border: "1px solid var(--color-border)",
                 borderRadius: "var(--radius-sm)",
@@ -271,9 +271,9 @@ export default async function CaseStudyPage({
       {/* Media (optional) */}
       {cs.media && cs.media.length > 0 && (
         <section style={{ marginBottom: "var(--space-12)" }}>
-          {cs.media.map((m, i) => (
+          {cs.media.map((m) => (
             <div
-              key={i}
+              key={`${m.type}-${m.caption ?? m.content?.slice(0, 32) ?? "media"}`}
               style={{
                 padding: "var(--space-6)",
                 background: "var(--color-bg-surface)",
@@ -297,6 +297,8 @@ export default async function CaseStudyPage({
               {m.type === "diagram" && m.content && (
                 <pre
                   className="mono"
+                  role="img"
+                  aria-label={m.caption || "Architecture diagram"}
                   style={{
                     fontSize: "var(--text-xs)",
                     color: "var(--color-text-secondary)",

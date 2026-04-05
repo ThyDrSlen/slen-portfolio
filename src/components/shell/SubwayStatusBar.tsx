@@ -63,6 +63,8 @@ export function SubwayStatusBar() {
   return (
     <output
       data-testid="subway-status-bar"
+      aria-live="polite"
+      aria-atomic="true"
       style={{
         position: "fixed",
         bottom: 0,
@@ -133,13 +135,19 @@ export function SubwayStatusBar() {
         onClick={dismiss}
         aria-label="Dismiss status bar"
         style={{
+          display: "inline-flex",
+          alignItems: "center",
+          justifyContent: "center",
           background: "none",
           border: "none",
           color: "var(--color-text-secondary)",
           fontFamily: "var(--font-mono)",
           fontSize: "0.75rem",
           cursor: "pointer",
-          padding: "0 0 0 var(--space-3)",
+          minWidth: 44,
+          minHeight: 44,
+          padding: 0,
+          marginLeft: "calc(var(--space-3) * -1)",
           opacity: 0.5,
           flexShrink: 0,
           lineHeight: 1,
