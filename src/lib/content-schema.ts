@@ -61,7 +61,7 @@ const diagramEdgeSchema = z
   .passthrough();
 
 export const caseStudySchema = z.object({
-  slug: z.enum(["form-factor", "orwell-scraper", "palo-alto", "portus"]),
+  slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Slug must be kebab-case"),
   title: z.string().min(1),
   summary: z.string().min(10),
   role: z.string().min(1),

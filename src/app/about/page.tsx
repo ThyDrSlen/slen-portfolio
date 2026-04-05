@@ -60,7 +60,7 @@ export default function About() {
             About
           </h1>
           <p className="mono" style={{ color: "var(--color-accent)", fontSize: "var(--text-sm)" }}>
-            Software Engineer @ Palo Alto Networks
+            {experienceEntries[0].role} @ {experienceEntries[0].company}
           </p>
         </div>
       </div>
@@ -283,42 +283,29 @@ export default function About() {
           >
             Download Resume
           </a>
-          <a
-            href="https://github.com/ThyDrSlen"
-            target="_blank"
-            rel="noopener noreferrer"
-            data-testid="social-link-github"
-            style={{
-              display: "inline-flex",
-              padding: "var(--space-3) var(--space-6)",
-              border: "1px solid var(--color-border)",
-              fontFamily: "var(--font-mono)",
-              fontSize: "var(--text-sm)",
-              borderRadius: "var(--radius-md)",
-              textDecoration: "none",
-              color: "var(--color-text-secondary)",
-            }}
-          >
-            GitHub
-          </a>
-          <a
-            href="https://www.linkedin.com/in/fabrizio-corrales/"
-            target="_blank"
-            rel="noopener noreferrer"
-            data-testid="social-link-linkedin"
-            style={{
-              display: "inline-flex",
-              padding: "var(--space-3) var(--space-6)",
-              border: "1px solid var(--color-border)",
-              fontFamily: "var(--font-mono)",
-              fontSize: "var(--text-sm)",
-              borderRadius: "var(--radius-md)",
-              textDecoration: "none",
-              color: "var(--color-text-secondary)",
-            }}
-          >
-            LinkedIn
-          </a>
+          {siteConfig.socialLinks
+            .filter((l) => l.platform !== "email")
+            .map((link) => (
+              <a
+                key={link.platform}
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-testid={`social-link-${link.platform}`}
+                style={{
+                  display: "inline-flex",
+                  padding: "var(--space-3) var(--space-6)",
+                  border: "1px solid var(--color-border)",
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "var(--text-sm)",
+                  borderRadius: "var(--radius-md)",
+                  textDecoration: "none",
+                  color: "var(--color-text-secondary)",
+                }}
+              >
+                {link.label}
+              </a>
+            ))}
         </div>
       </section>
     </div>

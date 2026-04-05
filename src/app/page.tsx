@@ -7,6 +7,7 @@ import {
   siteConfig,
   skillCategories,
   lookingFor,
+  experienceEntries,
 } from "@/content/site";
 import { TypingTest } from "@/components/TypingTest";
 import { InteractiveTerminal } from "@/components/home/InteractiveTerminal";
@@ -102,7 +103,7 @@ export default function Home() {
                 textShadow: "0 0 10px var(--color-accent-glow)",
               }}
             >
-              Software Engineer @ Palo Alto Networks
+              {experienceEntries[0].role} @ {experienceEntries[0].company}
             </p>
             <p
               data-testid="hero-subhead"
@@ -143,24 +144,29 @@ export default function Home() {
               >
                 {heroContent.cta.label} &rarr;
               </Link>
-              <a
-                href="https://www.linkedin.com/in/fabrizio-corrales/"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  padding: "var(--space-3) var(--space-6)",
-                  border: "1px solid var(--color-border)",
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "var(--text-sm)",
-                  borderRadius: "var(--radius-md)",
-                  textDecoration: "none",
-                  color: "var(--color-text-secondary)",
-                }}
-              >
-                LinkedIn
-              </a>
+              {siteConfig.socialLinks
+                .filter((l) => l.platform === "linkedin")
+                .map((link) => (
+                  <a
+                    key={link.platform}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      padding: "var(--space-3) var(--space-6)",
+                      border: "1px solid var(--color-border)",
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "var(--text-sm)",
+                      borderRadius: "var(--radius-md)",
+                      textDecoration: "none",
+                      color: "var(--color-text-secondary)",
+                    }}
+                  >
+                    {link.label}
+                  </a>
+                ))}
             </div>
           </div>
           <div style={{ flex: "0 0 auto" }}>
