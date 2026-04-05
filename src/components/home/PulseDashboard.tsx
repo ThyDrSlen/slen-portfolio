@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, memo } from "react";
 import { type GitHubEvent } from "@/lib/github";
 import { PulseAnimation } from "./PulseAnimation";
 
@@ -64,7 +64,7 @@ function rangeButtonStyle(active: boolean): React.CSSProperties {
   };
 }
 
-export function PulseDashboard({
+export const PulseDashboard = memo(function PulseDashboard({
   events,
   lastActive,
 }: {
@@ -269,4 +269,4 @@ export function PulseDashboard({
       </div>
     </div>
   );
-}
+});

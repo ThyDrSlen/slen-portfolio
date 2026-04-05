@@ -7,6 +7,7 @@ import { MatrixRain } from "@/components/shell/MatrixRain";
 import { BootSequence } from "@/components/shell/BootSequence";
 import { CursorTrail } from "@/components/shell/CursorTrail";
 import { HitMarker } from "@/components/shell/HitMarker";
+import { ClientErrorBoundary } from "@/components/shell/ClientErrorBoundary";
 import { SubwayStatusBar } from "@/components/shell/SubwayStatusBar";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -73,10 +74,12 @@ export default function RootLayout({
       className={`${spaceGrotesk.variable} ${ibmPlexMono.variable}`}
     >
       <body>
-        <BootSequence />
-        <CursorTrail />
-        <HitMarker />
-        <MatrixRain />
+        <ClientErrorBoundary>
+          <BootSequence />
+          <CursorTrail />
+          <HitMarker />
+          <MatrixRain />
+        </ClientErrorBoundary>
         <div className="scanline" aria-hidden="true" />
         <SkipLink />
         <Header />

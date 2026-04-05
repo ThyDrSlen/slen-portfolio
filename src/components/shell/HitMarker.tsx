@@ -22,18 +22,11 @@ export function HitMarker() {
   const prefersReducedMotion = usePrefersReducedMotion();
 
   useEffect(() => {
-    if (prefersReducedMotion) {
-      audioRef.current = null;
-      return;
+    if (!audioRef.current) {
+      audioRef.current = new Audio(HIT_SOUND);
+      audioRef.current.volume = 0.4;
     }
-
-    audioRef.current = new Audio(HIT_SOUND);
-    audioRef.current.volume = 0.4;
-
-    return () => {
-      audioRef.current = null;
-    };
-  }, [prefersReducedMotion]);
+  }, []);
 
   useEffect(() => {
     return () => {
