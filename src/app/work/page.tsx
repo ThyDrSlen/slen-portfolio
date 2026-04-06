@@ -92,8 +92,11 @@ export default function WorkIndex() {
                   key={tech}
                   className="mono"
                   style={{
+                    display: "inline-flex",
+                    alignItems: "center",
                     fontSize: "var(--text-xs)",
-                    padding: "var(--space-1) var(--space-2)",
+                    minHeight: 44,
+                    padding: "0 var(--space-3)",
                     background: "var(--color-bg-surface)",
                     border: "1px solid var(--color-border)",
                     borderRadius: "var(--radius-sm)",

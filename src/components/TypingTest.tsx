@@ -529,15 +529,22 @@ export function TypingTest() {
 
       <div className="typing-test-words">
         {!started && !finished && (
-          <p
+          <button
+            type="button"
+            onClick={handleFocus}
             style={{
+              background: "transparent",
+              border: 0,
               color: "var(--color-text-muted)",
+              cursor: "text",
               fontSize: "var(--text-sm)",
               marginBottom: "var(--space-4)",
+              padding: 0,
+              textAlign: "left",
             }}
           >
-            click here and start typing &middot; tab to reset
-          </p>
+            Click here and start typing &middot; or press any key to begin &middot; tab to reset
+          </button>
         )}
         {words.map((word, wi) => (
           <span key={`${word}-${wi}`} style={{ marginRight: "0.75em", display: "inline" }}>

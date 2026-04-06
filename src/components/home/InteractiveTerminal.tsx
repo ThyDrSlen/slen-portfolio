@@ -11,6 +11,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { useRouter } from "next/navigation";
 import { terminalConfig, terminalHints } from "@/content/system";
 import {
   UPTIME_PLACEHOLDER,
@@ -74,9 +75,17 @@ function setHintButtonActiveStyles(button: HTMLButtonElement) {
 function setHintButtonDefaultStyles(button: HTMLButtonElement) {
   button.style.borderColor = "var(--color-border)";
   button.style.color = "var(--color-text-muted)";
+  button.style.boxShadow = "none";
+}
+
+function setHintButtonFocusVisibleStyles(button: HTMLButtonElement) {
+  button.style.borderColor = "var(--color-accent)";
+  button.style.color = "var(--color-accent)";
+  button.style.boxShadow = "0 0 0 2px color-mix(in srgb, var(--color-accent) 24%, transparent)";
 }
 
 export function InteractiveTerminal() {
+  const router = useRouter();
   const [state, dispatch] = useReducer(reducer, undefined, createMountedState);
   const [input, setInput] = useState("");
   const [historyIndex, setHistoryIndex] = useState<number | null>(null);
@@ -101,8 +110,12 @@ export function InteractiveTerminal() {
       return;
     }
 
+    if (state.output.length === 0) {
+      return;
+    }
+
     node.scrollTop = node.scrollHeight;
-  }, [state.output.length]);
+  }, [state.output]);
 
   useEffect(() => {
     const interval = window.setInterval(() => {
@@ -135,7 +148,7 @@ export function InteractiveTerminal() {
     resetCompletion();
 
     if (result.navigate) {
-      window.location.href = result.navigate;
+      router.push(result.navigate);
     }
   };
 
@@ -415,9 +428,19 @@ export function InteractiveTerminal() {
                   setHintButtonActiveStyles(event.currentTarget);
                 }}
                 onMouseLeave={(event: MouseEvent<HTMLButtonElement>) => {
+                  if (event.currentTarget.matches(":focus-visible")) {
+                    setHintButtonFocusVisibleStyles(event.currentTarget);
+                    return;
+                  }
+
                   setHintButtonDefaultStyles(event.currentTarget);
                 }}
                 onFocus={(event: FocusEvent<HTMLButtonElement>) => {
+                  if (event.currentTarget.matches(":focus-visible")) {
+                    setHintButtonFocusVisibleStyles(event.currentTarget);
+                    return;
+                  }
+
                   setHintButtonActiveStyles(event.currentTarget);
                 }}
                 onBlur={(event: FocusEvent<HTMLButtonElement>) => {
