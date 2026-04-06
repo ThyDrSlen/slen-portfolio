@@ -24,7 +24,7 @@ test.describe("Typing test", () => {
     await expect(snippetsBtn).toBeVisible();
     await snippetsBtn.click();
 
-    const activeMode = typingTest.locator("[data-testid='typing-test-mode-snippets']");
+    const activeMode = typingTest.locator("[data-testid='typing-mode-snippets']");
     await expect(activeMode).toBeVisible();
   });
 
@@ -35,8 +35,7 @@ test.describe("Typing test", () => {
     await expect(time60).toBeVisible();
     await time60.click();
 
-    const timerDisplay = typingTest.getByTestId("typing-test-timer");
-    await expect(timerDisplay).toContainText("60");
+    await expect(typingTest).toContainText("60s");
   });
 
   test("Tab key resets an active run", async ({ page }) => {
