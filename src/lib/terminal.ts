@@ -48,7 +48,13 @@ function normalizePath(path: string, cwd: string) {
   }
 
   if (trimmed === "..") {
-    return cwd === "~" ? "~" : "~";
+    if (cwd === "~") {
+      return "~";
+    }
+
+    const parentSegments = cwd.split("/").filter(Boolean).slice(0, -1);
+
+    return parentSegments.length > 0 ? parentSegments.join("/") : "~";
   }
 
   if (trimmed.startsWith("~/")) {
