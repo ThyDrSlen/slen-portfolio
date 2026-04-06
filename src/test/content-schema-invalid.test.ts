@@ -91,7 +91,7 @@ describe("Schema rejects invalid data", () => {
 
   it("rejects invalid slug", () => {
     const result = caseStudySchema.safeParse({
-      slug: "not-a-valid-slug",
+      slug: "UPPERCASE_INVALID",
       title: "Test",
       summary: "A test case study for validation",
       role: "Dev",
