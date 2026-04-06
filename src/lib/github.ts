@@ -67,6 +67,11 @@ async function fetchGitHubEventsPage(url: string): Promise<Response | null> {
 export async function fetchGitHubPulse(
   username: string
 ): Promise<GitHubPulseData | null> {
+  if (!/^[a-zA-Z0-9-]{1,39}$/.test(username)) {
+    console.warn(`Invalid GitHub username: ${username}`);
+    return null;
+  }
+
   try {
     const allEvents: RawGitHubEvent[] = [];
 
@@ -76,7 +81,15 @@ export async function fetchGitHubPulse(
 
       if (!res) return null;
 
-      const events: RawGitHubEvent[] = await res.json();
+      let events: RawGitHubEvent[];
+
+      try {
+        events = (await res.json()) as RawGitHubEvent[];
+      } catch (error) {
+        console.warn(`Failed to parse GitHub API response for ${url}`, error);
+        return null;
+      }
+
       allEvents.push(...events);
 
       if (events.length < 100) break;
