@@ -27,15 +27,16 @@ export function BootSequence() {
     }
   }, [prefersReducedMotion, setFlag]);
 
+  const dismissRef = useRef(dismiss);
   useEffect(() => {
-    if (seen || prefersReducedMotion || unmounted) {
-      return;
-    }
+    dismissRef.current = dismiss;
+  });
 
+  useEffect(() => {
     overlayRef.current?.focus();
 
     const handleKeyDown = () => {
-      dismiss();
+      dismissRef.current();
     };
 
     window.addEventListener("keydown", handleKeyDown);
@@ -43,7 +44,7 @@ export function BootSequence() {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [prefersReducedMotion, seen, unmounted, setFlag]);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (seen || prefersReducedMotion) return;
@@ -104,7 +105,7 @@ export function BootSequence() {
 
         return (
           <div
-            key={line}
+            key={i}
             style={{
               lineHeight: 1.8,
               color: isSystemReady ? "#fff" : "var(--color-accent)",
