@@ -342,7 +342,7 @@ export const caseStudies: CaseStudy[] = [
     },
     featured: true,
   },
-];
+] satisfies CaseStudy[];
 
 export function getCaseStudyBySlug(slug: string): CaseStudy | undefined {
   return caseStudies.find((cs) => cs.slug === slug);
