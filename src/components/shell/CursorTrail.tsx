@@ -13,14 +13,21 @@ const MAX_POINTS = 20;
 const LIFETIME = 500;
 const IDLE_GRACE_MS = 100;
 
+// Hoisted to module level so addEventListener and removeEventListener
+// always operate on the same stable MediaQueryList instance,
+// preventing listener accumulation when useSyncExternalStore re-subscribes.
+const pointerMql =
+  typeof window !== "undefined"
+    ? window.matchMedia("(pointer: fine)")
+    : null;
+
 function subscribePointer(callback: () => void) {
-  const mql = window.matchMedia("(pointer: fine)");
-  mql.addEventListener("change", callback);
-  return () => mql.removeEventListener("change", callback);
+  pointerMql?.addEventListener("change", callback);
+  return () => pointerMql?.removeEventListener("change", callback);
 }
 
 function getPointerSnapshot() {
-  return window.matchMedia("(pointer: fine)").matches;
+  return pointerMql?.matches ?? false;
 }
 
 // Frame skip by hardwareConcurrency: 1 (8+ cores), 2 (3–4), 3 (≤2)

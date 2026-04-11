@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -14,6 +15,27 @@ import { GitHubCommitPulse } from "@/components/home/GitHubCommitPulse";
 import { Reveal } from "@/components/motion/Reveal";
 import { CountUpMetric } from "@/components/motion/CountUpMetric";
 import { TypeOnReveal } from "@/components/motion/TypeOnReveal";
+
+export const metadata: Metadata = {
+  title: siteConfig.name,
+  description: siteConfig.description,
+  openGraph: {
+    title: siteConfig.name,
+    description: siteConfig.description,
+    url: siteConfig.url,
+    siteName: siteConfig.name,
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteConfig.name,
+    description: siteConfig.description,
+  },
+  alternates: {
+    canonical: siteConfig.url,
+  },
+};
 
 function GitHubCommitPulseSkeleton() {
   return (
