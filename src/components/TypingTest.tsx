@@ -196,7 +196,7 @@ export function TypingTest() {
   const [personalBest, setPersonalBest] = useState(0);
   const [isNewRecord, setIsNewRecord] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const timerRef = useRef<ReturnType<typeof setInterval>>(undefined);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const accuracy = totalChars > 0 ? Math.round((correctChars / totalChars) * 100) : 100;
@@ -219,7 +219,7 @@ export function TypingTest() {
     setElapsed(0);
     setIsNewRecord(false);
     setPersonalBest(readPersonalBest(mode));
-    if (timerRef.current) clearInterval(timerRef.current);
+    if (timerRef.current !== null) { clearInterval(timerRef.current); timerRef.current = null; }
   }, [mode]);
 
   useEffect(() => {
@@ -267,12 +267,12 @@ export function TypingTest() {
 
         if (secs >= timeLimit) {
           setFinished(true);
-          if (timerRef.current) clearInterval(timerRef.current);
+          if (timerRef.current !== null) { clearInterval(timerRef.current); timerRef.current = null; }
         }
       }, 100);
     }
     return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
+      if (timerRef.current !== null) { clearInterval(timerRef.current); timerRef.current = null; }
     };
   }, [started, finished, startTime, timeLimit]);
 
@@ -318,7 +318,7 @@ export function TypingTest() {
 
         if (wordIndex + 1 >= words.length) {
           setFinished(true);
-          if (timerRef.current) clearInterval(timerRef.current);
+          if (timerRef.current !== null) { clearInterval(timerRef.current); timerRef.current = null; }
         }
       }
       return;
