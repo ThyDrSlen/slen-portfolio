@@ -11,6 +11,7 @@ const contentSecurityPolicy = [
 ].join("; ");
 
 const nextConfig: NextConfig = {
+  trailingSlash: false,
   async headers() {
     return [
       {
