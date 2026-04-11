@@ -477,6 +477,8 @@ export function TypingTest() {
             data-testid={`typing-mode-${m.key}`}
             style={modeButtonStyle(mode === m.key)}
             onClick={(e) => { e.stopPropagation(); handleModeChange(m.key); }}
+            aria-pressed={mode === m.key}
+            disabled={started}
           >
             {m.label}
           </button>
@@ -489,6 +491,8 @@ export function TypingTest() {
             data-testid={`typing-time-${t}`}
             style={timeButtonStyle(timeLimit === t)}
             onClick={(e) => { e.stopPropagation(); handleTimeChange(t); }}
+            aria-pressed={timeLimit === t}
+            disabled={started}
           >
             {t}s
           </button>
@@ -579,7 +583,17 @@ export function TypingTest() {
       )}
 
       {finished && (
-        <div className="typing-test-stats" data-testid="typing-test-results" role="status" aria-live="polite" aria-atomic="true">
+        <div
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+          style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", clip: "rect(0,0,0,0)", whiteSpace: "nowrap" }}
+        >
+          Test complete. {wpm} words per minute, {accuracy}% accuracy.
+        </div>
+      )}
+      {finished && (
+        <div className="typing-test-stats" data-testid="typing-test-results">
           <div>
             <div className="stat-value">{wpm}</div>
             <div className="stat-label">wpm</div>
