@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useSyncExternalStore } from "react";
+import { useState, useEffect, useCallback, useRef, useSyncExternalStore } from "react";
 import { useSessionFlag } from "@/hooks/useSessionFlag";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { subwayConfig } from "@/content/system";
@@ -45,18 +45,23 @@ export function SubwayStatusBar() {
     return () => clearInterval(id);
   }, [prefersReducedMotion]);
 
-  const handleKeyDown = useCallback(
-    (e: KeyboardEvent) => {
-      if (e.key === "Escape") dismiss();
-    },
-    [dismiss]
-  );
+  // Keep a ref to dismiss so the stable handler always calls the latest version
+  // without needing to re-register the event listener when dismiss changes identity.
+  const dismissRef = useRef(dismiss);
+  useEffect(() => {
+    dismissRef.current = dismiss;
+  }, [dismiss]);
+
+  // Stable handler: created once, never recreated, always reads from the ref.
+  const stableHandleKeyDown = useCallback((e: KeyboardEvent) => {
+    if (e.key === "Escape") dismissRef.current();
+  }, []); // empty deps — the ref keeps it up-to-date without re-registration
 
   useEffect(() => {
     if (dismissed) return;
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [dismissed, handleKeyDown]);
+    window.addEventListener("keydown", stableHandleKeyDown);
+    return () => window.removeEventListener("keydown", stableHandleKeyDown);
+  }, [dismissed, stableHandleKeyDown]);
 
   if (dismissed) return null;
 
