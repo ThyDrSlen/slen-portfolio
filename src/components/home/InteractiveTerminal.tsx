@@ -135,7 +135,10 @@ export function InteractiveTerminal() {
     resetCompletion();
 
     if (result.navigate) {
-      window.location.href = result.navigate;
+      const target = result.navigate;
+      window.setTimeout(() => {
+        window.location.href = target;
+      }, 120);
     }
   };
 

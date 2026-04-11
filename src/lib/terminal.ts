@@ -222,15 +222,21 @@ export function executeCommand(state: TerminalState, input: string): TerminalRes
       }
 
       if (argText === "about") {
-        return withOutput(state, trimmedInput, [], { history, navigate: "/about" });
+        return withOutput(
+          state,
+          trimmedInput,
+          [{ text: "→ /about", type: "system" }],
+          { history, navigate: "/about" }
+        );
       }
 
       if (argText === "work") {
-        return withOutput(state, trimmedInput, [], {
-          cwd: "work",
-          history,
-          navigate: "/work",
-        });
+        return withOutput(
+          state,
+          trimmedInput,
+          [{ text: "→ /work", type: "system" }],
+          { cwd: "work", history, navigate: "/work" }
+        );
       }
 
       const targetPath = normalizePath(argText, state.cwd);
