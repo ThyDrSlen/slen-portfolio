@@ -12,6 +12,7 @@ export const siteConfigSchema = z.object({
   description: z.string().min(10),
   url: z.url(),
   email: z.email(),
+  twitterHandle: z.string().optional(),
   socialLinks: z.array(socialLinkSchema).min(1),
 });
 
