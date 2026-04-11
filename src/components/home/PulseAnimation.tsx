@@ -24,8 +24,10 @@ function buildPoints(
 
 export function PulseAnimation({
   commitsByDay,
+  rangeLabel = "7 days",
 }: {
   commitsByDay: DayData[];
+  rangeLabel?: string;
 }) {
   const W = 400;
   const H = 120;
@@ -61,7 +63,7 @@ export function PulseAnimation({
       preserveAspectRatio="xMidYMid meet"
       style={{ display: "block" }}
       role="img"
-      aria-label="GitHub commit activity over the last 7 days"
+      aria-label={`GitHub commit activity over the last ${rangeLabel}`}
     >
       <defs>
         <filter id="pulse-glow">

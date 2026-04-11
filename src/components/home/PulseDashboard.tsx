@@ -6,10 +6,10 @@ import { PulseAnimation } from "./PulseAnimation";
 
 type Range = 7 | 30 | 90;
 
-const RANGES: { key: Range; label: string }[] = [
-  { key: 7, label: "7d" },
-  { key: 30, label: "1m" },
-  { key: 90, label: "3m" },
+const RANGES: { key: Range; label: string; ariaLabel: string }[] = [
+  { key: 7, label: "7d", ariaLabel: "7 days" },
+  { key: 30, label: "1m", ariaLabel: "30 days" },
+  { key: 90, label: "3m", ariaLabel: "90 days" },
 ];
 
 function computeWindow(events: GitHubEvent[], days: Range) {
@@ -164,7 +164,10 @@ export function PulseDashboard({
       </div>
 
       <div style={{ marginBottom: "var(--space-6)" }}>
-        <PulseAnimation commitsByDay={sampledDays} />
+        <PulseAnimation
+          commitsByDay={sampledDays}
+          rangeLabel={RANGES.find((r) => r.key === range)?.ariaLabel ?? "7 days"}
+        />
       </div>
 
       <div
