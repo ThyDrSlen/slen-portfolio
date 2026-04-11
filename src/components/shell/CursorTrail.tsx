@@ -49,6 +49,7 @@ export function CursorTrail() {
     let rendering = false;
     let frameCount = 0;
     const frameSkip = getFrameSkip();
+    let rafId: number | null = null;
 
     const trail: TrailPoint[] = [];
     let mouseX = 0;
@@ -134,17 +135,21 @@ export function CursorTrail() {
     };
 
     const onMouseMove = (e: MouseEvent) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      mouseActive = true;
-      lastMoveTime = Date.now();
+      if (rafId !== null) return; // already scheduled, skip until next frame
+      rafId = requestAnimationFrame(() => {
+        rafId = null;
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        mouseActive = true;
+        lastMoveTime = Date.now();
 
-      trail.push({ x: mouseX, y: mouseY, timestamp: lastMoveTime });
-      if (trail.length > MAX_POINTS) {
-        trail.shift();
-      }
+        trail.push({ x: mouseX, y: mouseY, timestamp: lastMoveTime });
+        if (trail.length > MAX_POINTS) {
+          trail.shift();
+        }
 
-      startRendering();
+        startRendering();
+      });
     };
 
     document.addEventListener("mousemove", onMouseMove);
@@ -152,6 +157,7 @@ export function CursorTrail() {
 
     return () => {
       cancelAnimationFrame(animationId);
+      if (rafId !== null) cancelAnimationFrame(rafId);
       document.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("resize", resize);
     };

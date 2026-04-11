@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 type DayData = { date: string; count: number };
@@ -22,7 +22,7 @@ function buildPoints(
   }));
 }
 
-export function PulseAnimation({
+function PulseAnimationInner({
   commitsByDay,
 }: {
   commitsByDay: DayData[];
@@ -35,14 +35,25 @@ export function PulseAnimation({
   const lineRef = useRef<SVGPolylineElement>(null);
   const prefersReducedMotion = usePrefersReducedMotion();
 
-  const points = buildPoints(commitsByDay, W, H, PAD_X, PAD_Y);
-  const polyline = points.map((p) => `${p.x},${p.y}`).join(" ");
+  const points = useMemo(
+    () => buildPoints(commitsByDay, W, H, PAD_X, PAD_Y),
+    [commitsByDay]
+  );
 
-  const totalLength = points.reduce((acc, p, i) => {
-    if (i === 0) return 0;
-    const prev = points[i - 1];
-    return acc + Math.sqrt((p.x - prev.x) ** 2 + (p.y - prev.y) ** 2);
-  }, 0);
+  const polyline = useMemo(
+    () => points.map((p) => `${p.x},${p.y}`).join(" "),
+    [points]
+  );
+
+  const totalLength = useMemo(
+    () =>
+      points.reduce((acc, p, i) => {
+        if (i === 0) return 0;
+        const prev = points[i - 1];
+        return acc + Math.sqrt((p.x - prev.x) ** 2 + (p.y - prev.y) ** 2);
+      }, 0),
+    [points]
+  );
 
   useEffect(() => {
     if (prefersReducedMotion) {
@@ -170,3 +181,5 @@ export function PulseAnimation({
     </svg>
   );
 }
+
+export const PulseAnimation = React.memo(PulseAnimationInner);
