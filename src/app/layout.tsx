@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Space_Grotesk, IBM_Plex_Mono } from "next/font/google";
 import { Header } from "@/components/shell/Header";
 import { Footer } from "@/components/shell/Footer";
@@ -26,6 +26,14 @@ const ibmPlexMono = IBM_Plex_Mono({
   weight: ["400", "500", "600"],
   display: "swap",
 });
+
+export const viewport: Viewport = {
+  colorScheme: "dark",
+  themeColor: [
+    { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" },
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+  ],
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
