@@ -270,6 +270,7 @@ export default function About() {
             target="_blank"
             rel="noopener noreferrer"
             data-testid="about-resume-download"
+            aria-label="Download resume PDF, opens in new tab"
             style={{
               display: "inline-flex",
               padding: "var(--space-3) var(--space-6)",

@@ -401,6 +401,7 @@ export default function Home() {
                 href="/resume.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Download resume PDF, opens in new tab"
                 style={{
                   display: "inline-flex",
                   padding: "var(--space-3) var(--space-6)",
