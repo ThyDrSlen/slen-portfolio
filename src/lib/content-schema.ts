@@ -77,7 +77,7 @@ export const caseStudySchema = z.object({
       label: z.string().min(1),
       url: z.url(),
     })
-  ).min(1),
+  ).optional().default([]),
   disclosure: disclosureMatrixSchema,
   disclaimer: z.string().optional(),
   featured: z.boolean().default(false),

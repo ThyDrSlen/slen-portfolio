@@ -357,42 +357,44 @@ export default async function CaseStudyPage({
       </section>
 
       {/* Proof Links */}
-      <section
-        data-testid="case-study-proof-links"
-        style={{ marginBottom: "var(--space-12)" }}
-      >
-        <h2 style={{ marginBottom: "var(--space-4)" }}>Proof</h2>
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: "var(--space-3)",
-          }}
+      {cs.proofLinks && cs.proofLinks.length > 0 && (
+        <section
+          data-testid="case-study-proof-links"
+          style={{ marginBottom: "var(--space-12)" }}
         >
-          {cs.proofLinks.map((link) => (
-            <a
-              key={link.url}
-              href={link.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: "inline-flex",
-                padding: "var(--space-2) var(--space-4)",
-                border: "1px solid var(--color-border)",
-                borderRadius: "var(--radius-md)",
-                fontFamily: "var(--font-mono)",
-                fontSize: "var(--text-sm)",
-                color: "var(--color-text-secondary)",
-                textDecoration: "none",
-                transition:
-                  "border-color var(--duration-fast) var(--easing)",
-              }}
-            >
-              {link.label} &rarr;
-            </a>
-          ))}
-        </div>
-      </section>
+          <h2 style={{ marginBottom: "var(--space-4)" }}>Proof</h2>
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "var(--space-3)",
+            }}
+          >
+            {cs.proofLinks.map((link) => (
+              <a
+                key={link.url}
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: "inline-flex",
+                  padding: "var(--space-2) var(--space-4)",
+                  border: "1px solid var(--color-border)",
+                  borderRadius: "var(--radius-md)",
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "var(--text-sm)",
+                  color: "var(--color-text-secondary)",
+                  textDecoration: "none",
+                  transition:
+                    "border-color var(--duration-fast) var(--easing)",
+                }}
+              >
+                {link.label} &rarr;
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Reflection */}
       <section style={{ marginBottom: "var(--space-12)" }}>
