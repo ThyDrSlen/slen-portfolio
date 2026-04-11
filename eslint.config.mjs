@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Agent worktrees share the repo root — exclude them from linting.
+    ".claude/worktrees/**",
   ]),
 ]);
 
