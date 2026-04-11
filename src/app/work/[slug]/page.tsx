@@ -395,6 +395,7 @@ export default async function CaseStudyPage({
               href={link.url}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label={`View proof on ${link.label}`}
               style={{
                 display: "inline-flex",
                 padding: "var(--space-2) var(--space-4)",
@@ -408,7 +409,7 @@ export default async function CaseStudyPage({
                   "border-color var(--duration-fast) var(--easing)",
               }}
             >
-              {link.label} &rarr;
+              {link.label} <span aria-hidden="true">&rarr;</span>
             </a>
           ))}
         </div>
