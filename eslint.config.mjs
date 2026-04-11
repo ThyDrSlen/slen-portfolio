@@ -12,6 +12,10 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Ignore Claude Code worktree copies of the project:
+    ".claude/worktrees/**",
+    // Ignore stray non-project directories:
+    "~Projects/**",
   ]),
 ]);
 
