@@ -316,6 +316,53 @@ a {
   margin: 0 auto;
 }
 
+/* ── About Page Contact Links ── */
+.about-contact-link {
+  display: inline-flex;
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-md);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  text-decoration: none;
+  transition: color var(--duration-fast) var(--easing),
+    background var(--duration-fast) var(--easing),
+    border-color var(--duration-fast) var(--easing),
+    box-shadow var(--duration-fast) var(--easing);
+}
+
+.about-contact-link--primary {
+  background: var(--color-text);
+  color: var(--color-bg);
+  font-weight: 600;
+}
+
+.about-contact-link--primary:hover {
+  background: var(--color-accent);
+  color: var(--color-bg);
+  box-shadow: 0 0 12px var(--color-accent-glow);
+}
+
+.about-contact-link--primary:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.about-contact-link--outline {
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+}
+
+.about-contact-link--outline:hover {
+  border-color: var(--color-accent-dim);
+  color: var(--color-accent);
+  box-shadow: 0 0 8px var(--color-accent-glow);
+}
+
+.about-contact-link--outline:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
 /* ── Matrix Rain Canvas ── */
 .matrix-rain {
   position: fixed;
