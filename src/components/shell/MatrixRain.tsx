@@ -22,11 +22,14 @@ export function MatrixRain() {
     let viewportWidth = 0;
     let viewportHeight = 0;
     let columns = 0;
-    let drops: number[] = [];
+    // Use a ref-like plain object so the draw loop always reads the
+    // latest array reference, eliminating the race condition that occurs
+    // when the resize handler replaces the array while draw() is mid-loop.
+    const dropsRef: { current: number[] } = { current: [] };
 
     const initializeDrops = () => {
       columns = Math.floor(viewportWidth / fontSize);
-      drops = new Array(columns).fill(0).map(() => Math.random() * -100);
+      dropsRef.current = new Array(columns).fill(0).map(() => Math.random() * -100);
     };
 
     const resize = () => {
@@ -58,10 +61,10 @@ export function MatrixRain() {
       ctx.fillStyle = "#00ff41";
       ctx.font = `${fontSize}px monospace`;
 
-      for (let i = 0; i < drops.length; i++) {
+      for (let i = 0; i < dropsRef.current.length; i++) {
         const char = charArray[Math.floor(Math.random() * charArray.length)];
         const x = i * fontSize;
-        const y = drops[i] * fontSize;
+        const y = dropsRef.current[i] * fontSize;
 
         // Vary brightness
         const brightness = Math.random();
@@ -76,9 +79,9 @@ export function MatrixRain() {
         ctx.fillText(char, x, y);
 
         if (y > viewportHeight && Math.random() > 0.975) {
-          drops[i] = 0;
+          dropsRef.current[i] = 0;
         }
-        drops[i] += 0.15 + Math.random() * 0.2;
+        dropsRef.current[i] += 0.15 + Math.random() * 0.2;
       }
 
       animationId = requestAnimationFrame(draw);
