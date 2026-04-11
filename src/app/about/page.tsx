@@ -26,7 +26,7 @@ export default function About() {
       .map((l) => l.url),
   };
   return (
-    <div className="container">
+    <article className="container">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -66,7 +66,7 @@ export default function About() {
       </div>
 
       {/* Intro */}
-      <div style={{ maxWidth: "40rem", marginBottom: "var(--space-12)" }}>
+      <section aria-label="Introduction" style={{ maxWidth: "40rem", marginBottom: "var(--space-12)" }}>
         {aboutContent.introSections.map((para) => (
           <p
             key={para.slice(0, 30)}
@@ -80,7 +80,7 @@ export default function About() {
             {para}
           </p>
         ))}
-      </div>
+      </section>
 
       {/* Looking For */}
       <section style={{ marginBottom: "var(--space-16)" }}>
@@ -308,6 +308,6 @@ export default function About() {
             ))}
         </div>
       </section>
-    </div>
+    </article>
   );
 }
