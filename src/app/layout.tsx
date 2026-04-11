@@ -8,6 +8,7 @@ import { BootSequence } from "@/components/shell/BootSequence";
 import { CursorTrail } from "@/components/shell/CursorTrail";
 import { HitMarker } from "@/components/shell/HitMarker";
 import { SubwayStatusBar } from "@/components/shell/SubwayStatusBar";
+import { ErrorBoundary } from "@/components/shell/ErrorBoundary";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { siteConfig } from "@/content/site";
@@ -74,9 +75,13 @@ export default function RootLayout({
     >
       <body>
         <BootSequence />
-        <CursorTrail />
+        <ErrorBoundary>
+          <CursorTrail />
+        </ErrorBoundary>
         <HitMarker />
-        <MatrixRain />
+        <ErrorBoundary>
+          <MatrixRain />
+        </ErrorBoundary>
         <div className="scanline" aria-hidden="true" />
         <SkipLink />
         <Header />
