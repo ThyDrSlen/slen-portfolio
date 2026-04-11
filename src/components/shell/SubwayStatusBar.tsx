@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useSyncExternalStore } from "react";
+import { useState, useEffect, useCallback, useRef, useSyncExternalStore } from "react";
 import { useSessionFlag } from "@/hooks/useSessionFlag";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { subwayConfig } from "@/content/system";
@@ -45,18 +45,20 @@ export function SubwayStatusBar() {
     return () => clearInterval(id);
   }, [prefersReducedMotion]);
 
+  const dismissedRef = useRef(dismissed);
+  dismissedRef.current = dismissed;
+
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      if (e.key === "Escape") dismiss();
+      if (e.key === "Escape" && !dismissedRef.current) dismiss();
     },
     [dismiss]
   );
 
   useEffect(() => {
-    if (dismissed) return;
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [dismissed, handleKeyDown]);
+  }, [handleKeyDown]);
 
   if (dismissed) return null;
 
