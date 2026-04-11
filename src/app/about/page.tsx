@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import Image from "next/image";
 import {
   siteConfig,
@@ -14,7 +15,9 @@ export const metadata: Metadata = {
   alternates: { canonical: "/about" },
 };
 
-export default function About() {
+export default async function About() {
+  const nonce = (await headers()).get("x-nonce") ?? undefined;
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Person",
@@ -29,6 +32,7 @@ export default function About() {
     <div className="container">
       <script
         type="application/ld+json"
+        nonce={nonce}
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <div

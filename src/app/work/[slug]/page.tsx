@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import {
@@ -37,6 +38,7 @@ export default async function CaseStudyPage({
 }: {
   params: Promise<{ slug: string }>;
 }) {
+  const nonce = (await headers()).get("x-nonce") ?? undefined;
   const { slug } = await params;
   const cs = getCaseStudyBySlug(slug);
 
@@ -60,7 +62,7 @@ export default async function CaseStudyPage({
 
   return (
     <article className="container" data-testid="case-study-page">
-      <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
+      <script type="application/ld+json" nonce={nonce}>{JSON.stringify(jsonLd)}</script>
       <nav
         data-testid="case-study-breadcrumbs"
         aria-label="Breadcrumb"
