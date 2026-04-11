@@ -13,6 +13,11 @@ export const siteConfigSchema = z.object({
   url: z.url(),
   email: z.email(),
   socialLinks: z.array(socialLinkSchema).min(1),
+  github: z
+    .object({
+      username: z.string().min(1),
+    })
+    .optional(),
 });
 
 export const experienceEntrySchema = z.object({

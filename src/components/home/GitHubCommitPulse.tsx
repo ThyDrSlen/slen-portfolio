@@ -1,8 +1,10 @@
 import { fetchGitHubPulse } from "@/lib/github";
+import { siteConfig } from "@/content/site";
 import { PulseDashboard } from "./PulseDashboard";
 
 export async function GitHubCommitPulse() {
-  const data = await fetchGitHubPulse("ThyDrSlen");
+  const githubUsername = siteConfig.github?.username ?? "ThyDrSlen";
+  const data = await fetchGitHubPulse(githubUsername);
 
   if (!data) {
     return (
@@ -40,7 +42,7 @@ export async function GitHubCommitPulse() {
           signal unavailable {"// "}check GitHub
         </p>
         <a
-          href="https://github.com/ThyDrSlen"
+          href={`https://github.com/${githubUsername}`}
           target="_blank"
           rel="noopener noreferrer"
           className="mono"
@@ -50,7 +52,7 @@ export async function GitHubCommitPulse() {
             textDecoration: "none",
           }}
         >
-          github.com/ThyDrSlen &rarr;
+          github.com/{githubUsername} &rarr;
         </a>
       </div>
     );

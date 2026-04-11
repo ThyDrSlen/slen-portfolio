@@ -7,6 +7,9 @@ export const siteConfig: SiteConfig = {
     "Portfolio of Fabrizio Corrales. Backend-focused software engineer building scalable distributed systems, developer tooling, and platform capabilities.",
   url: "https://slen.win",
   email: "drslen9@gmail.com",
+  github: {
+    username: process.env.NEXT_PUBLIC_GITHUB_USERNAME ?? "ThyDrSlen",
+  },
   socialLinks: [
     {
       platform: "github",
