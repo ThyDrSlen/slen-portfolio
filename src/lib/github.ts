@@ -95,7 +95,8 @@ export async function fetchGitHubPulse(
       events.length > 0 ? events[0].date : "no recent activity";
 
     return { events, lastActive };
-  } catch {
+  } catch (error) {
+    console.error('[GitHub pulse] fetch failed:', error instanceof Error ? error.message : String(error));
     return null;
   }
 }
