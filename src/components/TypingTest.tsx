@@ -458,6 +458,14 @@ export function TypingTest() {
       </div>
 
       <div
+        aria-live="polite"
+        aria-atomic="true"
+        style={{ position: "absolute", width: "1px", height: "1px", overflow: "hidden", clip: "rect(0 0 0 0)", whiteSpace: "nowrap" }}
+      >
+        {started ? "Controls disabled — test in progress" : ""}
+      </div>
+
+      <div
         data-testid="typing-test-mode-bar"
         style={{
           display: "flex",
@@ -475,6 +483,7 @@ export function TypingTest() {
             type="button"
             key={m.key}
             data-testid={`typing-mode-${m.key}`}
+            disabled={started}
             style={modeButtonStyle(mode === m.key)}
             onClick={(e) => { e.stopPropagation(); handleModeChange(m.key); }}
           >
@@ -487,6 +496,7 @@ export function TypingTest() {
             type="button"
             key={t}
             data-testid={`typing-time-${t}`}
+            disabled={started}
             style={timeButtonStyle(timeLimit === t)}
             onClick={(e) => { e.stopPropagation(); handleTimeChange(t); }}
           >

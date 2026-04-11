@@ -372,6 +372,5 @@ export function getAdjacentCaseStudies(slug: string): {
   };
 }
 
-if (process.env.NODE_ENV !== "production") {
-  validateCaseStudies(caseStudies);
-}
+// Validate at module load — ensures build fails on malformed data
+validateCaseStudies(caseStudies);
