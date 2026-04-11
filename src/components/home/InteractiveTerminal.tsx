@@ -275,9 +275,11 @@ export function InteractiveTerminal() {
             data-testid="terminal-output"
             ref={outputRef}
             role="log"
+            aria-live="polite"
+            aria-atomic="false"
+            aria-label="Terminal output log"
             tabIndex={-1}
             onClick={() => inputRef.current?.focus()}
-            onKeyDown={() => inputRef.current?.focus()}
             style={{
               maxHeight: "28rem",
               overflowY: "auto",
