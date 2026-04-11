@@ -2,7 +2,12 @@ import { fetchGitHubPulse } from "@/lib/github";
 import { PulseDashboard } from "./PulseDashboard";
 
 export async function GitHubCommitPulse() {
-  const data = await fetchGitHubPulse("ThyDrSlen");
+  let data = null;
+  try {
+    data = await fetchGitHubPulse("ThyDrSlen");
+  } catch (error) {
+    console.error('[GitHubCommitPulse] fetch threw:', error);
+  }
 
   if (!data) {
     return (
