@@ -169,7 +169,9 @@ export default function Home() {
               alt="Fabrizio Corrales"
               width={240}
               height={320}
+              quality={85}
               priority
+              sizes="240px"
               style={{
                 borderRadius: "var(--radius-lg)",
                 border: "2px solid var(--color-border)",

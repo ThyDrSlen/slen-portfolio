@@ -45,6 +45,9 @@ export default function About() {
           alt="Fabrizio Corrales"
           width={160}
           height={213}
+          quality={85}
+          priority
+          sizes="160px"
           style={{
             borderRadius: "var(--radius-lg)",
             border: "2px solid var(--color-border)",
