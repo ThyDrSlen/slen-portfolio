@@ -28,6 +28,7 @@ export async function generateMetadata({
       title: `${cs.title} | ${siteConfig.name}`,
       description: cs.summary,
       type: "article",
+      url: `${siteConfig.url}/work/${slug}`,
     },
   };
 }
