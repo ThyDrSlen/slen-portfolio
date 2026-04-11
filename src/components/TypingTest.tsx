@@ -196,7 +196,7 @@ export function TypingTest() {
   const [personalBest, setPersonalBest] = useState(0);
   const [isNewRecord, setIsNewRecord] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const timerRef = useRef<ReturnType<typeof setInterval>>(undefined);
+  const timerRef = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const accuracy = totalChars > 0 ? Math.round((correctChars / totalChars) * 100) : 100;
