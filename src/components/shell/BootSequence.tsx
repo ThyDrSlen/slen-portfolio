@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useSessionFlag } from "@/hooks/useSessionFlag";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { bootLines, motionConfig } from "@/content/system";
@@ -15,11 +15,11 @@ export function BootSequence() {
   const [unmounted, setUnmounted] = useState(false);
   const overlayRef = useRef<HTMLDivElement>(null);
 
-  const dismiss = () => {
+  const dismiss = useCallback(() => {
     setFadingOut(true);
     setUnmounted(true);
     setFlag();
-  };
+  }, [setFlag]);
 
   useEffect(() => {
     if (prefersReducedMotion) {
@@ -28,10 +28,6 @@ export function BootSequence() {
   }, [prefersReducedMotion, setFlag]);
 
   useEffect(() => {
-    if (seen || prefersReducedMotion || unmounted) {
-      return;
-    }
-
     overlayRef.current?.focus();
 
     const handleKeyDown = () => {
@@ -43,7 +39,7 @@ export function BootSequence() {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [prefersReducedMotion, seen, unmounted, setFlag]);
+  }, [dismiss]);
 
   useEffect(() => {
     if (seen || prefersReducedMotion) return;
@@ -104,7 +100,7 @@ export function BootSequence() {
 
         return (
           <div
-            key={line}
+            key={i}
             style={{
               lineHeight: 1.8,
               color: isSystemReady ? "#fff" : "var(--color-accent)",
