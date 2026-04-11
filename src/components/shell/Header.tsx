@@ -7,6 +7,7 @@ export function Header() {
   const currentPath = usePathname();
 
   const getAriaCurrent = (href: string) => {
+    if (!currentPath) return undefined;
     if (href === "/") {
       return currentPath === "/" ? "page" : undefined;
     }
