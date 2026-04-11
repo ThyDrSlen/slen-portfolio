@@ -23,14 +23,21 @@ export function HitMarker() {
 
   useEffect(() => {
     if (prefersReducedMotion) {
-      audioRef.current = null;
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.src = "";
+        audioRef.current = null;
+      }
       return;
     }
 
-    audioRef.current = new Audio(HIT_SOUND);
-    audioRef.current.volume = 0.4;
+    const audio = new Audio(HIT_SOUND);
+    audio.volume = 0.4;
+    audioRef.current = audio;
 
     return () => {
+      audio.pause();
+      audio.src = "";
       audioRef.current = null;
     };
   }, [prefersReducedMotion]);
