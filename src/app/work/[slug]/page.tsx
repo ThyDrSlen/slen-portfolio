@@ -58,9 +58,20 @@ export default async function CaseStudyPage({
     url: `${siteConfig.url}/work/${cs.slug}`,
   };
 
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: siteConfig.url },
+      { "@type": "ListItem", position: 2, name: "Work", item: `${siteConfig.url}/work` },
+      { "@type": "ListItem", position: 3, name: cs.title, item: `${siteConfig.url}/work/${cs.slug}` },
+    ],
+  };
+
   return (
     <article className="container" data-testid="case-study-page">
       <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
+      <script type="application/ld+json">{JSON.stringify(breadcrumbJsonLd)}</script>
       <nav
         data-testid="case-study-breadcrumbs"
         aria-label="Breadcrumb"
