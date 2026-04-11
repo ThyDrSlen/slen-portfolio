@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { caseStudies } from "@/content/case-studies";
+import type { CaseStudy } from "@/lib/content-schema";
 
 export const metadata: Metadata = {
   title: "Work",
@@ -33,7 +34,7 @@ export default function WorkIndex() {
           gap: "var(--space-6)",
         }}
       >
-        {caseStudies.map((cs) => (
+        {(caseStudies as CaseStudy[]).map((cs) => (
           <Link
             key={cs.slug}
             href={`/work/${cs.slug}`}
