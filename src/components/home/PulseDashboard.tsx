@@ -153,6 +153,7 @@ export function PulseDashboard({
             <button
               key={r.key}
               type="button"
+              aria-pressed={range === r.key}
               data-testid={`pulse-range-${r.key}`}
               style={rangeButtonStyle(range === r.key)}
               onClick={() => setRange(r.key)}
