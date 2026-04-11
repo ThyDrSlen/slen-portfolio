@@ -276,7 +276,7 @@ export default async function CaseStudyPage({
           style={{ marginBottom: "var(--space-12)" }}
         >
           <h2 style={{ marginBottom: "var(--space-4)" }}>Media</h2>
-          {cs.media.map((m) => (
+          {cs.media.map((m, i) => (
             <div
               key={`${m.type}-${m.caption ?? ("content" in m ? m.content?.slice(0, 32) : null) ?? "media"}`}
               style={{
@@ -304,6 +304,7 @@ export default async function CaseStudyPage({
                   className="mono"
                   role="img"
                   aria-label={m.caption || "Architecture diagram"}
+                  aria-describedby={m.caption ? `diagram-caption-${i}` : undefined}
                   style={{
                     fontSize: "var(--text-xs)",
                     color: "var(--color-text-secondary)",
@@ -328,6 +329,7 @@ export default async function CaseStudyPage({
               )}
               {m.caption && (
                 <p
+                  id={`diagram-caption-${i}`}
                   className="mono"
                   style={{
                     fontSize: "var(--text-xs)",
