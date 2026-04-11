@@ -271,7 +271,11 @@ export default async function CaseStudyPage({
 
       {/* Media (optional) */}
       {cs.media && cs.media.length > 0 && (
-        <section style={{ marginBottom: "var(--space-12)" }}>
+        <section
+          data-testid="case-study-media"
+          style={{ marginBottom: "var(--space-12)" }}
+        >
+          <h2 style={{ marginBottom: "var(--space-4)" }}>Media</h2>
           {cs.media.map((m) => (
             <div
               key={`${m.type}-${m.caption ?? ("content" in m ? m.content?.slice(0, 32) : null) ?? "media"}`}
