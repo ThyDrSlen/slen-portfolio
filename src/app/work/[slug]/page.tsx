@@ -271,6 +271,7 @@ export default async function CaseStudyPage({
       {/* Media (optional) */}
       {cs.media && cs.media.length > 0 && (
         <section style={{ marginBottom: "var(--space-12)" }}>
+          <h2 style={{ marginBottom: "var(--space-4)" }}>Media</h2>
           {cs.media.map((m, i) => (
             <div
               key={i}
@@ -283,40 +284,58 @@ export default async function CaseStudyPage({
               }}
             >
               {m.type === "text-block" && m.content && (
-                <p
-                  className="mono"
-                  style={{
-                    fontSize: "var(--text-sm)",
-                    color: "var(--color-text-secondary)",
-                    lineHeight: 1.6,
-                  }}
-                >
-                  {m.content}
-                </p>
+                <>
+                  <p
+                    className="mono"
+                    style={{
+                      fontSize: "var(--text-sm)",
+                      color: "var(--color-text-secondary)",
+                      lineHeight: 1.6,
+                    }}
+                  >
+                    {m.content}
+                  </p>
+                  {m.caption && (
+                    <p
+                      className="mono"
+                      style={{
+                        fontSize: "var(--text-xs)",
+                        color: "var(--color-text-muted)",
+                        marginTop: "var(--space-2)",
+                      }}
+                    >
+                      {m.caption}
+                    </p>
+                  )}
+                </>
               )}
               {m.type === "diagram" && m.content && (
-                <pre
-                  className="mono"
-                  style={{
-                    fontSize: "var(--text-xs)",
-                    color: "var(--color-text-secondary)",
-                    overflow: "auto",
-                  }}
-                >
-                  {m.content}
-                </pre>
-              )}
-              {m.caption && (
-                <p
-                  className="mono"
-                  style={{
-                    fontSize: "var(--text-xs)",
-                    color: "var(--color-text-muted)",
-                    marginTop: "var(--space-2)",
-                  }}
-                >
-                  {m.caption}
-                </p>
+                <figure style={{ margin: 0 }}>
+                  <pre
+                    className="mono"
+                    aria-describedby={m.caption ? `diagram-caption-${i}` : undefined}
+                    style={{
+                      fontSize: "var(--text-xs)",
+                      color: "var(--color-text-secondary)",
+                      overflow: "auto",
+                    }}
+                  >
+                    {m.content}
+                  </pre>
+                  {m.caption && (
+                    <figcaption
+                      id={`diagram-caption-${i}`}
+                      className="mono"
+                      style={{
+                        fontSize: "var(--text-xs)",
+                        color: "var(--color-text-muted)",
+                        marginTop: "var(--space-2)",
+                      }}
+                    >
+                      {m.caption}
+                    </figcaption>
+                  )}
+                </figure>
               )}
             </div>
           ))}
@@ -355,42 +374,45 @@ export default async function CaseStudyPage({
       </section>
 
       {/* Proof Links */}
-      <section
-        data-testid="case-study-proof-links"
-        style={{ marginBottom: "var(--space-12)" }}
-      >
-        <h2 style={{ marginBottom: "var(--space-4)" }}>Proof</h2>
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: "var(--space-3)",
-          }}
+      {cs.proofLinks && cs.proofLinks.length > 0 && (
+        <section
+          data-testid="case-study-proof-links"
+          style={{ marginBottom: "var(--space-12)" }}
         >
-          {cs.proofLinks.map((link) => (
-            <a
-              key={link.url}
-              href={link.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: "inline-flex",
-                padding: "var(--space-2) var(--space-4)",
-                border: "1px solid var(--color-border)",
-                borderRadius: "var(--radius-md)",
-                fontFamily: "var(--font-mono)",
-                fontSize: "var(--text-sm)",
-                color: "var(--color-text-secondary)",
-                textDecoration: "none",
-                transition:
-                  "border-color var(--duration-fast) var(--easing)",
-              }}
-            >
-              {link.label} &rarr;
-            </a>
-          ))}
-        </div>
-      </section>
+          <h2 style={{ marginBottom: "var(--space-4)" }}>Proof</h2>
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "var(--space-3)",
+            }}
+          >
+            {cs.proofLinks.map((link) => (
+              <a
+                key={link.url}
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`View proof: ${link.label}`}
+                style={{
+                  display: "inline-flex",
+                  padding: "var(--space-2) var(--space-4)",
+                  border: "1px solid var(--color-border)",
+                  borderRadius: "var(--radius-md)",
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "var(--text-sm)",
+                  color: "var(--color-text-secondary)",
+                  textDecoration: "none",
+                  transition:
+                    "border-color var(--duration-fast) var(--easing)",
+                }}
+              >
+                {link.label} <span aria-hidden="true">&rarr;</span>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Reflection */}
       <section style={{ marginBottom: "var(--space-12)" }}>
