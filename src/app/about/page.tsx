@@ -6,6 +6,7 @@ import {
   experienceEntries,
   lookingFor,
   skillCategories,
+  heroContent,
 } from "@/content/site";
 
 export const metadata: Metadata = {
@@ -20,7 +21,13 @@ export default function About() {
     "@type": "Person",
     name: siteConfig.name,
     url: siteConfig.url,
-    jobTitle: "Software Engineer",
+    description: heroContent.subhead,
+    jobTitle: experienceEntries[0].role,
+    worksFor: {
+      "@type": "Organization",
+      name: experienceEntries[0].company,
+    },
+    knowsAbout: skillCategories.flatMap((cat) => cat.skills),
     sameAs: siteConfig.socialLinks
       .filter((l) => l.platform !== "email")
       .map((l) => l.url),
