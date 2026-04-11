@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Rust doc build artifacts from sibling projects (fixes #95):
+    "~Projects/**",
   ]),
 ]);
 
