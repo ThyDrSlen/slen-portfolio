@@ -8,6 +8,7 @@ const contentSecurityPolicy = [
   "font-src 'self' https://fonts.gstatic.com",
   "media-src 'self' data: blob:",
   "img-src 'self' data: blob:",
+  "frame-ancestors 'none'",
 ].join("; ");
 
 const nextConfig: NextConfig = {
