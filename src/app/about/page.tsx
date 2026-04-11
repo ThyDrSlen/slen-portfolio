@@ -11,7 +11,13 @@ import {
 export const metadata: Metadata = {
   title: "About",
   description: aboutContent.intro.slice(0, 155),
-  alternates: { canonical: "/about" },
+  openGraph: {
+    title: `About | ${siteConfig.name}`,
+    description: aboutContent.intro.slice(0, 155),
+    url: `${siteConfig.url}/about`,
+    type: "profile",
+  },
+  alternates: { canonical: `${siteConfig.url}/about` },
 };
 
 export default function About() {

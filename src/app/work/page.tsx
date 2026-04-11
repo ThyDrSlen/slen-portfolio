@@ -1,12 +1,21 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { caseStudies } from "@/content/case-studies";
+import { siteConfig } from "@/content/site";
+
+const WORK_DESCRIPTION =
+  "Selected projects spanning product engineering, systems automation, and enterprise platform work.";
 
 export const metadata: Metadata = {
   title: "Work",
-  description:
-    "Selected projects spanning product engineering, systems automation, and enterprise platform work.",
-  alternates: { canonical: "/work" },
+  description: WORK_DESCRIPTION,
+  openGraph: {
+    title: `Work | ${siteConfig.name}`,
+    description: WORK_DESCRIPTION,
+    url: `${siteConfig.url}/work`,
+    type: "website",
+  },
+  alternates: { canonical: `${siteConfig.url}/work` },
 };
 
 export default function WorkIndex() {
