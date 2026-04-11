@@ -36,6 +36,7 @@ beforeEach(() => {
   }
 
   sessionStorage.clear();
+  localStorage.clear();
 });
 
 afterEach(() => {
