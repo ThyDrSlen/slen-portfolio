@@ -6,7 +6,7 @@
  * with vi.useFakeTimers to prevent runaway async work.
  */
 
-import { act, render, screen } from "@testing-library/react";
+import { act, render } from "@testing-library/react";
 import {
   afterEach,
   beforeEach,
