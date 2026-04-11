@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import Image from "next/image";
 import Link from "next/link";
 import {
   getCaseStudyBySlug,
@@ -273,7 +274,7 @@ export default async function CaseStudyPage({
         <section style={{ marginBottom: "var(--space-12)" }}>
           {cs.media.map((m) => (
             <div
-              key={`${m.type}-${m.caption ?? m.content?.slice(0, 32) ?? "media"}`}
+              key={`${m.type}-${m.caption ?? ("content" in m ? m.content?.slice(0, 32) : null) ?? "media"}`}
               style={{
                 padding: "var(--space-6)",
                 background: "var(--color-bg-surface)",
@@ -307,6 +308,19 @@ export default async function CaseStudyPage({
                 >
                   {m.content}
                 </pre>
+              )}
+              {m.type === "screenshot" && (
+                <Image
+                  src={m.src}
+                  alt={m.alt}
+                  width={800}
+                  height={450}
+                  style={{
+                    width: "100%",
+                    height: "auto",
+                    borderRadius: "var(--radius-sm)",
+                  }}
+                />
               )}
               {m.caption && (
                 <p
