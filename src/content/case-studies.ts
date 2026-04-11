@@ -1,4 +1,4 @@
-import { validateCaseStudies, type CaseStudy } from "@/lib/content-schema";
+import { validateCaseStudiesSafe, type CaseStudy } from "@/lib/content-schema";
 
 export const caseStudies: CaseStudy[] = [
   {
@@ -372,6 +372,13 @@ export function getAdjacentCaseStudies(slug: string): {
   };
 }
 
-if (process.env.NODE_ENV !== "production") {
-  validateCaseStudies(caseStudies);
+const validationResult = validateCaseStudiesSafe(caseStudies);
+if (!validationResult.valid) {
+  console.error(
+    "[case-studies] schema validation failed:",
+    validationResult.errors
+  );
+  if (process.env.NODE_ENV !== "production") {
+    throw new Error("Case study validation failed");
+  }
 }

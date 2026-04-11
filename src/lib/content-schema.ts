@@ -113,3 +113,17 @@ export function validateCaseStudy(data: unknown): CaseStudy {
 export function validateCaseStudies(data: unknown[]): CaseStudy[] {
   return data.map((d) => caseStudySchema.parse(d));
 }
+
+export function validateCaseStudiesSafe(data: unknown[]): {
+  valid: boolean;
+  errors: string[];
+} {
+  const errors: string[] = [];
+  for (let i = 0; i < data.length; i++) {
+    const result = caseStudySchema.safeParse(data[i]);
+    if (!result.success) {
+      errors.push(`[${i}]: ${result.error.message}`);
+    }
+  }
+  return { valid: errors.length === 0, errors };
+}
