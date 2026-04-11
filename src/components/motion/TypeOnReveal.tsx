@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState, createElement } from "react";
+import { useCallback, useEffect, useRef, useState, createElement } from "react";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { motionConfig } from "@/content/system";
 
@@ -25,6 +25,14 @@ export function TypeOnReveal({
   const [cursorVisible, setCursorVisible] = useState(true);
   const prefersReducedMotion = usePrefersReducedMotion();
 
+  // Fix #82: keep a ref so the timer callback always reads the latest delay
+  // value without needing to re-create the effect (avoids stale closure on
+  // hot updates or future prop-driven delay config).
+  const delayRef = useRef(motionConfig.typewriterCharDelayMs);
+  useEffect(() => {
+    delayRef.current = motionConfig.typewriterCharDelayMs;
+  });
+
   const callbackRef = useCallback((node: HTMLElement | null) => {
     setEl(node);
   }, []);
@@ -46,13 +54,22 @@ export function TypeOnReveal({
     return () => observer.disconnect();
   }, [el, prefersReducedMotion]);
 
+  // Fix #96: reset charCount and cursor whenever `text` itself changes (not
+  // just its length) so that equal-length text swaps always restart the
+  // animation from the beginning.
+  useEffect(() => {
+    setCharCount(0);
+    setCursorVisible(true);
+  }, [text]);
+
   useEffect(() => {
     if (!started || prefersReducedMotion) return;
 
     if (charCount < text.length) {
+      // Fix #82: read delay from ref so we always use the latest value.
       const timer = setTimeout(() => {
         setCharCount((c) => c + 1);
-      }, motionConfig.typewriterCharDelayMs);
+      }, delayRef.current);
       return () => clearTimeout(timer);
     }
 
