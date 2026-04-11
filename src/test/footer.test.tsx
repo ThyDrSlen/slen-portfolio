@@ -1,18 +1,20 @@
 import { describe, it, expect } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import { Footer } from "@/components/shell/Footer";
 import { siteConfig } from "@/content/site";
 
-// Re-implement getSocialAriaLabel logic here to test it in isolation.
-// We drive assertions against the rendered aria-label attributes on the links.
-
 describe("Footer", () => {
-  it("renders the footer social links container", () => {
+  it("renders without crashing", () => {
+    render(<Footer />);
+    expect(screen.getByRole("contentinfo")).toBeInTheDocument();
+  });
+
+  it("renders the social links container", () => {
     render(<Footer />);
     expect(screen.getByTestId("footer-social-links")).toBeInTheDocument();
   });
 
-  it("renders a link for every socialLink in siteConfig", () => {
+  it("renders all social links from siteConfig", () => {
     render(<Footer />);
     for (const link of siteConfig.socialLinks) {
       expect(
@@ -21,30 +23,72 @@ describe("Footer", () => {
     }
   });
 
-  it("renders social links with correct href values", () => {
+  it("renders GitHub link with correct href", () => {
     render(<Footer />);
-    for (const link of siteConfig.socialLinks) {
-      const el = screen.getByTestId(`social-link-${link.platform}`);
-      expect(el).toHaveAttribute("href", link.url);
+    const githubLink = screen.getByTestId("social-link-github");
+    expect(githubLink).toHaveAttribute(
+      "href",
+      "https://github.com/ThyDrSlen"
+    );
+  });
+
+  it("renders LinkedIn link with correct href", () => {
+    render(<Footer />);
+    const linkedinLink = screen.getByTestId("social-link-linkedin");
+    expect(linkedinLink).toHaveAttribute(
+      "href",
+      "https://www.linkedin.com/in/fabrizio-corrales/"
+    );
+  });
+
+  it("renders email link with correct href", () => {
+    render(<Footer />);
+    const emailLink = screen.getByTestId("social-link-email");
+    expect(emailLink).toHaveAttribute("href", "mailto:drslen9@gmail.com");
+  });
+
+  it("all non-email links open in a new tab", () => {
+    render(<Footer />);
+    const container = screen.getByTestId("footer-social-links");
+    const links = within(container).getAllByRole("link");
+    for (const link of links) {
+      const href = link.getAttribute("href") ?? "";
+      if (!href.startsWith("mailto:")) {
+        expect(link).toHaveAttribute("target", "_blank");
+      }
     }
   });
 
-  it("displays the current year in the copyright line", () => {
+  it("all non-email links have rel=noopener noreferrer", () => {
     render(<Footer />);
-    const currentYear = new Date().getFullYear().toString();
-    expect(screen.getByText(new RegExp(currentYear))).toBeInTheDocument();
+    const container = screen.getByTestId("footer-social-links");
+    const links = within(container).getAllByRole("link");
+    for (const link of links) {
+      const href = link.getAttribute("href") ?? "";
+      if (!href.startsWith("mailto:")) {
+        expect(link).toHaveAttribute("rel", "noopener noreferrer");
+      }
+    }
   });
 
-  it("displays the site owner name in the copyright line", () => {
+  it("email link does not open in a new tab", () => {
     render(<Footer />);
-    expect(
-      screen.getByText(new RegExp(siteConfig.name))
-    ).toBeInTheDocument();
+    const emailLink = screen.getByTestId("social-link-email");
+    expect(emailLink).not.toHaveAttribute("target");
+    expect(emailLink).not.toHaveAttribute("rel");
   });
-});
 
-describe("getSocialAriaLabel (via rendered aria-label)", () => {
-  it("returns the correct aria-label for the github link", () => {
+  it("all links have an href attribute", () => {
+    render(<Footer />);
+    const container = screen.getByTestId("footer-social-links");
+    const links = within(container).getAllByRole("link");
+    for (const link of links) {
+      expect(link).toHaveAttribute("href");
+      expect(link.getAttribute("href")).not.toBe("");
+    }
+  });
+
+  it("GitHub link has a descriptive aria-label", () => {
     render(<Footer />);
     const githubLink = screen.getByTestId("social-link-github");
     expect(githubLink).toHaveAttribute(
@@ -53,7 +97,7 @@ describe("getSocialAriaLabel (via rendered aria-label)", () => {
     );
   });
 
-  it("returns the correct aria-label for the linkedin link", () => {
+  it("LinkedIn link has a descriptive aria-label", () => {
     render(<Footer />);
     const linkedinLink = screen.getByTestId("social-link-linkedin");
     expect(linkedinLink).toHaveAttribute(
@@ -62,7 +106,7 @@ describe("getSocialAriaLabel (via rendered aria-label)", () => {
     );
   });
 
-  it("returns the correct aria-label for the email link", () => {
+  it("email link has a descriptive aria-label", () => {
     render(<Footer />);
     const emailLink = screen.getByTestId("social-link-email");
     expect(emailLink).toHaveAttribute(
@@ -70,46 +114,22 @@ describe("getSocialAriaLabel (via rendered aria-label)", () => {
       "Email Fabrizio Corrales"
     );
   });
-});
 
-describe("Footer link attributes", () => {
-  it("external social links have target='_blank'", () => {
+  it("renders copyright text with the site owner's name", () => {
     render(<Footer />);
-    const externalPlatforms = siteConfig.socialLinks.filter(
-      (l) => l.platform !== "email"
+    const copy = screen.getByText(
+      (content) =>
+        content.includes(siteConfig.name) && content.includes("©")
     );
-    for (const link of externalPlatforms) {
-      const el = screen.getByTestId(`social-link-${link.platform}`);
-      expect(el).toHaveAttribute("target", "_blank");
-    }
+    expect(copy).toBeInTheDocument();
   });
 
-  it("external social links have rel='noopener noreferrer'", () => {
+  it("copyright text includes the current year", () => {
     render(<Footer />);
-    const externalPlatforms = siteConfig.socialLinks.filter(
-      (l) => l.platform !== "email"
+    const currentYear = new Date().getFullYear().toString();
+    const copy = screen.getByText(
+      (content) => content.includes(currentYear)
     );
-    for (const link of externalPlatforms) {
-      const el = screen.getByTestId(`social-link-${link.platform}`);
-      expect(el).toHaveAttribute("rel", "noopener noreferrer");
-    }
-  });
-
-  it("email link does NOT have target='_blank'", () => {
-    render(<Footer />);
-    const emailLink = screen.getByTestId("social-link-email");
-    expect(emailLink).not.toHaveAttribute("target", "_blank");
-  });
-
-  it("email link does NOT have a rel attribute", () => {
-    render(<Footer />);
-    const emailLink = screen.getByTestId("social-link-email");
-    expect(emailLink).not.toHaveAttribute("rel");
-  });
-
-  it("email link href uses mailto: scheme", () => {
-    render(<Footer />);
-    const emailLink = screen.getByTestId("social-link-email");
-    expect(emailLink.getAttribute("href")).toMatch(/^mailto:/);
+    expect(copy).toBeInTheDocument();
   });
 });
