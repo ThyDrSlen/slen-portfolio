@@ -60,7 +60,8 @@ export function TypeOnReveal({
       setCursorVisible(false);
     }, 1000);
     return () => clearTimeout(hideTimer);
-  }, [started, charCount, text.length, prefersReducedMotion]);
+  // Use full text string (not .length) so the effect resets when content changes
+  }, [started, charCount, text, prefersReducedMotion]);
 
   if (prefersReducedMotion) {
     return createElement(tag, { className, style }, text);
