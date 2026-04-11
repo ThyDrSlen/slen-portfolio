@@ -1,7 +1,10 @@
 import { ImageResponse } from 'next/og'
+import { siteConfig } from '@/content/site'
 
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
+
+const domain = new URL(siteConfig.url).hostname
 
 export default function Image() {
   return new ImageResponse(
@@ -78,7 +81,7 @@ export default function Image() {
                 letterSpacing: '-1px',
               }}
             >
-              Fabrizio Corrales
+              {siteConfig.name}
             </span>
           </div>
 
@@ -96,7 +99,7 @@ export default function Image() {
                 lineHeight: 1,
               }}
             >
-              Software Engineer
+              {siteConfig.tagline}
             </span>
           </div>
 
@@ -115,7 +118,7 @@ export default function Image() {
                 letterSpacing: '0.5px',
               }}
             >
-              Backend-focused · Distributed Systems · Developer Tooling
+              {siteConfig.subtitle}
             </span>
           </div>
         </div>
@@ -137,7 +140,7 @@ export default function Image() {
               letterSpacing: '1px',
             }}
           >
-            slen.win
+            {domain}
           </span>
         </div>
       </div>
