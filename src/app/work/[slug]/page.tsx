@@ -46,15 +46,21 @@ export default async function CaseStudyPage({
 
   const { previous, next } = getAdjacentCaseStudies(cs.slug);
 
+  // Parse a year from the period string (e.g. "Sept 2025 – Present" → "2025")
+  const yearMatch = cs.period.match(/\d{4}/);
+  const datePublished = yearMatch ? `${yearMatch[0]}-01-01` : undefined;
+
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "CreativeWork",
-    name: cs.title,
+    "@type": "Article",
+    headline: cs.title,
     description: cs.summary,
     author: {
       "@type": "Person",
       name: siteConfig.name,
+      url: siteConfig.url,
     },
+    ...(datePublished ? { datePublished } : {}),
     url: `${siteConfig.url}/work/${cs.slug}`,
   };
 
