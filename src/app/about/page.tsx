@@ -12,7 +12,19 @@ import {
 export const metadata: Metadata = {
   title: "About",
   description: aboutContent.intro.slice(0, 155),
-  alternates: { canonical: "/about" },
+  openGraph: {
+    title: `About | ${siteConfig.name}`,
+    description: aboutContent.intro.slice(0, 155),
+    url: `${siteConfig.url}/about`,
+    siteName: siteConfig.name,
+    type: "profile",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `About | ${siteConfig.name}`,
+    description: aboutContent.intro.slice(0, 155),
+  },
+  alternates: { canonical: `${siteConfig.url}/about` },
 };
 
 export default function About() {
