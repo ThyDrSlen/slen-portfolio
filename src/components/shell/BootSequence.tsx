@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useSessionFlag } from "@/hooks/useSessionFlag";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { bootLines, motionConfig } from "@/content/system";
@@ -15,11 +15,11 @@ export function BootSequence() {
   const [unmounted, setUnmounted] = useState(false);
   const overlayRef = useRef<HTMLDivElement>(null);
 
-  const dismiss = () => {
+  const dismiss = useCallback(() => {
     setFadingOut(true);
     setUnmounted(true);
     setFlag();
-  };
+  }, [setFlag]);
 
   useEffect(() => {
     if (prefersReducedMotion) {
@@ -28,14 +28,14 @@ export function BootSequence() {
   }, [prefersReducedMotion, setFlag]);
 
   useEffect(() => {
-    if (seen || prefersReducedMotion || unmounted) {
-      return;
+    const active = !seen && !prefersReducedMotion && !unmounted;
+
+    if (active) {
+      overlayRef.current?.focus();
     }
 
-    overlayRef.current?.focus();
-
     const handleKeyDown = () => {
-      dismiss();
+      if (active) dismiss();
     };
 
     window.addEventListener("keydown", handleKeyDown);
@@ -43,7 +43,7 @@ export function BootSequence() {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [prefersReducedMotion, seen, unmounted, setFlag]);
+  }, [prefersReducedMotion, seen, unmounted, dismiss]);
 
   useEffect(() => {
     if (seen || prefersReducedMotion) return;
