@@ -1,6 +1,6 @@
 import { validateCaseStudies, type CaseStudy } from "@/lib/content-schema";
 
-export const caseStudies: CaseStudy[] = [
+export const caseStudies = [
   {
     slug: "form-factor",
     title: "Form Factor",
@@ -342,7 +342,7 @@ export const caseStudies: CaseStudy[] = [
     },
     featured: true,
   },
-];
+] satisfies CaseStudy[];
 
 export function getCaseStudyBySlug(slug: string): CaseStudy | undefined {
   return caseStudies.find((cs) => cs.slug === slug);
