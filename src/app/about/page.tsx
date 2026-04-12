@@ -6,12 +6,25 @@ import {
   experienceEntries,
   lookingFor,
   skillCategories,
+  heroContent,
 } from "@/content/site";
 
 export const metadata: Metadata = {
   title: "About",
   description: aboutContent.intro.slice(0, 155),
-  alternates: { canonical: "/about" },
+  openGraph: {
+    title: `About | ${siteConfig.name}`,
+    description: aboutContent.intro.slice(0, 155),
+    url: `${siteConfig.url}/about`,
+    siteName: siteConfig.name,
+    type: "profile",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `About | ${siteConfig.name}`,
+    description: aboutContent.intro.slice(0, 155),
+  },
+  alternates: { canonical: `${siteConfig.url}/about` },
 };
 
 export default function About() {
@@ -20,7 +33,13 @@ export default function About() {
     "@type": "Person",
     name: siteConfig.name,
     url: siteConfig.url,
-    jobTitle: "Software Engineer",
+    description: heroContent.subhead,
+    jobTitle: experienceEntries[0].role,
+    worksFor: {
+      "@type": "Organization",
+      name: experienceEntries[0].company,
+    },
+    knowsAbout: skillCategories.flatMap((cat) => cat.skills),
     sameAs: siteConfig.socialLinks
       .filter((l) => l.platform !== "email")
       .map((l) => l.url),
