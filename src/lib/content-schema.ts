@@ -9,6 +9,8 @@ export const socialLinkSchema = z.object({
 export const siteConfigSchema = z.object({
   name: z.string().min(1),
   title: z.string().min(1),
+  tagline: z.string().min(1),
+  subtitle: z.string().min(1),
   description: z.string().min(10),
   url: z.url(),
   email: z.email(),

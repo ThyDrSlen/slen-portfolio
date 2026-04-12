@@ -3,6 +3,8 @@ import type { SiteConfig, ExperienceEntry } from "@/lib/content-schema";
 export const siteConfig: SiteConfig = {
   name: "Fabrizio Corrales",
   title: "Slen Portfolio",
+  tagline: "Software Engineer",
+  subtitle: "Backend-focused \u00b7 Distributed Systems \u00b7 Developer Tooling",
   description:
     "Portfolio of Fabrizio Corrales. Backend-focused software engineer building scalable distributed systems, developer tooling, and platform capabilities.",
   url: "https://slen.win",
