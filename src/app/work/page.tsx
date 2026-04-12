@@ -26,7 +26,7 @@ export const metadata: Metadata = {
 
 export default function WorkIndex() {
   return (
-    <div className="container">
+    <section className="container" aria-label="Work">
       <h1 data-testid="work-page-title" style={{ marginBottom: "var(--space-4)" }}>
         Work
       </h1>
@@ -40,7 +40,8 @@ export default function WorkIndex() {
         {WORK_DESCRIPTION}
       </p>
 
-      <div
+      <section
+        aria-label="Project list"
         data-testid="work-grid"
         style={{
           display: "grid",
@@ -123,7 +124,7 @@ export default function WorkIndex() {
             </div>
           </Link>
         ))}
-      </div>
-    </div>
+      </section>
+    </section>
   );
 }

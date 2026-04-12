@@ -85,15 +85,26 @@ export const caseStudySchema = z.object({
   featured: z.boolean().default(false),
   media: z
     .array(
-      z.object({
-        type: z.enum(["diagram", "screenshot", "text-block"]),
-        src: z.string().optional(),
-        alt: z.string().optional(),
-        content: z.string().optional(),
-        caption: z.string().optional(),
-        diagramNodes: z.array(diagramNodeSchema).optional(),
-        diagramEdges: z.array(diagramEdgeSchema).optional(),
-      })
+      z.discriminatedUnion("type", [
+        z.object({
+          type: z.literal("diagram"),
+          content: z.string(),
+          caption: z.string().optional(),
+          diagramNodes: z.array(diagramNodeSchema).optional(),
+          diagramEdges: z.array(diagramEdgeSchema).optional(),
+        }),
+        z.object({
+          type: z.literal("screenshot"),
+          src: z.string(),
+          alt: z.string().min(1),
+          caption: z.string().optional(),
+        }),
+        z.object({
+          type: z.literal("text-block"),
+          content: z.string().min(1),
+          caption: z.string().optional(),
+        }),
+      ])
     )
     .optional(),
 });

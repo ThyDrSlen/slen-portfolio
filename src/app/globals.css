@@ -320,6 +320,61 @@ a {
   margin: 0 auto;
 }
 
+/* ── Contact Links ── */
+.contact-link {
+  display: inline-flex;
+  padding: var(--space-3) var(--space-6);
+  border: 1px solid var(--color-border);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  color: var(--color-text-secondary);
+  transition: color var(--duration-fast) var(--easing),
+    border-color var(--duration-fast) var(--easing),
+    box-shadow var(--duration-fast) var(--easing);
+}
+
+.contact-link:hover {
+  color: var(--color-accent);
+  border-color: var(--color-accent-dim);
+  box-shadow: 0 0 12px var(--color-accent-glow);
+}
+
+.contact-link:focus-visible {
+  color: var(--color-accent);
+  border-color: var(--color-accent-dim);
+  box-shadow: 0 0 12px var(--color-accent-glow);
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.contact-link-primary {
+  display: inline-flex;
+  padding: var(--space-3) var(--space-6);
+  background: var(--color-text);
+  color: var(--color-bg);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  transition: background var(--duration-fast) var(--easing),
+    box-shadow var(--duration-fast) var(--easing);
+}
+
+.contact-link-primary:hover {
+  background: var(--color-accent);
+  box-shadow: 0 0 20px var(--color-accent-glow-strong);
+}
+
+.contact-link-primary:focus-visible {
+  background: var(--color-accent);
+  box-shadow: 0 0 20px var(--color-accent-glow-strong);
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
 /* ── Matrix Rain Canvas ── */
 .matrix-rain {
   position: fixed;

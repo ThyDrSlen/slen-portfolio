@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import Image from "next/image";
 import Link from "next/link";
 import {
   getCaseStudyBySlug,
@@ -287,10 +288,14 @@ export default async function CaseStudyPage({
 
       {/* Media (optional) */}
       {cs.media && cs.media.length > 0 && (
-        <section style={{ marginBottom: "var(--space-12)" }}>
-          {cs.media.map((m) => (
+        <section
+          data-testid="case-study-media"
+          style={{ marginBottom: "var(--space-12)" }}
+        >
+          <h2 style={{ marginBottom: "var(--space-4)" }}>Media</h2>
+          {cs.media.map((m, i) => (
             <div
-              key={`${m.type}-${m.caption ?? m.content?.slice(0, 32) ?? "media"}`}
+              key={`${m.type}-${m.caption ?? ("content" in m ? m.content?.slice(0, 32) : null) ?? "media"}`}
               style={{
                 padding: "var(--space-6)",
                 background: "var(--color-bg-surface)",
@@ -316,6 +321,7 @@ export default async function CaseStudyPage({
                   className="mono"
                   role="img"
                   aria-label={m.caption || "Architecture diagram"}
+                  aria-describedby={m.caption ? `diagram-caption-${i}` : undefined}
                   style={{
                     fontSize: "var(--text-xs)",
                     color: "var(--color-text-secondary)",
@@ -325,8 +331,22 @@ export default async function CaseStudyPage({
                   {m.content}
                 </pre>
               )}
+              {m.type === "screenshot" && (
+                <Image
+                  src={m.src}
+                  alt={m.alt}
+                  width={800}
+                  height={450}
+                  style={{
+                    width: "100%",
+                    height: "auto",
+                    borderRadius: "var(--radius-sm)",
+                  }}
+                />
+              )}
               {m.caption && (
                 <p
+                  id={`diagram-caption-${i}`}
                   className="mono"
                   style={{
                     fontSize: "var(--text-xs)",
@@ -392,6 +412,7 @@ export default async function CaseStudyPage({
               href={link.url}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label={`View proof on ${link.label}`}
               style={{
                 display: "inline-flex",
                 padding: "var(--space-2) var(--space-4)",
@@ -405,7 +426,7 @@ export default async function CaseStudyPage({
                   "border-color var(--duration-fast) var(--easing)",
               }}
             >
-              {link.label} &rarr;
+              {link.label} <span aria-hidden="true">&rarr;</span>
             </a>
           ))}
         </div>
