@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Exclude agent worktrees and symlinked external directories:
+    ".claude/worktrees/**",
+    "~Projects/**",
   ]),
 ]);
 
