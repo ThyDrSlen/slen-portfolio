@@ -133,21 +133,28 @@ export function CursorTrail() {
       animationId = requestAnimationFrame(render);
     };
 
+    let moveQueued = false;
+
     const onMouseMove = (e: MouseEvent) => {
       mouseX = e.clientX;
       mouseY = e.clientY;
       mouseActive = true;
-      lastMoveTime = Date.now();
 
-      trail.push({ x: mouseX, y: mouseY, timestamp: lastMoveTime });
-      if (trail.length > MAX_POINTS) {
-        trail.shift();
+      if (!moveQueued) {
+        moveQueued = true;
+        requestAnimationFrame(() => {
+          moveQueued = false;
+          lastMoveTime = Date.now();
+          trail.push({ x: mouseX, y: mouseY, timestamp: lastMoveTime });
+          if (trail.length > MAX_POINTS) {
+            trail.shift();
+          }
+          startRendering();
+        });
       }
-
-      startRendering();
     };
 
-    document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mousemove", onMouseMove, { passive: true });
     window.addEventListener("resize", resize);
 
     return () => {

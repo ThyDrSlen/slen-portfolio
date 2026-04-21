@@ -41,10 +41,14 @@ export default function About() {
         }}
       >
         <Image
-          src="/headshot.jpg"
+          src="/headshot.webp"
           alt="Fabrizio Corrales"
           width={160}
           height={213}
+          quality={80}
+          sizes="160px"
+          placeholder="blur"
+          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEA8ADwAAD/2wBDAFA3PEY8MlBGQUZaVVBfeMiCeG5uePWvuZHI////////////////////////////////////////////////////2wBDAVVaWnhpeOuCguv/////////////////////////////////////////////////////////////////////////wAARCAAOAAgDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAP/xAAaEAACAgMAAAAAAAAAAAAAAAAAEQESITGh/8QAFAEBAAAAAAAAAAAAAAAAAAAAAf/EABURAQEAAAAAAAAAAAAAAAAAAAAR/9oADAMBAAIRAxEAPwCalbyCdpS6Bgr/2Q=="
           style={{
             borderRadius: "var(--radius-lg)",
             border: "2px solid var(--color-border)",

@@ -171,11 +171,15 @@ export default function Home() {
           </div>
           <div style={{ flex: "0 0 auto" }}>
             <Image
-              src="/headshot.jpg"
+              src="/headshot.webp"
               alt="Fabrizio Corrales"
               width={240}
               height={320}
+              quality={80}
+              sizes="240px"
               priority
+              placeholder="blur"
+              blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEA8ADwAAD/2wBDAFA3PEY8MlBGQUZaVVBfeMiCeG5uePWvuZHI////////////////////////////////////////////////////2wBDAVVaWnhpeOuCguv/////////////////////////////////////////////////////////////////////////wAARCAAOAAgDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAP/xAAaEAACAgMAAAAAAAAAAAAAAAAAEQESITGh/8QAFAEBAAAAAAAAAAAAAAAAAAAAAf/EABURAQEAAAAAAAAAAAAAAAAAAAAR/9oADAMBAAIRAxEAPwCalbyCdpS6Bgr/2Q=="
               style={{
                 borderRadius: "var(--radius-lg)",
                 border: "2px solid var(--color-border)",
