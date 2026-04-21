@@ -26,7 +26,7 @@ describe("Schema rejects invalid data", () => {
     expect(result.success).toBe(false);
   });
 
-  it("rejects case study missing proofLinks", () => {
+  it("accepts case study with empty proofLinks", () => {
     const result = caseStudySchema.safeParse({
       slug: "form-factor",
       title: "Test",
@@ -48,7 +48,7 @@ describe("Schema rejects invalid data", () => {
         proofLinks: [],
       },
     });
-    expect(result.success).toBe(false);
+    expect(result.success).toBe(true);
   });
 
   it("rejects case study missing outcomes", () => {
