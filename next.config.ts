@@ -1,15 +1,5 @@
 import type { NextConfig } from "next";
 
-const contentSecurityPolicy = [
-  "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com https://vitals.vercel-analytics.com",
-  "connect-src 'self' https://va.vercel-scripts.com https://vitals.vercel-analytics.com",
-  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-  "font-src 'self' https://fonts.gstatic.com",
-  "media-src 'self' data: blob:",
-  "img-src 'self' data: blob:",
-].join("; ");
-
 const nextConfig: NextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
@@ -25,10 +15,7 @@ const nextConfig: NextConfig = {
       {
         source: "/:path*",
         headers: [
-          {
-            key: "Content-Security-Policy",
-            value: contentSecurityPolicy,
-          },
+          // CSP is set per-request in middleware.ts (nonce-based)
           {
             key: "X-Frame-Options",
             value: "DENY",
@@ -43,7 +30,8 @@ const nextConfig: NextConfig = {
           },
           {
             key: "Permissions-Policy",
-            value: "camera=(), microphone=(), geolocation=()",
+            value:
+              "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=(), accelerometer=(), gyroscope=(), magnetometer=(), display-capture=(), fullscreen=(self), picture-in-picture=()",
           },
         ],
       },
