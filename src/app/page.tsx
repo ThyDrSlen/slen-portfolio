@@ -48,7 +48,7 @@ function GitHubCommitPulseSkeleton() {
 export default async function Home() {
   const nonce = (await headers()).get("x-nonce") ?? undefined;
 
-  const jsonLd = {
+  const personJsonLd = {
     "@context": "https://schema.org",
     "@type": "Person",
     name: siteConfig.name,
@@ -59,12 +59,30 @@ export default async function Home() {
       .map((l) => l.url),
   };
 
+  const webSiteJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: siteConfig.title,
+    url: siteConfig.url,
+    description: siteConfig.description,
+    author: {
+      "@type": "Person",
+      name: siteConfig.name,
+      url: siteConfig.url,
+    },
+  };
+
   return (
     <>
       <script
         type="application/ld+json"
         nonce={nonce}
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        nonce={nonce}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteJsonLd) }}
       />
 
       <section style={{ paddingTop: "var(--space-16)", marginBottom: "var(--space-8)" }}>

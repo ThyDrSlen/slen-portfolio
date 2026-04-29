@@ -10,6 +10,7 @@ const nextConfig: NextConfig = {
         ? { exclude: ["error", "warn"] }
         : false,
   },
+  trailingSlash: false,
   async headers() {
     return [
       {
