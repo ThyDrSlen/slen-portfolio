@@ -21,18 +21,23 @@ import {
   skillCategories,
 } from "@/content/site";
 
+async function renderAboutPage() {
+  const jsx = await About();
+  return render(jsx);
+}
+
 /* ================================================================== */
 /*  About page                                                        */
 /* ================================================================== */
 describe("About page", () => {
   /* ── Rendering ────────────────────────────────────────────────── */
 
-  it("renders without crashing", () => {
-    render(<About />);
+  it("renders without crashing", async () => {
+    await renderAboutPage();
   });
 
-  it("renders the page heading", () => {
-    render(<About />);
+  it("renders the page heading", async () => {
+    await renderAboutPage();
     const heading = screen.getByTestId("about-page-title");
     expect(heading).toBeInTheDocument();
     expect(heading.tagName).toBe("H1");
@@ -41,17 +46,17 @@ describe("About page", () => {
 
   /* ── Headshot image ──────────────────────────────────────────── */
 
-  it("renders the headshot image with correct alt text", () => {
-    render(<About />);
+  it("renders the headshot image with correct alt text", async () => {
+    await renderAboutPage();
     const img = screen.getByAltText("Fabrizio Corrales");
     expect(img).toBeInTheDocument();
-    expect(img).toHaveAttribute("src", "/headshot.jpg");
+    expect(img).toHaveAttribute("src", "/headshot.webp");
   });
 
   /* ── Current role subtitle ───────────────────────────────────── */
 
-  it("displays the current role and company", () => {
-    render(<About />);
+  it("displays the current role and company", async () => {
+    await renderAboutPage();
     const entry = experienceEntries[0];
     expect(
       screen.getByText(`${entry.role} @ ${entry.company}`)
@@ -60,8 +65,8 @@ describe("About page", () => {
 
   /* ── Intro / bio text ────────────────────────────────────────── */
 
-  it("renders every intro paragraph", () => {
-    render(<About />);
+  it("renders every intro paragraph", async () => {
+    await renderAboutPage();
     for (const para of aboutContent.introSections) {
       expect(screen.getByText(para)).toBeInTheDocument();
     }
@@ -69,8 +74,8 @@ describe("About page", () => {
 
   /* ── "What I'm Looking For" section ──────────────────────────── */
 
-  it("renders the 'What I'm Looking For' section", () => {
-    render(<About />);
+  it("renders the 'What I'm Looking For' section", async () => {
+    await renderAboutPage();
     expect(
       screen.getByRole("heading", { name: /what i.m looking for/i })
     ).toBeInTheDocument();
@@ -79,8 +84,8 @@ describe("About page", () => {
 
   /* ── Current Focus section ───────────────────────────────────── */
 
-  it("renders the Current Focus section", () => {
-    render(<About />);
+  it("renders the Current Focus section", async () => {
+    await renderAboutPage();
     expect(
       screen.getByRole("heading", { name: /current focus/i })
     ).toBeInTheDocument();
@@ -90,15 +95,15 @@ describe("About page", () => {
   /* ── Tech Stack / Skills ─────────────────────────────────────── */
 
   describe("Tech Stack", () => {
-    it("renders the Tech Stack heading", () => {
-      render(<About />);
+    it("renders the Tech Stack heading", async () => {
+      await renderAboutPage();
       expect(
         screen.getByRole("heading", { name: /tech stack/i })
       ).toBeInTheDocument();
     });
 
-    it("renders every skill category label", () => {
-      render(<About />);
+    it("renders every skill category label", async () => {
+      await renderAboutPage();
       for (const cat of skillCategories) {
         expect(
           screen.getByRole("heading", { name: new RegExp(cat.label, "i") })
@@ -106,8 +111,8 @@ describe("About page", () => {
       }
     });
 
-    it("renders every individual skill", () => {
-      render(<About />);
+    it("renders every individual skill", async () => {
+      await renderAboutPage();
       for (const cat of skillCategories) {
         for (const skill of cat.skills) {
           expect(screen.getByText(skill)).toBeInTheDocument();
@@ -119,15 +124,15 @@ describe("About page", () => {
   /* ── Journey / Timeline ──────────────────────────────────────── */
 
   describe("Journey timeline", () => {
-    it("renders the Journey heading", () => {
-      render(<About />);
+    it("renders the Journey heading", async () => {
+      await renderAboutPage();
       expect(
         screen.getByRole("heading", { name: /journey/i })
       ).toBeInTheDocument();
     });
 
-    it("renders an entry for every experience", () => {
-      render(<About />);
+    it("renders an entry for every experience", async () => {
+      await renderAboutPage();
       const timeline = screen.getByTestId("journey-timeline");
       for (const entry of experienceEntries) {
         expect(
@@ -145,15 +150,15 @@ describe("About page", () => {
   /* ── Contact links ───────────────────────────────────────────── */
 
   describe("Get in Touch", () => {
-    it("renders the section heading", () => {
-      render(<About />);
+    it("renders the section heading", async () => {
+      await renderAboutPage();
       expect(
         screen.getByRole("heading", { name: /get in touch/i })
       ).toBeInTheDocument();
     });
 
-    it("renders the email link with correct mailto href", () => {
-      render(<About />);
+    it("renders the email link with correct mailto href", async () => {
+      await renderAboutPage();
       const emailLink = screen.getByTestId("contact-email-link");
       expect(emailLink).toBeInTheDocument();
       expect(emailLink).toHaveAttribute(
@@ -163,18 +168,18 @@ describe("About page", () => {
       expect(emailLink).toHaveTextContent("Email me");
     });
 
-    it("renders the resume download link", () => {
-      render(<About />);
+    it("renders the resume download link", async () => {
+      await renderAboutPage();
       const resumeLink = screen.getByTestId("about-resume-download");
       expect(resumeLink).toBeInTheDocument();
-      expect(resumeLink).toHaveAttribute("href", "/resume.pdf");
+      expect(resumeLink).toHaveAttribute("href", "/resume");
       expect(resumeLink).toHaveAttribute("target", "_blank");
       expect(resumeLink).toHaveAttribute("rel", "noopener noreferrer");
       expect(resumeLink).toHaveTextContent("Download Resume");
     });
 
-    it("renders social links for every non-email platform", () => {
-      render(<About />);
+    it("renders social links for every non-email platform", async () => {
+      await renderAboutPage();
       const nonEmailLinks = siteConfig.socialLinks.filter(
         (l) => l.platform !== "email"
       );
@@ -188,8 +193,8 @@ describe("About page", () => {
       }
     });
 
-    it("does not render a social link for the email platform", () => {
-      render(<About />);
+    it("does not render a social link for the email platform", async () => {
+      await renderAboutPage();
       expect(
         screen.queryByTestId("social-link-email")
       ).not.toBeInTheDocument();
@@ -198,8 +203,8 @@ describe("About page", () => {
 
   /* ── JSON-LD structured data ─────────────────────────────────── */
 
-  it("embeds Person JSON-LD structured data", () => {
-    const { container } = render(<About />);
+  it("embeds Person JSON-LD structured data", async () => {
+    const { container } = await renderAboutPage();
     const script = container.querySelector(
       'script[type="application/ld+json"]'
     );

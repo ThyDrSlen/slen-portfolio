@@ -274,7 +274,7 @@ export default async function About() {
             Email me
           </a>
           <a
-            href="/resume.pdf"
+            href="/resume"
             target="_blank"
             rel="noopener noreferrer"
             data-testid="about-resume-download"

@@ -61,7 +61,7 @@ export const virtualFs: Record<string, string | Record<string, string>> = {
     "portus":
       "Portus — Rust daemon for port collision prevention. Lease-based IPC, MCP server for AI agents, TUI dashboard.",
   },
-  resume: "Download at: /resume.pdf",
+  resume: "Open at: /resume (direct PDF: /resume.pdf)",
 };
 
 export const easterEggs: Record<string, string[]> = {
