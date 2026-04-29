@@ -11,7 +11,7 @@ test.describe("About page", () => {
     // Resume download
     const resumeLink = page.getByTestId("about-resume-download");
     await expect(resumeLink).toBeVisible();
-    await expect(resumeLink).toHaveAttribute("href", "/resume.pdf");
+    await expect(resumeLink).toHaveAttribute("href", "/resume");
 
     // Email CTA
     const emailLink = page.getByTestId("contact-email-link");
@@ -29,6 +29,15 @@ test.describe("About page", () => {
     const response = await request.get("/resume.pdf");
     expect(response.status()).toBe(200);
     expect(response.headers()["content-type"]).toContain("application/pdf");
+    expect(response.headers()["x-frame-options"]).toBeUndefined();
+  });
+
+  test("resume route - /resume keeps metadata and embeds the pdf", async ({
+    page,
+  }) => {
+    await page.goto("/resume");
+    await expect(page).toHaveTitle(/Resume/);
+    await expect(page.locator('iframe[title="Fabrizio Corrales resume"]')).toBeVisible();
   });
 
   test("about page has no form elements", async ({ page }) => {

@@ -37,8 +37,8 @@ describe("Content copy is complete and publishable", () => {
     }
   });
 
-  it("resume file path is referenced in site config", () => {
-    // Resume is at /resume.pdf and linked from content
+  it("resume route is referenced in site config", () => {
+    // Resume opens at /resume and still serves the direct PDF from /resume.pdf
     expect(siteConfig.url).toBeTruthy();
   });
 });

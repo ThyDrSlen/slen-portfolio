@@ -5,7 +5,7 @@ test.describe("Metadata", () => {
     page,
   }) => {
     // Home
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "domcontentloaded" });
     const homeTitle = await page.title();
     expect(homeTitle).toContain("Fabrizio Corrales");
 
@@ -30,6 +30,17 @@ test.describe("Metadata", () => {
     const aboutTitle = await page.title();
     expect(aboutTitle).toContain("About");
 
+    // Resume
+    await page.goto("/resume");
+    const resumeTitle = await page.title();
+    expect(resumeTitle).toContain("Resume");
+
+    const resumeCanonical = page.locator('link[rel="canonical"]');
+    await expect(resumeCanonical).toHaveAttribute(
+      "href",
+      "https://slen.win/resume"
+    );
+
     // Case study
     await page.goto("/work/form-factor");
     const csTitle = await page.title();
@@ -39,7 +50,7 @@ test.describe("Metadata", () => {
     await expect(csJsonLd.first()).toBeAttached();
   });
 
-  test("sitemap and unknown slug - sitemap contains only V1 routes", async ({
+  test("sitemap and unknown slug - sitemap contains public routes", async ({
     request,
   }) => {
     const response = await request.get("/sitemap.xml");
@@ -50,6 +61,7 @@ test.describe("Metadata", () => {
     expect(body).toContain("https://slen.win");
     expect(body).toContain("https://slen.win/work");
     expect(body).toContain("https://slen.win/about");
+    expect(body).toContain("https://slen.win/resume");
     expect(body).toContain("https://slen.win/work/form-factor");
     expect(body).toContain("https://slen.win/work/orwell-scraper");
     expect(body).toContain("https://slen.win/work/palo-alto");

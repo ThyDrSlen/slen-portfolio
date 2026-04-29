@@ -411,7 +411,7 @@ export default async function Home() {
                 ls ./work
               </Link>
               <a
-                href="/resume.pdf"
+                href="/resume"
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{

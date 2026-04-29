@@ -26,6 +26,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.7,
     },
+    {
+      url: `${baseUrl}/resume`,
+      lastModified: CONTENT_LAST_MODIFIED,
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    },
   ];
 
   const caseStudyRoutes = getAllSlugs().map((slug) => ({
