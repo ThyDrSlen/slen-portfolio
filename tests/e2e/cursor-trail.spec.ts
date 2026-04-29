@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 
 test.describe("Cursor trail", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "domcontentloaded" });
     await page.getByTestId("boot-sequence").waitFor({ state: "hidden", timeout: 10000 });
     await page.waitForTimeout(500);
   });
@@ -51,7 +51,7 @@ test.describe("Cursor trail", () => {
 
   test("reduced motion disables cursor trail", async ({ page }) => {
     await page.emulateMedia({ reducedMotion: "reduce" });
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "domcontentloaded" });
 
     const cursorCanvas = page.locator(
       'canvas[aria-hidden="true"][style*="z-index: 10"]'

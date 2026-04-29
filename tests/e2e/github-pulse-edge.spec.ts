@@ -3,7 +3,7 @@ import { test, expect } from "@playwright/test";
 test.describe("GitHub pulse edge cases", () => {
   test("fallback renders when GitHub API is blocked", async ({ page }) => {
     await page.route("**/api.github.com/**", (route) => route.abort());
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "domcontentloaded" });
     await page.getByTestId("boot-sequence").waitFor({ state: "hidden", timeout: 10000 });
 
     const pulse = page.getByTestId("github-commit-pulse");
@@ -14,7 +14,7 @@ test.describe("GitHub pulse edge cases", () => {
   });
 
   test("commit count is a non-negative number", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "domcontentloaded" });
     await page.getByTestId("boot-sequence").waitFor({ state: "hidden", timeout: 10000 });
 
     const pulse = page.getByTestId("github-commit-pulse");
@@ -37,7 +37,7 @@ test.describe("GitHub pulse edge cases", () => {
   });
 
   test("SVG has exactly 7 data points for days", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "domcontentloaded" });
     await page.getByTestId("boot-sequence").waitFor({ state: "hidden", timeout: 10000 });
 
     const pulse = page.getByTestId("github-commit-pulse");
@@ -52,7 +52,7 @@ test.describe("GitHub pulse edge cases", () => {
   });
 
   test("streak value is formatted with d suffix", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "domcontentloaded" });
     await page.getByTestId("boot-sequence").waitFor({ state: "hidden", timeout: 10000 });
 
     const pulse = page.getByTestId("github-commit-pulse");
@@ -67,7 +67,7 @@ test.describe("GitHub pulse edge cases", () => {
   });
 
   test("last push date is a valid date string", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "domcontentloaded" });
     await page.getByTestId("boot-sequence").waitFor({ state: "hidden", timeout: 10000 });
 
     const pulse = page.getByTestId("github-commit-pulse");

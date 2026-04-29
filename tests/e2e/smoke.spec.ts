@@ -3,12 +3,12 @@ import AxeBuilder from "@axe-core/playwright";
 
 test.describe("Smoke tests", () => {
   test("home page loads and has heading", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "domcontentloaded" });
     await expect(page.locator("h1")).toBeVisible();
   });
 
   test("home page passes basic accessibility checks", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "domcontentloaded" });
     const results = await new AxeBuilder({ page }).analyze();
     expect(results.violations).toEqual([]);
   });

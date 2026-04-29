@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 
 test.describe("GitHub commit pulse", () => {
   test("renders telemetry panel with commit data", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "domcontentloaded" });
     await page.getByTestId("boot-sequence").waitFor({ state: "hidden", timeout: 5000 });
 
     const pulse = page.getByTestId("github-commit-pulse");
@@ -18,7 +18,7 @@ test.describe("GitHub commit pulse", () => {
   });
 
   test("renders SVG heartbeat visualization", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "domcontentloaded" });
     await page.getByTestId("boot-sequence").waitFor({ state: "hidden", timeout: 5000 });
 
     const pulse = page.getByTestId("github-commit-pulse");
@@ -33,7 +33,7 @@ test.describe("GitHub commit pulse", () => {
   });
 
   test("github link opens in new tab", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "domcontentloaded" });
     await page.getByTestId("boot-sequence").waitFor({ state: "hidden", timeout: 5000 });
 
     const pulse = page.getByTestId("github-commit-pulse");

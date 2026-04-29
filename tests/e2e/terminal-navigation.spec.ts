@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 
 test.describe("Terminal navigation and advanced input", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "domcontentloaded" });
     await page.getByTestId("boot-sequence").waitFor({ state: "hidden", timeout: 10000 });
     const input = page.getByTestId("terminal-input");
     await input.scrollIntoViewIfNeeded();
@@ -15,7 +15,10 @@ test.describe("Terminal navigation and advanced input", () => {
     await input.fill("cd about");
 
     await Promise.all([
-      page.waitForURL("**/about", { timeout: 5000 }),
+      page.waitForURL("**/about", {
+        timeout: 5000,
+        waitUntil: "domcontentloaded",
+      }),
       page.keyboard.press("Enter"),
     ]);
 
@@ -27,7 +30,10 @@ test.describe("Terminal navigation and advanced input", () => {
     await input.fill("cd work");
 
     await Promise.all([
-      page.waitForURL("**/work", { timeout: 5000 }),
+      page.waitForURL("**/work", {
+        timeout: 5000,
+        waitUntil: "domcontentloaded",
+      }),
       page.keyboard.press("Enter"),
     ]);
 

@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 
 test.describe("Subway status bar timing and layout", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "domcontentloaded" });
     await page.getByTestId("boot-sequence").waitFor({ state: "hidden", timeout: 10000 });
     await page.getByTestId("subway-status-bar").waitFor({ state: "visible", timeout: 5000 });
   });
@@ -78,7 +78,7 @@ test.describe("Subway status bar timing and layout", () => {
 
   test("mobile viewport - bar remains usable at 390px", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "domcontentloaded" });
     await page.getByTestId("boot-sequence").waitFor({ state: "hidden", timeout: 10000 });
 
     const bar = page.getByTestId("subway-status-bar");

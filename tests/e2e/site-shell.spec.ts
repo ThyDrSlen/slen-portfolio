@@ -4,7 +4,9 @@ test.describe("Site shell", () => {
   test("keyboard - skip link is focusable and jumps to main content", async ({
     page,
   }) => {
-    await page.goto("/");
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    await page.getByTestId("boot-sequence").waitFor({ state: "hidden" });
     await page.keyboard.press("Tab");
     const skipLink = page.getByTestId("skip-link");
     await expect(skipLink).toBeFocused();
@@ -14,7 +16,9 @@ test.describe("Site shell", () => {
   });
 
   test("keyboard - nav links are focusable", async ({ page }) => {
-    await page.goto("/");
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    await page.getByTestId("boot-sequence").waitFor({ state: "hidden" });
     // Tab past skip link, then through nav
     await page.keyboard.press("Tab"); // skip link
     await page.keyboard.press("Tab"); // logo
@@ -24,7 +28,7 @@ test.describe("Site shell", () => {
   });
 
   test("shell renders required selectors", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "domcontentloaded" });
     await expect(page.getByTestId("site-shell")).toBeVisible();
     await expect(page.getByTestId("primary-nav")).toBeVisible();
     await expect(page.getByTestId("nav-link-work")).toBeVisible();
@@ -37,7 +41,7 @@ test.describe("Site shell", () => {
     page,
   }) => {
     await page.emulateMedia({ reducedMotion: "reduce" });
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "domcontentloaded" });
     // Shell should render without errors in reduced motion mode
     await expect(page.getByTestId("site-shell")).toBeVisible();
     await expect(page.getByTestId("primary-nav")).toBeVisible();

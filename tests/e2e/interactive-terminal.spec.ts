@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 
 test.describe("Interactive terminal", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "domcontentloaded" });
     await page.getByTestId("boot-sequence").waitFor({ state: "hidden", timeout: 5000 });
   });
 
