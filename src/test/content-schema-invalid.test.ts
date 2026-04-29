@@ -89,6 +89,90 @@ describe("Schema rejects invalid data", () => {
     expect(result.success).toBe(false);
   });
 
+  it("rejects screenshot media missing alt", () => {
+    const result = caseStudySchema.safeParse({
+      slug: "test-case",
+      title: "Test",
+      summary: "A test case study for validation",
+      role: "Dev",
+      period: "2024",
+      techStack: ["TS"],
+      problem: "Some problem text here",
+      approach: "Some approach text here",
+      outcomes: ["outcome"],
+      reflection: "Some reflection text here",
+      proofLinks: [{ label: "Link", url: "https://example.com" }],
+      disclosure: {
+        anonymizationLevel: "none",
+        allowedClaims: ["claim"],
+        forbiddenClaims: [],
+        allowedAssetTypes: [],
+        requiresDisclaimer: false,
+        proofLinks: [],
+      },
+      media: [
+        { type: "screenshot", src: "https://example.com/img.png" },
+      ],
+    });
+    expect(result.success).toBe(false);
+  });
+
+  it("rejects screenshot media with empty alt", () => {
+    const result = caseStudySchema.safeParse({
+      slug: "test-case",
+      title: "Test",
+      summary: "A test case study for validation",
+      role: "Dev",
+      period: "2024",
+      techStack: ["TS"],
+      problem: "Some problem text here",
+      approach: "Some approach text here",
+      outcomes: ["outcome"],
+      reflection: "Some reflection text here",
+      proofLinks: [{ label: "Link", url: "https://example.com" }],
+      disclosure: {
+        anonymizationLevel: "none",
+        allowedClaims: ["claim"],
+        forbiddenClaims: [],
+        allowedAssetTypes: [],
+        requiresDisclaimer: false,
+        proofLinks: [],
+      },
+      media: [
+        { type: "screenshot", src: "https://example.com/img.png", alt: "" },
+      ],
+    });
+    expect(result.success).toBe(false);
+  });
+
+  it("accepts screenshot media with valid alt", () => {
+    const result = caseStudySchema.safeParse({
+      slug: "test-case",
+      title: "Test",
+      summary: "A test case study for validation",
+      role: "Dev",
+      period: "2024",
+      techStack: ["TS"],
+      problem: "Some problem text here",
+      approach: "Some approach text here",
+      outcomes: ["outcome"],
+      reflection: "Some reflection text here",
+      proofLinks: [{ label: "Link", url: "https://example.com" }],
+      disclosure: {
+        anonymizationLevel: "none",
+        allowedClaims: ["claim"],
+        forbiddenClaims: [],
+        allowedAssetTypes: [],
+        requiresDisclaimer: false,
+        proofLinks: [],
+      },
+      media: [
+        { type: "screenshot", src: "https://example.com/img.png", alt: "Dashboard view" },
+      ],
+    });
+    expect(result.success).toBe(true);
+  });
+
   it("rejects invalid slug", () => {
     const result = caseStudySchema.safeParse({
       slug: "UPPERCASE_INVALID",

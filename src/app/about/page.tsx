@@ -7,12 +7,25 @@ import {
   experienceEntries,
   lookingFor,
   skillCategories,
+  heroContent,
 } from "@/content/site";
 
 export const metadata: Metadata = {
   title: "About",
   description: aboutContent.intro.slice(0, 155),
-  alternates: { canonical: "/about" },
+  openGraph: {
+    title: `About | ${siteConfig.name}`,
+    description: aboutContent.intro.slice(0, 155),
+    url: `${siteConfig.url}/about`,
+    siteName: siteConfig.name,
+    type: "profile",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `About | ${siteConfig.name}`,
+    description: aboutContent.intro.slice(0, 155),
+  },
+  alternates: { canonical: `${siteConfig.url}/about` },
 };
 
 export default async function About() {
@@ -23,13 +36,19 @@ export default async function About() {
     "@type": "Person",
     name: siteConfig.name,
     url: siteConfig.url,
-    jobTitle: "Software Engineer",
+    description: heroContent.subhead,
+    jobTitle: experienceEntries[0].role,
+    worksFor: {
+      "@type": "Organization",
+      name: experienceEntries[0].company,
+    },
+    knowsAbout: skillCategories.flatMap((cat) => cat.skills),
     sameAs: siteConfig.socialLinks
       .filter((l) => l.platform !== "email")
       .map((l) => l.url),
   };
   return (
-    <div className="container">
+    <article className="container">
       <script
         type="application/ld+json"
         nonce={nonce}
@@ -74,7 +93,7 @@ export default async function About() {
       </div>
 
       {/* Intro */}
-      <div style={{ maxWidth: "40rem", marginBottom: "var(--space-12)" }}>
+      <section aria-label="Introduction" style={{ maxWidth: "40rem", marginBottom: "var(--space-12)" }}>
         {aboutContent.introSections.map((para) => (
           <p
             key={para.slice(0, 30)}
@@ -88,7 +107,7 @@ export default async function About() {
             {para}
           </p>
         ))}
-      </div>
+      </section>
 
       {/* Looking For */}
       <section style={{ marginBottom: "var(--space-16)" }}>
@@ -259,17 +278,7 @@ export default async function About() {
           <a
             href={`mailto:${siteConfig.email}`}
             data-testid="contact-email-link"
-            style={{
-              display: "inline-flex",
-              padding: "var(--space-3) var(--space-6)",
-              background: "var(--color-text)",
-              color: "var(--color-bg)",
-              fontFamily: "var(--font-mono)",
-              fontSize: "var(--text-sm)",
-              fontWeight: 600,
-              borderRadius: "var(--radius-md)",
-              textDecoration: "none",
-            }}
+            className="contact-link-primary"
           >
             Email me
           </a>
@@ -278,16 +287,7 @@ export default async function About() {
             target="_blank"
             rel="noopener noreferrer"
             data-testid="about-resume-download"
-            style={{
-              display: "inline-flex",
-              padding: "var(--space-3) var(--space-6)",
-              border: "1px solid var(--color-border)",
-              fontFamily: "var(--font-mono)",
-              fontSize: "var(--text-sm)",
-              borderRadius: "var(--radius-md)",
-              textDecoration: "none",
-              color: "var(--color-text-secondary)",
-            }}
+            className="contact-link"
           >
             Download Resume
           </a>
@@ -300,22 +300,13 @@ export default async function About() {
                 target="_blank"
                 rel="noopener noreferrer"
                 data-testid={`social-link-${link.platform}`}
-                style={{
-                  display: "inline-flex",
-                  padding: "var(--space-3) var(--space-6)",
-                  border: "1px solid var(--color-border)",
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "var(--text-sm)",
-                  borderRadius: "var(--radius-md)",
-                  textDecoration: "none",
-                  color: "var(--color-text-secondary)",
-                }}
+                className="contact-link"
               >
                 {link.label}
               </a>
             ))}
         </div>
       </section>
-    </div>
+    </article>
   );
 }
