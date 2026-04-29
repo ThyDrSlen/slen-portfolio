@@ -5,7 +5,7 @@ test.describe("Responsive layout for new features", () => {
     page,
   }) => {
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "domcontentloaded" });
     await page.getByTestId("boot-sequence").waitFor({ state: "hidden", timeout: 10000 });
 
     await expect(page.getByTestId("hero-headline")).toBeVisible({ timeout: 5000 });
@@ -21,7 +21,7 @@ test.describe("Responsive layout for new features", () => {
 
   test("mobile 390px - terminal input is usable", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "domcontentloaded" });
     await page.getByTestId("boot-sequence").waitFor({ state: "hidden", timeout: 10000 });
 
     const input = page.getByTestId("terminal-input");
@@ -36,7 +36,7 @@ test.describe("Responsive layout for new features", () => {
 
   test("mobile 390px - GitHub pulse doesn't overflow", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "domcontentloaded" });
     await page.getByTestId("boot-sequence").waitFor({ state: "hidden", timeout: 10000 });
 
     const pulse = page.getByTestId("github-commit-pulse");
@@ -53,7 +53,7 @@ test.describe("Responsive layout for new features", () => {
     page,
   }) => {
     await page.setViewportSize({ width: 768, height: 1024 });
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "domcontentloaded" });
     await page.getByTestId("boot-sequence").waitFor({ state: "hidden", timeout: 5000 });
 
     const hasHorizontalScroll = await page.evaluate(
@@ -64,7 +64,7 @@ test.describe("Responsive layout for new features", () => {
 
   test("boot sequence fills viewport on all sizes", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "domcontentloaded" });
 
     const boot = page.getByTestId("boot-sequence");
     if (await boot.isVisible()) {
@@ -85,7 +85,7 @@ test.describe("Responsive layout for new features", () => {
       }
     });
 
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "domcontentloaded" });
     await page.getByTestId("boot-sequence").waitFor({ state: "hidden", timeout: 10000 });
 
     await page.mouse.move(400, 300);

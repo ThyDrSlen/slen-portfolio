@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 
 test.describe("Home page", () => {
   test("home happy path - scannable and navigable", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "domcontentloaded" });
     await expect(page.getByTestId("hero-headline")).toBeVisible();
     await expect(page.getByTestId("hero-subhead")).toBeVisible();
     await expect(page.getByTestId("proof-rail")).toBeVisible();
@@ -13,7 +13,7 @@ test.describe("Home page", () => {
   });
 
   test("home page has exactly one h1", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "domcontentloaded" });
     const headings = page.locator("h1");
     await expect(headings).toHaveCount(1);
   });

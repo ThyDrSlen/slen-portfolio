@@ -1,17 +1,20 @@
 import { test, expect } from "@playwright/test";
 
 test.describe("Matrix card hover effects", () => {
-  test("case study cards have matrix-card class", async ({ page }) => {
-    await page.goto("/work");
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/work", { waitUntil: "domcontentloaded" });
+    await page
+      .getByTestId("boot-sequence")
+      .evaluate((overlay) => overlay.remove());
+  });
 
+  test("case study cards have matrix-card class", async ({ page }) => {
     const cards = page.locator(".matrix-card");
     const count = await cards.count();
     expect(count).toBeGreaterThanOrEqual(3);
   });
 
   test("card hover triggers glow effect", async ({ page }) => {
-    await page.goto("/work");
-
     const card = page.locator(".matrix-card").first();
     await card.waitFor({ state: "visible", timeout: 5000 });
     await card.scrollIntoViewIfNeeded();
@@ -36,8 +39,6 @@ test.describe("Matrix card hover effects", () => {
   test("card has pseudo-elements for rain and glitch effects", async ({
     page,
   }) => {
-    await page.goto("/work");
-
     const card = page.locator(".matrix-card").first();
     await card.hover();
     await page.waitForTimeout(200);

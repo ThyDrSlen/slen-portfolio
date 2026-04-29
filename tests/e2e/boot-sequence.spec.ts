@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 
 test.describe("Boot sequence", () => {
   test("shows overlay on first visit then fades away", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "domcontentloaded" });
 
     const overlay = page.getByTestId("boot-sequence");
     await expect(overlay).toBeVisible();
@@ -16,10 +16,10 @@ test.describe("Boot sequence", () => {
   test("does not replay on second visit within same session", async ({
     page,
   }) => {
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "domcontentloaded" });
     await page.getByTestId("boot-sequence").waitFor({ state: "hidden", timeout: 5000 });
 
-    await page.reload();
+    await page.reload({ waitUntil: "domcontentloaded" });
     await expect(page.getByTestId("boot-sequence")).toBeHidden();
     await expect(page.getByTestId("hero-headline")).toBeVisible();
   });
@@ -28,7 +28,7 @@ test.describe("Boot sequence", () => {
     page,
   }) => {
     await page.emulateMedia({ reducedMotion: "reduce" });
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "domcontentloaded" });
 
     await expect(page.getByTestId("boot-sequence")).toBeHidden();
     await expect(page.getByTestId("hero-headline")).toBeVisible();
