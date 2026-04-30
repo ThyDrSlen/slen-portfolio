@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { headers } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -44,7 +45,8 @@ function GitHubCommitPulseSkeleton() {
   );
 }
 
-export default function Home() {
+export default async function Home() {
+  const nonce = (await headers()).get("x-nonce") ?? undefined;
 
   const personJsonLd = {
     "@context": "https://schema.org",
@@ -74,10 +76,12 @@ export default function Home() {
     <>
       <script
         type="application/ld+json"
+        nonce={nonce}
         dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
       />
       <script
         type="application/ld+json"
+        nonce={nonce}
         dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteJsonLd) }}
       />
 
@@ -188,11 +192,15 @@ export default function Home() {
           </div>
           <div style={{ flex: "0 0 auto" }}>
             <Image
-              src="/headshot.jpg"
+              src="/headshot.webp"
               alt="Fabrizio Corrales"
               width={240}
               height={320}
+              quality={80}
+              sizes="240px"
               priority
+              placeholder="blur"
+              blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEA8ADwAAD/2wBDAFA3PEY8MlBGQUZaVVBfeMiCeG5uePWvuZHI////////////////////////////////////////////////////2wBDAVVaWnhpeOuCguv/////////////////////////////////////////////////////////////////////////wAARCAAOAAgDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAP/xAAaEAACAgMAAAAAAAAAAAAAAAAAEQESITGh/8QAFAEBAAAAAAAAAAAAAAAAAAAAAf/EABURAQEAAAAAAAAAAAAAAAAAAAAR/9oADAMBAAIRAxEAPwCalbyCdpS6Bgr/2Q=="
               style={{
                 borderRadius: "var(--radius-lg)",
                 border: "2px solid var(--color-border)",
@@ -421,7 +429,7 @@ export default function Home() {
                 ls ./work
               </Link>
               <a
-                href="/resume.pdf"
+                href="/resume"
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{

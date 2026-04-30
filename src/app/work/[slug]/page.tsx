@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -38,6 +39,7 @@ export default async function CaseStudyPage({
 }: {
   params: Promise<{ slug: string }>;
 }) {
+  const nonce = (await headers()).get("x-nonce") ?? undefined;
   const { slug } = await params;
   const cs = getCaseStudyBySlug(slug);
 
@@ -54,6 +56,7 @@ export default async function CaseStudyPage({
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
+    name: cs.title,
     headline: cs.title,
     description: cs.summary,
     author: {
@@ -77,8 +80,8 @@ export default async function CaseStudyPage({
 
   return (
     <article className="container" data-testid="case-study-page">
-      <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
-      <script type="application/ld+json">{JSON.stringify(breadcrumbJsonLd)}</script>
+      <script type="application/ld+json" nonce={nonce}>{JSON.stringify(jsonLd)}</script>
+      <script type="application/ld+json" nonce={nonce}>{JSON.stringify(breadcrumbJsonLd)}</script>
       <nav
         data-testid="case-study-breadcrumbs"
         aria-label="Breadcrumb"
@@ -394,43 +397,45 @@ export default async function CaseStudyPage({
       </section>
 
       {/* Proof Links */}
-      <section
-        data-testid="case-study-proof-links"
-        style={{ marginBottom: "var(--space-12)" }}
-      >
-        <h2 style={{ marginBottom: "var(--space-4)" }}>Proof</h2>
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: "var(--space-3)",
-          }}
+      {cs.proofLinks && cs.proofLinks.length > 0 && (
+        <section
+          data-testid="case-study-proof-links"
+          style={{ marginBottom: "var(--space-12)" }}
         >
-          {cs.proofLinks.map((link) => (
-            <a
-              key={link.url}
-              href={link.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`View proof on ${link.label}`}
-              style={{
-                display: "inline-flex",
-                padding: "var(--space-2) var(--space-4)",
-                border: "1px solid var(--color-border)",
-                borderRadius: "var(--radius-md)",
-                fontFamily: "var(--font-mono)",
-                fontSize: "var(--text-sm)",
-                color: "var(--color-text-secondary)",
-                textDecoration: "none",
-                transition:
-                  "border-color var(--duration-fast) var(--easing)",
-              }}
-            >
-              {link.label} <span aria-hidden="true">&rarr;</span>
-            </a>
-          ))}
-        </div>
-      </section>
+          <h2 style={{ marginBottom: "var(--space-4)" }}>Proof</h2>
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "var(--space-3)",
+            }}
+          >
+            {cs.proofLinks.map((link) => (
+              <a
+                key={link.url}
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`View proof on ${link.label}`}
+                style={{
+                  display: "inline-flex",
+                  padding: "var(--space-2) var(--space-4)",
+                  border: "1px solid var(--color-border)",
+                  borderRadius: "var(--radius-md)",
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "var(--text-sm)",
+                  color: "var(--color-text-secondary)",
+                  textDecoration: "none",
+                  transition:
+                    "border-color var(--duration-fast) var(--easing)",
+                }}
+              >
+                {link.label} <span aria-hidden="true">&rarr;</span>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Reflection */}
       <section style={{ marginBottom: "var(--space-12)" }}>

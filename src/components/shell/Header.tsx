@@ -15,7 +15,7 @@ export function Header() {
             About
           </Link>
           <a
-            href="/resume.pdf"
+            href="/resume"
             data-testid="resume-download-link"
             target="_blank"
             rel="noopener noreferrer"

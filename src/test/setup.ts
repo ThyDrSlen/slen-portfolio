@@ -1,6 +1,10 @@
 import "@testing-library/jest-dom/vitest";
 import { cleanup } from "@testing-library/react";
-import { afterEach, beforeEach } from "vitest";
+import { afterEach, beforeEach, vi } from "vitest";
+
+vi.mock("next/headers", () => ({
+  headers: vi.fn().mockResolvedValue(new Headers({ "x-nonce": "test-nonce" })),
+}));
 
 beforeEach(() => {
   Object.defineProperty(window, "matchMedia", {
@@ -36,6 +40,7 @@ beforeEach(() => {
   }
 
   sessionStorage.clear();
+  localStorage.clear();
 });
 
 afterEach(() => {

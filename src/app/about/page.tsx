@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import Image from "next/image";
 import {
   siteConfig,
@@ -27,7 +28,9 @@ export const metadata: Metadata = {
   alternates: { canonical: `${siteConfig.url}/about` },
 };
 
-export default function About() {
+export default async function About() {
+  const nonce = (await headers()).get("x-nonce") ?? undefined;
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Person",
@@ -48,6 +51,7 @@ export default function About() {
     <article className="container">
       <script
         type="application/ld+json"
+        nonce={nonce}
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <div
@@ -60,10 +64,14 @@ export default function About() {
         }}
       >
         <Image
-          src="/headshot.jpg"
+          src="/headshot.webp"
           alt="Fabrizio Corrales"
           width={160}
           height={213}
+          quality={80}
+          sizes="160px"
+          placeholder="blur"
+          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEA8ADwAAD/2wBDAFA3PEY8MlBGQUZaVVBfeMiCeG5uePWvuZHI////////////////////////////////////////////////////2wBDAVVaWnhpeOuCguv/////////////////////////////////////////////////////////////////////////wAARCAAOAAgDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAP/xAAaEAACAgMAAAAAAAAAAAAAAAAAEQESITGh/8QAFAEBAAAAAAAAAAAAAAAAAAAAAf/EABURAQEAAAAAAAAAAAAAAAAAAAAR/9oADAMBAAIRAxEAPwCalbyCdpS6Bgr/2Q=="
           style={{
             borderRadius: "var(--radius-lg)",
             border: "2px solid var(--color-border)",
@@ -275,7 +283,7 @@ export default function About() {
             Email me
           </a>
           <a
-            href="/resume.pdf"
+            href="/resume"
             target="_blank"
             rel="noopener noreferrer"
             data-testid="about-resume-download"

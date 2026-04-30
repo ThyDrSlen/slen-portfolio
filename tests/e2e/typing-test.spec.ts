@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 
 test.describe("Typing test", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "domcontentloaded" });
     await page.getByTestId("boot-sequence").waitFor({ state: "hidden", timeout: 10000 });
     await page.getByTestId("typing-test").scrollIntoViewIfNeeded();
   });

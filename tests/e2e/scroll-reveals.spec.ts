@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 
 test.describe("Scroll reveal animations", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "domcontentloaded" });
     await page.getByTestId("boot-sequence").waitFor({ state: "hidden", timeout: 5000 });
   });
 
@@ -30,7 +30,7 @@ test.describe("Scroll reveal animations", () => {
     page,
   }) => {
     await page.emulateMedia({ reducedMotion: "reduce" });
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "domcontentloaded" });
 
     const reveals = page.getByTestId("reveal");
     const count = await reveals.count();

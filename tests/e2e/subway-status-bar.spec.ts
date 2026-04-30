@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 
 test.describe("Subway status bar", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "domcontentloaded" });
     await page.getByTestId("boot-sequence").waitFor({ state: "hidden", timeout: 5000 });
   });
 
@@ -46,7 +46,7 @@ test.describe("Subway status bar", () => {
     await page.getByTestId("subway-dismiss").click();
     await expect(page.getByTestId("subway-status-bar")).toBeHidden();
 
-    await page.reload();
+    await page.reload({ waitUntil: "domcontentloaded" });
     await page.getByTestId("boot-sequence").waitFor({ state: "hidden", timeout: 5000 });
     await expect(page.getByTestId("subway-status-bar")).toBeHidden();
   });
@@ -59,7 +59,7 @@ test.describe("Subway status bar", () => {
 
   test("visible with reduced motion preferred", async ({ page }) => {
     await page.emulateMedia({ reducedMotion: "reduce" });
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "domcontentloaded" });
     const bar = page.getByTestId("subway-status-bar");
     await expect(bar).toBeVisible();
   });

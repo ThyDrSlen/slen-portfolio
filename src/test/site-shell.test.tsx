@@ -20,7 +20,7 @@ describe("Header", () => {
     render(<Header />);
     const link = screen.getByTestId("resume-download-link");
     expect(link).toBeInTheDocument();
-    expect(link).toHaveAttribute("href", "/resume.pdf");
+    expect(link).toHaveAttribute("href", "/resume");
   });
 });
 
