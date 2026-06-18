@@ -178,6 +178,17 @@ describe("Case study detail page (portus)", () => {
     expect(jsonLd.name).toBe(cs.title);
     expect(jsonLd.description).toBe(cs.summary);
   });
+
+  it("renders structured project diagrams as accessible SVG visuals", async () => {
+    await renderCaseStudy(slug);
+    const media = screen.getByTestId("case-study-media");
+    const diagram = within(media).getByTestId("project-diagram");
+    expect(diagram).toHaveAccessibleName(
+      "Portus — daemon architecture with IPC and MCP integration"
+    );
+    expect(diagram.querySelector("svg")).toBeInTheDocument();
+    expect(within(media).getByText(/Portus daemon/i)).toBeInTheDocument();
+  });
 });
 
 describe("Case study detail page (palo-alto with disclaimer)", () => {

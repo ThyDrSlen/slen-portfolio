@@ -25,15 +25,16 @@ describe("Site config schema", () => {
 });
 
 describe("Case study schema", () => {
-  it("validates all three case studies", () => {
+  it("validates all case studies", () => {
     expect(() => validateCaseStudies(caseStudies)).not.toThrow();
   });
 
-  it("has all three required slugs", () => {
+  it("has all required slugs", () => {
     const slugs = caseStudies.map((cs) => cs.slug);
     expect(slugs).toContain("form-factor");
     expect(slugs).toContain("orwell-scraper");
     expect(slugs).toContain("palo-alto");
+    expect(slugs).toContain("portus");
   });
 
   it("each case study has required fields", () => {
@@ -57,5 +58,22 @@ describe("Case study schema", () => {
     expect(paloAlto!.disclosure.anonymizationLevel).toBe("none");
     expect(paloAlto!.disclosure.requiresDisclaimer).toBe(true);
     expect(paloAlto!.disclaimer).toBeTruthy();
+  });
+
+  it("accepts structured diagram nodes and edges for project diagrams", () => {
+    const portus = caseStudies.find((cs) => cs.slug === "portus");
+    expect(portus).toBeDefined();
+    const diagram = portus!.media?.find((media) => media.type === "diagram");
+    expect(diagram).toBeDefined();
+
+    const result = caseStudySchema.safeParse(portus);
+    expect(result.success).toBe(true);
+    if (result.success) {
+      const parsedDiagram = result.data.media?.find(
+        (media) => media.type === "diagram"
+      );
+      expect(parsedDiagram?.diagramNodes?.length).toBeGreaterThan(0);
+      expect(parsedDiagram?.diagramEdges?.length).toBeGreaterThan(0);
+    }
   });
 });

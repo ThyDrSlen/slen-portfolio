@@ -3,6 +3,7 @@ import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import { ProjectDiagram } from "@/components/work/ProjectDiagram";
 import {
   getCaseStudyBySlug,
   getAllSlugs,
@@ -319,7 +320,14 @@ export default async function CaseStudyPage({
                   {m.content}
                 </p>
               )}
-              {m.type === "diagram" && m.content && (
+              {m.type === "diagram" && m.diagramNodes && m.diagramEdges && (
+                <ProjectDiagram
+                  nodes={m.diagramNodes}
+                  edges={m.diagramEdges}
+                  label={m.caption || "Architecture diagram"}
+                />
+              )}
+              {m.type === "diagram" && (!m.diagramNodes || !m.diagramEdges) && m.content && (
                 <pre
                   className="mono"
                   role="img"
