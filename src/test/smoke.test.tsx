@@ -11,6 +11,7 @@ vi.mock("@/components/home/GitHubCommitPulse", () => ({
 
 vi.mock("@/components/home/InteractiveTerminal", () => ({
   InteractiveTerminal: () => <div data-testid="interactive-terminal" />,
+  REVEAL_TYPING_TEST_EVENT: "slen:reveal-typing-test",
 }));
 
 import Home from "@/app/page";

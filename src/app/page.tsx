@@ -10,9 +10,9 @@ import {
   lookingFor,
   experienceEntries,
 } from "@/content/site";
-import { TypingTest } from "@/components/TypingTest";
 import { InteractiveTerminal } from "@/components/home/InteractiveTerminal";
 import { GitHubCommitPulse } from "@/components/home/GitHubCommitPulse";
+import { TypingTestGate } from "@/components/home/TypingTestGate";
 import { Reveal } from "@/components/motion/Reveal";
 import { CountUpMetric } from "@/components/motion/CountUpMetric";
 import { TypeOnReveal } from "@/components/motion/TypeOnReveal";
@@ -371,11 +371,7 @@ export default async function Home() {
         </section>
       </Reveal>
 
-      <section style={{ marginBottom: "var(--space-12)" }}>
-        <div className="container">
-          <TypingTest />
-        </div>
-      </section>
+      <TypingTestGate />
 
       <Reveal delay={100}>
         <section style={{ padding: "var(--space-16) 0" }}>
