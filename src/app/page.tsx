@@ -361,12 +361,6 @@ export default async function Home() {
         </Link>
       </div>
 
-      <section style={{ marginBottom: "var(--space-12)" }}>
-        <div className="container">
-          <TypingTest />
-        </div>
-      </section>
-
       <Reveal>
         <section style={{ marginBottom: "var(--space-12)" }}>
           <div className="container">
@@ -376,6 +370,12 @@ export default async function Home() {
           </div>
         </section>
       </Reveal>
+
+      <section style={{ marginBottom: "var(--space-12)" }}>
+        <div className="container">
+          <TypingTest />
+        </div>
+      </section>
 
       <Reveal delay={100}>
         <section style={{ padding: "var(--space-16) 0" }}>
