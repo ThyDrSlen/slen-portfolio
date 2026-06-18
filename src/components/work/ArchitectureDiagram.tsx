@@ -152,18 +152,6 @@ export default function ArchitectureDiagram({
           </ReactFlow>
         </div>
       </ReactFlowProvider>
-      {caption && (
-        <p
-          className="mono"
-          style={{
-            fontSize: "var(--text-xs)",
-            color: "var(--color-text-muted)",
-            marginTop: "var(--space-2)",
-          }}
-        >
-          {caption}
-        </p>
-      )}
     </div>
   );
 }

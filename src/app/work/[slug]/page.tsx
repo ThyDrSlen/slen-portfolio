@@ -355,7 +355,7 @@ export default async function CaseStudyPage({
                   }}
                 />
               )}
-              {m.caption && (
+              {m.caption && m.type !== "diagram" && (
                 <p
                   id={`diagram-caption-${i}`}
                   className="mono"
