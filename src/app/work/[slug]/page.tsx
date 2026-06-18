@@ -192,7 +192,7 @@ export default async function CaseStudyPage({
             style={{
               fontSize: "var(--text-xs)",
               fontWeight: 600,
-              color: "var(--color-steel)",
+              color: "var(--color-warning)",
               marginBottom: "var(--space-2)",
               textTransform: "uppercase",
               letterSpacing: "0.05em",
@@ -239,7 +239,7 @@ export default async function CaseStudyPage({
           className="mono"
           style={{
             fontSize: "var(--text-sm)",
-            color: "var(--color-steel)",
+            color: "var(--color-warning)",
             marginBottom: "var(--space-4)",
           }}
         >

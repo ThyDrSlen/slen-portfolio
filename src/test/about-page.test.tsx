@@ -168,14 +168,15 @@ describe("About page", () => {
       expect(emailLink).toHaveTextContent("Email me");
     });
 
-    it("renders the resume download link", async () => {
+    it("renders the resume view link", async () => {
       await renderAboutPage();
       const resumeLink = screen.getByTestId("about-resume-download");
       expect(resumeLink).toBeInTheDocument();
       expect(resumeLink).toHaveAttribute("href", "/resume");
       expect(resumeLink).toHaveAttribute("target", "_blank");
       expect(resumeLink).toHaveAttribute("rel", "noopener noreferrer");
-      expect(resumeLink).toHaveTextContent("Download Resume");
+      expect(resumeLink).toHaveTextContent("View Resume");
+      expect(resumeLink).toHaveAccessibleName("View resume, opens in a new tab");
     });
 
     it("renders social links for every non-email platform", async () => {

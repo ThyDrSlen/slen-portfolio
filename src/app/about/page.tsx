@@ -244,7 +244,7 @@ export default async function About() {
                 className="mono"
                 style={{
                   fontSize: "var(--text-sm)",
-                  color: "var(--color-steel)",
+                  color: "var(--color-warning)",
                   marginBottom: "var(--space-3)",
                 }}
               >
@@ -288,8 +288,9 @@ export default async function About() {
             rel="noopener noreferrer"
             data-testid="about-resume-download"
             className="contact-link"
+            aria-label="View resume, opens in a new tab"
           >
-            Download Resume
+            View Resume
           </a>
           {siteConfig.socialLinks
             .filter((l) => l.platform !== "email")
@@ -301,6 +302,7 @@ export default async function About() {
                 rel="noopener noreferrer"
                 data-testid={`social-link-${link.platform}`}
                 className="contact-link"
+                aria-label={`${link.label} profile, opens in a new tab`}
               >
                 {link.label}
               </a>

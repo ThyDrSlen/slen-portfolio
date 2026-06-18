@@ -100,6 +100,7 @@ export default function WorkIndex() {
                 display: "flex",
                 flexWrap: "wrap",
                 gap: "var(--space-2)",
+                marginBottom: "var(--space-4)",
               }}
             >
               {cs.techStack.map((tech) => (
@@ -122,6 +123,7 @@ export default function WorkIndex() {
                 </span>
               ))}
             </div>
+            <span className="card-action mono">Read case study &rarr;</span>
           </Link>
         ))}
       </section>
