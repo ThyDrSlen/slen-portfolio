@@ -6,6 +6,7 @@ import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { bootLines, motionConfig } from "@/content/system";
 
 const FADE_DURATION_MS = 500;
+const SKIP_BOOT_IN_DEVELOPMENT = process.env.NODE_ENV === "development";
 
 export function BootSequence() {
   const [seen, setFlag] = useSessionFlag("boot-seen");
@@ -74,7 +75,7 @@ export function BootSequence() {
     return () => timers.forEach(clearTimeout);
   }, [seen, prefersReducedMotion, setFlag]);
 
-  if (seen || prefersReducedMotion || unmounted) return null;
+  if (SKIP_BOOT_IN_DEVELOPMENT || seen || prefersReducedMotion || unmounted) return null;
 
   return (
     <section

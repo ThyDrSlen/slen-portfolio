@@ -19,6 +19,8 @@ test.describe("Work index", () => {
     await expect(paCard).toBeVisible();
     await expect(portusCard).toBeVisible();
     await expect(ffCard).toContainText("Read case study");
+    await expect(page.getByTestId("work-diagram-preview")).toBeVisible();
+    await expect(page.getByTestId("work-diagram-preview")).toContainText("Architecture");
 
     // Links resolve correctly
     await expect(ffCard).toHaveAttribute("href", "/work/form-factor");

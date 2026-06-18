@@ -1,4 +1,10 @@
 import { validateCaseStudies, type CaseStudy } from "@/lib/content-schema";
+import {
+  formFactorDiagram,
+  orwellDiagram,
+  paloAltoDiagram,
+  portusDiagram,
+} from "./diagram-data";
 
 export const caseStudies: CaseStudy[] = [
   {
@@ -64,22 +70,9 @@ export const caseStudies: CaseStudy[] = [
           "          │   Workout · Pose · Health│",
           "          └─────────────────────────┘",
         ].join("\n"),
-        caption: "Form Factor — mobile client to backend data flow",
-        diagramNodes: [
-          { id: "mobile", position: { x: 220, y: 20 }, data: { label: "iOS Device\nExpo + React Native" } },
-          { id: "arkit", position: { x: 20, y: 150 }, data: { label: "ARKit\nBody tracking" } },
-          { id: "healthkit", position: { x: 220, y: 150 }, data: { label: "HealthKit\nWatch sync" } },
-          { id: "supabase", position: { x: 420, y: 150 }, data: { label: "Supabase\nAuth + Realtime" } },
-          { id: "postgres", position: { x: 220, y: 280 }, data: { label: "Postgres\nWorkout · pose · health" } },
-        ],
-        diagramEdges: [
-          { id: "mobile-arkit", source: "mobile", target: "arkit", animated: true, label: "pose" },
-          { id: "mobile-healthkit", source: "mobile", target: "healthkit", animated: true, label: "metrics" },
-          { id: "mobile-supabase", source: "mobile", target: "supabase", label: "sessions" },
-          { id: "arkit-postgres", source: "arkit", target: "postgres", label: "joint data" },
-          { id: "healthkit-postgres", source: "healthkit", target: "postgres", label: "health data" },
-          { id: "supabase-postgres", source: "supabase", target: "postgres", label: "storage" },
-        ],
+        caption: "Form Factor — architecture overview",
+        diagramNodes: formFactorDiagram.nodes,
+        diagramEdges: formFactorDiagram.edges,
       },
     ],
     disclosure: {
@@ -155,24 +148,8 @@ export const caseStudies: CaseStudy[] = [
           "                         └─────────────────┘",
         ].join("\n"),
         caption: "Orwell — async scraping pipeline with resilience layer",
-        diagramNodes: [
-          { id: "urls", position: { x: 20, y: 30 }, data: { label: "Target URLs\nSeed queue" } },
-          { id: "browser", position: { x: 220, y: 30 }, data: { label: "Playwright\nBrowser" } },
-          { id: "aiohttp", position: { x: 420, y: 30 }, data: { label: "aiohttp\nAsync pool" } },
-          { id: "detection", position: { x: 120, y: 165 }, data: { label: "Anti-detection\nBrowser churn" } },
-          { id: "pacing", position: { x: 330, y: 165 }, data: { label: "Rate limiting\nPacing" } },
-          { id: "proxy", position: { x: 220, y: 290 }, data: { label: "Proxy rotation\n~90% access" } },
-          { id: "assets", position: { x: 420, y: 290 }, data: { label: "26k assets\nLabeled output" } },
-        ],
-        diagramEdges: [
-          { id: "urls-browser", source: "urls", target: "browser" },
-          { id: "browser-aiohttp", source: "browser", target: "aiohttp", animated: true },
-          { id: "browser-detection", source: "browser", target: "detection", label: "render" },
-          { id: "aiohttp-pacing", source: "aiohttp", target: "pacing", label: "fetch" },
-          { id: "detection-proxy", source: "detection", target: "proxy" },
-          { id: "pacing-proxy", source: "pacing", target: "proxy" },
-          { id: "proxy-assets", source: "proxy", target: "assets", label: "clean data" },
-        ],
+        diagramNodes: orwellDiagram.nodes,
+        diagramEdges: orwellDiagram.edges,
       },
     ],
     disclosure: {
@@ -257,24 +234,8 @@ export const caseStudies: CaseStudy[] = [
           "└──────────────────────────────────────────────────────┘",
         ].join("\n"),
         caption: "CI feedback loop with agent simulator and agentic triage platform",
-        diagramNodes: [
-          { id: "commit", position: { x: 20, y: 35 }, data: { label: "Developer\nCommit" } },
-          { id: "ci", position: { x: 220, y: 35 }, data: { label: "CI Trigger\nPre-merge" } },
-          { id: "sim", position: { x: 420, y: 35 }, data: { label: "Agent Simulator\nGo + gRPC" } },
-          { id: "validation", position: { x: 320, y: 175 }, data: { label: "Validation\nPipeline" } },
-          { id: "golden", position: { x: 520, y: 175 }, data: { label: "Golden tests\nTraffic replay" } },
-          { id: "gate", position: { x: 220, y: 305 }, data: { label: "Release gate\nSignal" } },
-          { id: "mcp", position: { x: 420, y: 305 }, data: { label: "MCP platform\nPD · Grafana · BQ" } },
-        ],
-        diagramEdges: [
-          { id: "commit-ci", source: "commit", target: "ci" },
-          { id: "ci-sim", source: "ci", target: "sim", animated: true },
-          { id: "sim-validation", source: "sim", target: "validation", label: "replay" },
-          { id: "sim-golden", source: "sim", target: "golden", label: "fixtures" },
-          { id: "validation-gate", source: "validation", target: "gate", label: "pass/fail" },
-          { id: "golden-gate", source: "golden", target: "gate" },
-          { id: "mcp-validation", source: "mcp", target: "validation", label: "triage" },
-        ],
+        diagramNodes: paloAltoDiagram.nodes,
+        diagramEdges: paloAltoDiagram.edges,
       },
     ],
     disclosure: {
@@ -374,23 +335,8 @@ export const caseStudies: CaseStudy[] = [
           "        └───────────────────────┘",
         ].join("\n"),
         caption: "Portus — daemon architecture with IPC and MCP integration",
-        diagramNodes: [
-          { id: "dev", position: { x: 20, y: 35 }, data: { label: "Dev server\nportus request" } },
-          { id: "agent", position: { x: 220, y: 35 }, data: { label: "AI agent\nMCP client" } },
-          { id: "tui", position: { x: 420, y: 35 }, data: { label: "TUI\nDashboard" } },
-          { id: "ipc", position: { x: 120, y: 175 }, data: { label: "Unix socket\nJSON IPC" } },
-          { id: "mcp", position: { x: 330, y: 175 }, data: { label: "MCP server\n5 tools" } },
-          { id: "daemon", position: { x: 220, y: 305 }, data: { label: "Portus daemon\nAtomic broker" } },
-          { id: "registry", position: { x: 420, y: 305 }, data: { label: "Registry\nLeases + recovery" } },
-        ],
-        diagramEdges: [
-          { id: "dev-ipc", source: "dev", target: "ipc", label: "request" },
-          { id: "agent-mcp", source: "agent", target: "mcp", animated: true, label: "tools" },
-          { id: "tui-mcp", source: "tui", target: "mcp", label: "observe" },
-          { id: "ipc-daemon", source: "ipc", target: "daemon" },
-          { id: "mcp-daemon", source: "mcp", target: "daemon" },
-          { id: "daemon-registry", source: "daemon", target: "registry", label: "lease" },
-        ],
+        diagramNodes: portusDiagram.nodes,
+        diagramEdges: portusDiagram.edges,
       },
     ],
     disclosure: {

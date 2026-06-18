@@ -3,7 +3,7 @@ import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { ProjectDiagram } from "@/components/work/ProjectDiagram";
+import ArchitectureDiagramWrapper from "@/components/work/ArchitectureDiagramWrapper";
 import {
   getCaseStudyBySlug,
   getAllSlugs,
@@ -321,10 +321,10 @@ export default async function CaseStudyPage({
                 </p>
               )}
               {m.type === "diagram" && m.diagramNodes && m.diagramEdges && (
-                <ProjectDiagram
+                <ArchitectureDiagramWrapper
                   nodes={m.diagramNodes}
                   edges={m.diagramEdges}
-                  label={m.caption || "Architecture diagram"}
+                  caption={m.caption || "Architecture diagram"}
                 />
               )}
               {m.type === "diagram" && (!m.diagramNodes || !m.diagramEdges) && m.content && (

@@ -33,7 +33,7 @@ test.describe("Case study template", () => {
     await expect(page).toHaveURL(/\/work\/form-factor$/);
   });
 
-  test("structured project diagram renders as an accessible SVG visual", async ({
+  test("structured project diagram renders as an accessible architecture visual", async ({
     page,
   }) => {
     await page.goto("/work/portus");
@@ -44,7 +44,7 @@ test.describe("Case study template", () => {
         name: "Portus — daemon architecture with IPC and MCP integration",
       })
     ).toBeVisible();
-    await expect(media.locator('[data-testid="project-diagram"] svg')).toBeVisible();
+    await expect(media.locator('[data-testid="project-diagram"]')).toBeVisible();
   });
 
   test("unknown slug - /work/not-a-real-project returns not-found", async ({
