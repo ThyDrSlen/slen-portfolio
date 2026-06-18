@@ -43,3 +43,81 @@ jobs:
 
       - name: Lighthouse CI
         run: pnpm lighthouse
+
+  actions-metrics-summary:
+    name: Actions Metrics Summary
+    runs-on: ubuntu-latest
+    if: ${{ always() && github.event_name == 'pull_request' }}
+    needs: [quality]
+    permissions:
+      contents: read
+      actions: read
+      pull-requests: read
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate PR metrics summary
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p .artifacts/actions-metrics
+          COMMENT_FILE=".artifacts/actions-metrics/comment.md"
+          printf '%s\n\n' '<!-- actions-metrics-comment -->' > "$COMMENT_FILE"
+          python3 scripts/ci/actions_metrics.py \
+            --repo "${{ github.repository }}" \
+            --run-id "${{ github.run_id }}" \
+            --pr "${{ github.event.pull_request.number }}" \
+            --format markdown \
+            --csv-prefix ".artifacts/actions-metrics/pr-${{ github.event.pull_request.number }}-run-${{ github.run_id }}" \
+            >> "$COMMENT_FILE"
+          cat "$COMMENT_FILE" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upsert actions metrics PR comment
+        if: >-
+          ${{
+            always() &&
+            hashFiles('.artifacts/actions-metrics/comment.md') != '' &&
+            github.event.pull_request.head.repo.full_name == github.repository
+          }}
+        continue-on-error: true
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('node:fs');
+            const marker = '<!-- actions-metrics-comment -->';
+            const body = fs.readFileSync('.artifacts/actions-metrics/comment.md', 'utf8');
+            const issue_number = context.payload.pull_request.number;
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number,
+              per_page: 100,
+            });
+            const existing = comments.find((comment) => comment.body && comment.body.includes(marker));
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              });
+              core.info(`Updated actions metrics comment ${existing.id}`);
+            } else {
+              const created = await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number,
+                body,
+              });
+              core.info(`Created actions metrics comment ${created.data.id}`);
+            }
+
+      - name: Upload actions metrics artifacts
+        if: ${{ always() && hashFiles('.artifacts/actions-metrics/*') != '' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: actions-metrics-${{ github.event.pull_request.number }}
+          path: .artifacts/actions-metrics/
+          retention-days: 14
