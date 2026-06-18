@@ -85,7 +85,7 @@ export default async function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteJsonLd) }}
       />
 
-      <section style={{ paddingTop: "var(--space-16)", marginBottom: "var(--space-8)" }}>
+      <section className="hero-section" style={{ marginBottom: "var(--space-8)" }}>
         <div
           className="container"
           style={{
@@ -149,22 +149,21 @@ export default async function Home() {
               <Link
                 href={heroContent.cta.href}
                 data-testid="primary-cta"
+                className="contact-link-primary"
                 style={{
-                  display: "inline-flex",
                   alignItems: "center",
                   gap: "var(--space-2)",
-                  padding: "var(--space-3) var(--space-6)",
-                  background: "var(--color-accent)",
-                  color: "var(--color-bg)",
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "var(--text-sm)",
-                  fontWeight: 600,
-                  borderRadius: "var(--radius-md)",
-                  textDecoration: "none",
                 }}
               >
                 {heroContent.cta.label} &rarr;
               </Link>
+              <a
+                href={`mailto:${siteConfig.email}`}
+                className="contact-link"
+                aria-label="Email Fabrizio"
+              >
+                Email me
+              </a>
               {siteConfig.socialLinks
                 .filter((l) => l.platform === "linkedin")
                 .map((link) => (
@@ -173,16 +172,10 @@ export default async function Home() {
                     href={link.url}
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label={`${link.label} profile, opens in a new tab`}
+                    className="contact-link"
                     style={{
-                      display: "inline-flex",
                       alignItems: "center",
-                      padding: "var(--space-3) var(--space-6)",
-                      border: "1px solid var(--color-border)",
-                      fontFamily: "var(--font-mono)",
-                      fontSize: "var(--text-sm)",
-                      borderRadius: "var(--radius-md)",
-                      textDecoration: "none",
-                      color: "var(--color-text-secondary)",
                     }}
                   >
                     {link.label}
@@ -211,8 +204,6 @@ export default async function Home() {
           </div>
         </div>
       </section>
-
-      <InteractiveTerminal />
 
       <Reveal>
         <section style={{ marginBottom: "var(--space-12)" }}>
@@ -279,6 +270,8 @@ export default async function Home() {
           </div>
         </section>
       </Reveal>
+
+      <InteractiveTerminal />
 
       <Reveal delay={100}>
         <section style={{ marginBottom: "var(--space-16)" }}>
@@ -355,7 +348,7 @@ export default async function Home() {
       >
         <Link
           href="/work"
-          className="mono"
+          className="mono card-action"
           style={{
             color: "var(--color-accent)",
             fontSize: "var(--text-sm)",
@@ -414,51 +407,25 @@ export default async function Home() {
             >
               <Link
                 href="/work"
-                style={{
-                  display: "inline-flex",
-                  padding: "var(--space-3) var(--space-6)",
-                  background: "var(--color-accent)",
-                  color: "var(--color-bg)",
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "var(--text-sm)",
-                  fontWeight: 600,
-                  borderRadius: "var(--radius-md)",
-                  textDecoration: "none",
-                }}
+                className="contact-link-primary"
               >
-                ls ./work
+                View work
               </Link>
               <a
                 href="/resume"
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{
-                  display: "inline-flex",
-                  padding: "var(--space-3) var(--space-6)",
-                  border: "1px solid var(--color-border)",
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "var(--text-sm)",
-                  borderRadius: "var(--radius-md)",
-                  textDecoration: "none",
-                  color: "var(--color-text-secondary)",
-                }}
+                className="contact-link"
+                aria-label="View resume, opens in a new tab"
               >
-                cat resume.pdf
+                View resume
               </a>
               <a
                 href={`mailto:${siteConfig.email}`}
-                style={{
-                  display: "inline-flex",
-                  padding: "var(--space-3) var(--space-6)",
-                  border: "1px solid var(--color-border)",
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "var(--text-sm)",
-                  borderRadius: "var(--radius-md)",
-                  textDecoration: "none",
-                  color: "var(--color-text-secondary)",
-                }}
+                className="contact-link"
+                aria-label="Email Fabrizio"
               >
-                mail -s &quot;hey&quot;
+                Email me
               </a>
             </div>
           </div>

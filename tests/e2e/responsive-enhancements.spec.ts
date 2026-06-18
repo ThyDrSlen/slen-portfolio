@@ -62,6 +62,23 @@ test.describe("Responsive layout for new features", () => {
     expect(hasHorizontalScroll).toBe(false);
   });
 
+  test("mobile 320px - header and primary CTA stay visible without horizontal scroll", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 320, height: 720 });
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    await page.getByTestId("boot-sequence").waitFor({ state: "hidden", timeout: 10000 });
+
+    await expect(page.getByTestId("site-shell")).toBeVisible();
+    await expect(page.getByTestId("primary-nav")).toBeVisible();
+    await expect(page.getByTestId("primary-cta")).toBeVisible();
+
+    const hasHorizontalScroll = await page.evaluate(
+      () => document.documentElement.scrollWidth > document.documentElement.clientWidth
+    );
+    expect(hasHorizontalScroll).toBe(false);
+  });
+
   test("boot sequence fills viewport on all sizes", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/", { waitUntil: "domcontentloaded" });
