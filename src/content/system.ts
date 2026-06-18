@@ -3,9 +3,9 @@ export const bootLines = [
   "SLEN OS v1.0.0",
   "POST check .......... OK",
   "Loading kernel modules",
-  "Mounting /work .......... 3 case studies found",
+  "Mounting /work .......... 4 case studies found",
   "Initializing matrix rain",
-  "Connecting to NYC backbone",
+  "Connecting to NYC roots / Bay Area edge",
   "Starting slen.win on port 443",
   "System ready.",
 ] as const;
@@ -18,7 +18,7 @@ export const terminalConfig = {
     'Type "help" to see available commands.',
     "",
   ],
-  motd: "Last login: today from NYC",
+  motd: "Last login: today from NYC roots / Bay Area base",
 } as const;
 
 export const terminalHelp: Record<string, string> = {
@@ -45,7 +45,7 @@ export const neofetchOutput = [
   "    ██░░██████░░░░██   Lang: TypeScript",
   "      ██░░░░░░░░██     Stack: Go, gRPC, K8s",
   "        ████████       Theme: Matrix [dark]",
-  "                        Location: NYC",
+  "                        Location: NYC roots / Bay Area",
 ] as const;
 
 export const virtualFs: Record<string, string | Record<string, string>> = {

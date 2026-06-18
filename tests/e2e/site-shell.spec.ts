@@ -31,10 +31,19 @@ test.describe("Site shell", () => {
     await page.goto("/", { waitUntil: "domcontentloaded" });
     await expect(page.getByTestId("site-shell")).toBeVisible();
     await expect(page.getByTestId("primary-nav")).toBeVisible();
+    await expect(page.getByTestId("primary-nav")).toHaveAttribute(
+      "aria-label",
+      "Primary navigation"
+    );
     await expect(page.getByTestId("nav-link-work")).toBeVisible();
     await expect(page.getByTestId("nav-link-about")).toBeVisible();
-    await expect(page.getByTestId("resume-download-link")).toBeVisible();
+    await expect(page.getByTestId("resume-download-link")).toHaveAccessibleName(
+      "Resume, opens in a new tab"
+    );
     await expect(page.getByTestId("footer-social-links")).toBeVisible();
+    await expect(page.getByTestId("social-link-email")).toHaveAccessibleName(
+      "Email Fabrizio"
+    );
   });
 
   test("reduced motion - shell transitions are reduced", async ({

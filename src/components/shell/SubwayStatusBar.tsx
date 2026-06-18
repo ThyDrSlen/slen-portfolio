@@ -13,7 +13,7 @@ const timeFormatter = new Intl.DateTimeFormat("en-US", {
   hour12: false,
 });
 
-function getNycTime(): string {
+function getPacificTime(): string {
   return timeFormatter.format(new Date());
 }
 
@@ -27,7 +27,7 @@ export function SubwayStatusBar() {
   const prefersReducedMotion = usePrefersReducedMotion();
   const [messageIndex, setMessageIndex] = useState(0);
   const [fading, setFading] = useState(false);
-  const nycTime = useSyncExternalStore(subscribeClock, getNycTime, () => "");
+  const pacificTime = useSyncExternalStore(subscribeClock, getPacificTime, () => "");
 
   useEffect(() => {
     if (prefersReducedMotion) return;
@@ -126,7 +126,7 @@ export function SubwayStatusBar() {
           flexShrink: 0,
         }}
       >
-        {nycTime}
+        PT {pacificTime}
       </span>
 
       <button

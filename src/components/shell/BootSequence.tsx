@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useSessionFlag } from "@/hooks/useSessionFlag";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { bootLines, motionConfig } from "@/content/system";
@@ -15,11 +15,11 @@ export function BootSequence() {
   const [unmounted, setUnmounted] = useState(false);
   const overlayRef = useRef<HTMLDivElement>(null);
 
-  const dismiss = () => {
+  const dismiss = useCallback(() => {
     setFadingOut(true);
     setUnmounted(true);
     setFlag();
-  };
+  }, [setFlag]);
 
   useEffect(() => {
     if (prefersReducedMotion) {
@@ -43,7 +43,7 @@ export function BootSequence() {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [prefersReducedMotion, seen, unmounted, setFlag]);
+  }, [dismiss, prefersReducedMotion, seen, unmounted]);
 
   useEffect(() => {
     if (seen || prefersReducedMotion) return;
@@ -81,6 +81,8 @@ export function BootSequence() {
       data-testid="boot-sequence"
       ref={overlayRef}
       aria-label="Boot sequence overlay"
+      aria-describedby="boot-sequence-instructions"
+      tabIndex={-1}
       style={{
         position: "fixed",
         inset: 0,
@@ -134,8 +136,10 @@ export function BootSequence() {
         );
       })}
       <button
+        id="boot-sequence-instructions"
         type="button"
         onClick={dismiss}
+        aria-label="Skip portfolio loading animation"
         style={{
           position: "absolute",
           left: "50%",
@@ -152,7 +156,7 @@ export function BootSequence() {
           padding: 0,
         }}
       >
-        Press any key to skip
+        Press any key to skip loading animation
       </button>
       <style>{`@keyframes boot-blink { 50% { opacity: 0; } }`}</style>
     </section>

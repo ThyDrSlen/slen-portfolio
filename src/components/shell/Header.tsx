@@ -7,7 +7,11 @@ export function Header() {
         <Link href="/" className="site-logo">
           slen.win
         </Link>
-        <nav className="site-nav" data-testid="primary-nav">
+        <nav
+          className="site-nav"
+          data-testid="primary-nav"
+          aria-label="Primary navigation"
+        >
           <Link href="/work" data-testid="nav-link-work">
             Work
           </Link>
@@ -19,6 +23,7 @@ export function Header() {
             data-testid="resume-download-link"
             target="_blank"
             rel="noopener noreferrer"
+            aria-label="Resume, opens in a new tab"
           >
             Resume
           </a>

@@ -6,7 +6,7 @@ test.describe("Subway status bar", () => {
     await page.getByTestId("boot-sequence").waitFor({ state: "hidden", timeout: 5000 });
   });
 
-  test("renders with line indicator, status, and NYC time", async ({
+  test("renders with line indicator, status, and Pacific time", async ({
     page,
   }) => {
     const bar = page.getByTestId("subway-status-bar");
@@ -17,6 +17,7 @@ test.describe("Subway status bar", () => {
 
     const timePattern = /\d{2}:\d{2}:\d{2}/;
     await expect(bar).toContainText(timePattern);
+    await expect(bar).toContainText("PT");
   });
 
   test("shows a status message", async ({ page }) => {
@@ -28,7 +29,7 @@ test.describe("Subway status bar", () => {
         text.includes("open to new opportunities") ||
         text.includes("building Form Factor") ||
         text.includes("shipping Go services") ||
-        text.includes("based in bay area")
+        text.includes("nyc roots")
       );
     });
     expect(hasStatus).toBe(true);
