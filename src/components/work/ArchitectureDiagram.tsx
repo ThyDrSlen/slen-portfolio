@@ -49,18 +49,6 @@ function ArchNode({ data }: NodeProps<Node<ArchDiagramNodeData>>) {
       >
         {data.label}
       </div>
-      {data.description && (
-        <div
-          style={{
-            color: "var(--color-text-muted)",
-            fontSize: "0.65rem",
-            marginTop: 2,
-            lineHeight: 1.2,
-          }}
-        >
-          {data.description}
-        </div>
-      )}
       <Handle
         type="source"
         position={Position.Bottom}
