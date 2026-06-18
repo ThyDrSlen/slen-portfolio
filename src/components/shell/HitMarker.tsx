@@ -4,6 +4,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 const MARKER_DURATION_MS = 250;
+const HIT_SOUND_SRC = "/audio/hitmarker.wav";
+const HIT_SOUND_VOLUME = 0.4;
 
 interface Marker {
   id: number;
@@ -14,8 +16,26 @@ interface Marker {
 export function HitMarker() {
   const [markers, setMarkers] = useState<Marker[]>([]);
   const nextId = useRef(0);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const timeoutRef = useRef<Map<number, NodeJS.Timeout>>(new Map());
   const prefersReducedMotion = usePrefersReducedMotion();
+
+  useEffect(() => {
+    if (prefersReducedMotion) {
+      audioRef.current?.pause();
+      audioRef.current = null;
+      return;
+    }
+
+    const audio = new Audio(HIT_SOUND_SRC);
+    audio.volume = HIT_SOUND_VOLUME;
+    audioRef.current = audio;
+
+    return () => {
+      audio.pause();
+      audioRef.current = null;
+    };
+  }, [prefersReducedMotion]);
 
   useEffect(() => {
     const activeTimeouts = timeoutRef.current;
@@ -31,6 +51,13 @@ export function HitMarker() {
   const spawn = useCallback((x: number, y: number) => {
     const id = nextId.current++;
     setMarkers((prev) => [...prev, { id, x, y }]);
+
+    const audio = audioRef.current;
+    if (audio) {
+      audio.pause();
+      audio.currentTime = 0;
+      void audio.play().catch(() => undefined);
+    }
 
     const timeoutId = setTimeout(() => {
       setMarkers((prev) => prev.filter((m) => m.id !== id));
