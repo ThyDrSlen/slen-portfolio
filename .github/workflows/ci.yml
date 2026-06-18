@@ -35,6 +35,18 @@ jobs:
       - name: Build
         run: pnpm build
 
+      - name: Get Playwright version
+        id: playwright-version
+        run: echo "version=$(pnpm exec playwright --version | cut -d' ' -f2)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Playwright Chromium
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-chromium-${{ steps.playwright-version.outputs.version }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            playwright-${{ runner.os }}-chromium-${{ steps.playwright-version.outputs.version }}-
+
       - name: Install Playwright browsers
         run: pnpm exec playwright install --with-deps chromium
 
