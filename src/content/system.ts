@@ -82,6 +82,7 @@ export const easterEggs: Record<string, string[]> = {
 /* ── Terminal Hints ── */
 export const terminalHints = [
   "help",
+  "type",
   "neofetch",
   "ls",
   "cat about",
