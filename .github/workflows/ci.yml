@@ -14,6 +14,9 @@ jobs:
   quality:
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    container:
+      image: mcr.microsoft.com/playwright:v1.58.2-noble
+      options: --ipc=host
     steps:
       - uses: actions/checkout@v4
 
@@ -40,33 +43,13 @@ jobs:
       - name: Build
         run: pnpm build
 
-      - name: Get Playwright version
-        id: playwright-version
-        run: echo "version=$(pnpm exec playwright --version | cut -d' ' -f2)" >> "$GITHUB_OUTPUT"
-
-      - name: Cache Playwright Chromium
-        id: playwright-cache
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-chromium-${{ steps.playwright-version.outputs.version }}
-          restore-keys: |
-            playwright-${{ runner.os }}-chromium-${{ steps.playwright-version.outputs.version }}-
-
-      - name: Install Playwright OS dependencies
-        timeout-minutes: 8
-        run: pnpm exec playwright install-deps chromium
-
-      - name: Install Playwright Chromium
-        if: steps.playwright-cache.outputs.cache-hit != 'true'
-        timeout-minutes: 8
-        run: pnpm exec playwright install chromium
-
       - name: E2E tests
         run: pnpm test:e2e
 
       - name: Lighthouse CI
-        run: pnpm lighthouse
+        run: |
+          export CHROME_PATH="$(find /ms-playwright -path '*/chrome-linux/chrome' -print -quit)"
+          pnpm lighthouse
 
   actions-metrics-summary:
     name: Actions Metrics Summary
