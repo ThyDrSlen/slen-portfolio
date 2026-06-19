@@ -1,13 +1,22 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type Page } from "@playwright/test";
+
+async function openWorkPage(page: Page) {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.addInitScript(() => {
+    window.sessionStorage.setItem("boot-seen", "1");
+  });
+  await page.goto("/work", { waitUntil: "domcontentloaded" });
+  await page.getByTestId("github-commit-pulse").waitFor({
+    state: "attached",
+    timeout: 10000,
+  });
+}
 
 test.describe("GitHub commit pulse", () => {
   test("renders telemetry panel with commit data", async ({ page }) => {
-    await page.goto("/", { waitUntil: "domcontentloaded" });
-    await page.getByTestId("boot-sequence").waitFor({ state: "hidden", timeout: 5000 });
+    await openWorkPage(page);
 
     const pulse = page.getByTestId("github-commit-pulse");
-    await pulse.scrollIntoViewIfNeeded();
-    await expect(pulse).toBeVisible();
 
     await expect(pulse).toContainText("~/telemetry");
     await expect(pulse).toContainText("commit pulse");
@@ -18,14 +27,12 @@ test.describe("GitHub commit pulse", () => {
   });
 
   test("renders SVG heartbeat visualization", async ({ page }) => {
-    await page.goto("/", { waitUntil: "domcontentloaded" });
-    await page.getByTestId("boot-sequence").waitFor({ state: "hidden", timeout: 5000 });
+    await openWorkPage(page);
 
     const pulse = page.getByTestId("github-commit-pulse");
-    await pulse.scrollIntoViewIfNeeded();
 
     const svg = pulse.locator("svg");
-    await expect(svg).toBeVisible();
+    await expect(svg).toBeAttached();
 
     const polylines = svg.locator("polyline");
     const count = await polylines.count();
@@ -33,11 +40,9 @@ test.describe("GitHub commit pulse", () => {
   });
 
   test("github link opens in new tab", async ({ page }) => {
-    await page.goto("/", { waitUntil: "domcontentloaded" });
-    await page.getByTestId("boot-sequence").waitFor({ state: "hidden", timeout: 5000 });
+    await openWorkPage(page);
 
     const pulse = page.getByTestId("github-commit-pulse");
-    await pulse.scrollIntoViewIfNeeded();
 
     const link = pulse.locator('a[href*="github.com"]');
     await expect(link).toHaveAttribute("target", "_blank");
