@@ -44,6 +44,9 @@ jobs:
         run: pnpm build
 
       - name: E2E tests
+        timeout-minutes: 15
+        env:
+          PLAYWRIGHT_WORKERS: 2
         run: pnpm test:e2e
 
       - name: Lighthouse CI
