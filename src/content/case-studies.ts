@@ -11,7 +11,7 @@ export const caseStudies: CaseStudy[] = [
     slug: "form-factor",
     title: "Form Factor",
     summary:
-      "A mobile fitness app that uses ARKit body tracking and Apple HealthKit to deliver real-time exercise form analysis, built from zero to shipped product.",
+      "A mobile fitness app I'm currently building from zero toward launch, using ARKit body tracking and Apple HealthKit to deliver real-time exercise form analysis.",
     role: "Founder & Lead Engineer",
     period: "Sept 2025 – Present",
     techStack: [
@@ -26,7 +26,7 @@ export const caseStudies: CaseStudy[] = [
     problem:
       "Most people working out alone have no reliable way to check their exercise form. Bad form leads to injury and stalled progress, but personal trainers are expensive and inaccessible. Existing fitness apps track reps and calories but ignore the quality of movement.",
     approach:
-      "Built a mobile-first app using Expo and React Native that integrates Apple HealthKit to sync heart-rate, step, and body-composition data from Apple Watch into workout logs. Used ARKit body tracking to record joint and pose metrics for real-time form analysis. Designed backend schemas and structured logging in Supabase/Postgres to store health and pose data reliably and support debugging and future ML features.",
+      "Building a mobile-first app using Expo and React Native that integrates Apple HealthKit to sync heart-rate, step, and body-composition data from Apple Watch into workout logs. Using ARKit body tracking to record joint and pose metrics for real-time form analysis. Designing backend schemas and structured logging in Supabase/Postgres to store health and pose data reliably and support debugging and future ML features.",
     constraints: [
       "Solo developer shipping across iOS client and backend",
       "Real-time CV processing on consumer mobile hardware",
@@ -34,13 +34,13 @@ export const caseStudies: CaseStudy[] = [
       "Backend schema design for both current use and future ML pipeline",
     ],
     outcomes: [
-      "Shipped a working product with real-time form analysis via ARKit body tracking",
-      "Integrated Apple HealthKit to sync watch data into workout logs",
-      "Built end-to-end: mobile client, backend schemas, health data pipeline",
-      "Maintained a steady release cadence as a solo developer",
+      "Building real-time form analysis via ARKit body tracking",
+      "Integrating Apple HealthKit to sync watch data into workout logs",
+      "Building end-to-end: mobile client, backend schemas, health data pipeline",
+      "Maintaining a steady release cadence as a solo developer",
     ],
     reflection:
-      "Form Factor proved I can take a product from concept to shipping code on my own. The hardest part wasn't any single technology. It was making architectural decisions across mobile, backend, and health data with no team to delegate to. Every tradeoff was mine to own, from schema design for future ML features to privacy constraints on body tracking data.",
+      "Form Factor is proving I can take a product from concept toward launch on my own. The hardest part isn't any single technology. It's making architectural decisions across mobile, backend, and health data with no team to delegate to. Every tradeoff is mine to own, from schema design for future ML features to privacy constraints on body tracking data.",
     proofLinks: [
       {
         label: "GitHub Repository",
@@ -78,11 +78,11 @@ export const caseStudies: CaseStudy[] = [
     disclosure: {
       anonymizationLevel: "none",
       allowedClaims: [
-        "Solo-built mobile app",
+        "Solo-building mobile app",
         "ARKit body tracking for form analysis",
         "Apple HealthKit integration",
         "React Native/Expo/TypeScript/Supabase stack",
-        "Shipped product with release cadence",
+        "Ongoing product development with release cadence",
       ],
       forbiddenClaims: [],
       allowedAssetTypes: ["diagram", "screenshot", "text-block"],

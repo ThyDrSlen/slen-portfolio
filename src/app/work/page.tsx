@@ -47,7 +47,7 @@ function GitHubCommitPulseSkeleton() {
 
 const KEY_OUTCOMES: Record<string, string> = {
   "form-factor":
-    "Real-time form analysis via ARKit body tracking, built end-to-end solo",
+    "Building real-time form analysis via ARKit body tracking end-to-end solo",
   "orwell-scraper": "~90% access rate, 26k labeled assets",
   "palo-alto": "~20% better pre-merge detection, ~85% incident replay",
   portus: "5 MCP tools, TUI dashboard, signal-safe cleanup",

@@ -49,9 +49,9 @@ export const experienceEntries: ExperienceEntry[] = [
     description:
       "Mobile fitness app with real-time form analysis using ARKit body tracking and Apple HealthKit integration.",
     highlights: [
-      "Integrated Apple HealthKit to sync heart-rate, step, and body-composition data into workout logs",
-      "Used ARKit body tracking to record joint/pose metrics for form analysis",
-      "Designed backend schemas in Supabase/Postgres for health and pose data",
+      "Integrating Apple HealthKit to sync heart-rate, step, and body-composition data into workout logs",
+      "Using ARKit body tracking to record joint/pose metrics for form analysis",
+      "Designing backend schemas in Supabase/Postgres for health and pose data",
     ],
   },
   {
@@ -88,7 +88,7 @@ export const aboutContent = {
     "I build scalable distributed systems, developer tooling, and experimentation-friendly platform capabilities. I care about shipping things that work at scale and proving it with measurable outcomes.",
   ],
   currentFocus:
-    "Currently building Go services, CI feedback acceleration, and operational analytics at Palo Alto Networks, while shipping Form Factor, a mobile fitness app with real-time ARKit body tracking and Apple HealthKit integration.",
+    "Currently building Go services, CI feedback acceleration, and operational analytics at Palo Alto Networks, while building Form Factor, a mobile fitness app with real-time ARKit body tracking and Apple HealthKit integration.",
 };
 
 export const proofRailItems = [
@@ -112,9 +112,9 @@ export const proofRailItems = [
   },
   {
     metric: null,
-    label: "Solo-built Form Factor",
+    label: "Building Form Factor solo",
     detail:
-      "Shipped a mobile product using ARKit body tracking and Apple HealthKit integration.",
+      "Building a mobile product using ARKit body tracking and Apple HealthKit integration.",
   },
 ];
 
