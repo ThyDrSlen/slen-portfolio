@@ -6,6 +6,9 @@ module.exports = {
       startServerReadyPattern: "Ready in",
       startServerReadyTimeout: 30000,
       numberOfRuns: 1,
+      settings: {
+        chromeFlags: "--no-sandbox --disable-dev-shm-usage",
+      },
     },
     assert: {
       assertions: {
