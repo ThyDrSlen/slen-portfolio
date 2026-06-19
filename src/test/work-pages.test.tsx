@@ -39,6 +39,10 @@ vi.mock("@/components/work/ArchitectureDiagramWrapper", () => ({
   ),
 }));
 
+vi.mock("@/components/home/GitHubCommitPulse", () => ({
+  GitHubCommitPulse: () => <div data-testid="github-commit-pulse" />,
+}));
+
 import WorkIndex from "@/app/work/page";
 import CaseStudyPage from "@/app/work/[slug]/page";
 
@@ -111,6 +115,18 @@ describe("Work listing page", () => {
     expect(formFactorCard).toHaveAccessibleName("View Form Factor case study");
     expect(within(formFactorCard).getByText("Flagship Project")).toBeInTheDocument();
     expect(screen.getByTestId("work-diagram-preview")).toBeInTheDocument();
+  });
+
+  it("places telemetry at the bottom of the work page", () => {
+    render(<WorkIndex />);
+
+    const workGrid = screen.getByTestId("work-grid");
+    const telemetry = screen.getByTestId("work-telemetry");
+
+    expect(telemetry).toContainElement(screen.getByTestId("github-commit-pulse"));
+    expect(workGrid.compareDocumentPosition(telemetry)).toBe(
+      Node.DOCUMENT_POSITION_FOLLOWING
+    );
   });
 });
 

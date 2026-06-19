@@ -1,5 +1,7 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
+import { GitHubCommitPulse } from "@/components/home/GitHubCommitPulse";
 import { caseStudies } from "@/content/case-studies";
 import { siteConfig } from "@/content/site";
 import ArchitectureDiagramWrapper from "@/components/work/ArchitectureDiagramWrapper";
@@ -14,6 +16,34 @@ type StructuredDiagramMedia = CaseStudyMedia & {
 
 const WORK_DESCRIPTION =
   "Selected projects spanning product engineering, systems automation, and enterprise platform work.";
+
+function GitHubCommitPulseSkeleton() {
+  return (
+    <>
+      <style>{`
+        .pulse-skeleton {
+          background: var(--color-surface);
+          animation: pulse-skeleton-fade 1.8s ease-in-out infinite;
+        }
+
+        @keyframes pulse-skeleton-fade {
+          0%, 100% { opacity: 0.55; }
+          50% { opacity: 0.9; }
+        }
+      `}</style>
+      <div
+        className="pulse-skeleton"
+        aria-hidden="true"
+        style={{
+          padding: "var(--space-8)",
+          minHeight: "20rem",
+          border: "1px solid var(--color-border)",
+          borderRadius: "var(--radius-lg)",
+        }}
+      />
+    </>
+  );
+}
 
 const KEY_OUTCOMES: Record<string, string> = {
   "form-factor":
@@ -172,6 +202,16 @@ export default function WorkIndex() {
             </Link>
           ))}
         </div>
+      </section>
+
+      <section
+        className={styles.telemetrySection}
+        aria-label="Commit telemetry"
+        data-testid="work-telemetry"
+      >
+        <Suspense fallback={<GitHubCommitPulseSkeleton />}>
+          <GitHubCommitPulse />
+        </Suspense>
       </section>
     </section>
   );

@@ -375,3 +375,7 @@
   color: var(--color-accent);
   transform: translateX(4px);
 }
+
+.telemetrySection {
+  margin-top: var(--space-12);
+}
