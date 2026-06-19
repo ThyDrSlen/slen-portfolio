@@ -1,6 +1,6 @@
 "use client";
 
-import { useSyncExternalStore, useCallback } from "react";
+import { useSyncExternalStore, useCallback, useEffect } from "react";
 
 const listeners = new Map<string, Set<() => void>>();
 
@@ -49,6 +49,10 @@ export function useSessionFlag(key: string): [boolean, () => void] {
     } catch (error) {
       console.warn(`Failed to set session flag \"${key}\"`, error);
     }
+    notify(key);
+  }, [key]);
+
+  useEffect(() => {
     notify(key);
   }, [key]);
 

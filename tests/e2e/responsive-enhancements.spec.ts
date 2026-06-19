@@ -1,13 +1,21 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type Page } from "@playwright/test";
 
 test.describe("Responsive layout for new features", () => {
+  async function openContentPage(page: Page, path: string) {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.addInitScript(() => {
+      window.sessionStorage.setItem("boot-seen", "1");
+    });
+    await page.goto(path, { waitUntil: "domcontentloaded" });
+  }
+
   test("mobile 390px - all sections stack and remain visible", async ({
     page,
   }) => {
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto("/", { waitUntil: "domcontentloaded" });
-    await page.getByTestId("boot-sequence").waitFor({ state: "hidden", timeout: 10000 });
+    await openContentPage(page, "/");
 
+    await expect(page.getByTestId("boot-sequence")).toBeHidden({ timeout: 5000 });
     await expect(page.getByTestId("hero-headline")).toBeVisible({ timeout: 5000 });
     await expect(page.getByTestId("interactive-terminal")).toBeVisible({ timeout: 5000 });
 
@@ -21,9 +29,9 @@ test.describe("Responsive layout for new features", () => {
 
   test("mobile 390px - terminal input is usable", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto("/", { waitUntil: "domcontentloaded" });
-    await page.getByTestId("boot-sequence").waitFor({ state: "hidden", timeout: 10000 });
+    await openContentPage(page, "/");
 
+    await expect(page.getByTestId("boot-sequence")).toBeHidden({ timeout: 5000 });
     const input = page.getByTestId("terminal-input");
     await input.waitFor({ state: "visible", timeout: 5000 });
     await input.scrollIntoViewIfNeeded();
@@ -36,26 +44,23 @@ test.describe("Responsive layout for new features", () => {
 
   test("mobile 390px - GitHub pulse doesn't overflow", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto("/", { waitUntil: "domcontentloaded" });
-    await page.getByTestId("boot-sequence").waitFor({ state: "hidden", timeout: 10000 });
+    await openContentPage(page, "/work");
+    await page.getByTestId("github-commit-pulse").waitFor({ state: "attached" });
 
     const pulse = page.getByTestId("github-commit-pulse");
-    await pulse.scrollIntoViewIfNeeded();
+    await pulse.evaluate((el) => el.scrollIntoView({ block: "center" }));
 
-    const pulseBox = await pulse.boundingBox();
-    expect(pulseBox).not.toBeNull();
-    if (pulseBox) {
-      expect(pulseBox.width).toBeLessThanOrEqual(390);
-    }
+    const pulseWidth = await pulse.evaluate((el) => el.getBoundingClientRect().width);
+    expect(pulseWidth).toBeLessThanOrEqual(390);
   });
 
   test("tablet 768px - layout adapts without horizontal scroll", async ({
     page,
   }) => {
     await page.setViewportSize({ width: 768, height: 1024 });
-    await page.goto("/", { waitUntil: "domcontentloaded" });
-    await page.getByTestId("boot-sequence").waitFor({ state: "hidden", timeout: 5000 });
+    await openContentPage(page, "/");
 
+    await expect(page.getByTestId("boot-sequence")).toBeHidden({ timeout: 5000 });
     const hasHorizontalScroll = await page.evaluate(
       () => document.documentElement.scrollWidth > document.documentElement.clientWidth
     );
@@ -66,9 +71,9 @@ test.describe("Responsive layout for new features", () => {
     page,
   }) => {
     await page.setViewportSize({ width: 320, height: 720 });
-    await page.goto("/", { waitUntil: "domcontentloaded" });
-    await page.getByTestId("boot-sequence").waitFor({ state: "hidden", timeout: 10000 });
+    await openContentPage(page, "/");
 
+    await expect(page.getByTestId("boot-sequence")).toBeHidden({ timeout: 5000 });
     await expect(page.getByTestId("site-shell")).toBeVisible();
     await expect(page.getByTestId("primary-nav")).toBeVisible();
     await expect(page.getByTestId("primary-cta")).toBeVisible();
@@ -102,9 +107,9 @@ test.describe("Responsive layout for new features", () => {
       }
     });
 
-    await page.goto("/", { waitUntil: "domcontentloaded" });
-    await page.getByTestId("boot-sequence").waitFor({ state: "hidden", timeout: 10000 });
+    await openContentPage(page, "/");
 
+    await expect(page.getByTestId("boot-sequence")).toBeHidden({ timeout: 5000 });
     await page.mouse.move(400, 300);
     await page.mouse.move(600, 400);
 
