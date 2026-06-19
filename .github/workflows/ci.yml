@@ -51,7 +51,7 @@ jobs:
 
       - name: Lighthouse CI
         run: |
-          export CHROME_PATH="$(find /ms-playwright -path '*/chrome-linux/chrome' -print -quit)"
+          export CHROME_PATH="$(node -e 'const { chromium } = require("@playwright/test"); console.log(chromium.executablePath())')"
           pnpm lighthouse
 
   actions-metrics-summary:
