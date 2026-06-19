@@ -309,28 +309,6 @@ export default async function Home() {
         </section>
       </Reveal>
 
-      <div
-        className="container"
-        style={{
-          textAlign: "center",
-          padding: "var(--space-8) 0 var(--space-12)",
-        }}
-      >
-        <Link
-          href="/work"
-          className="mono card-action"
-          style={{
-            color: "var(--color-accent)",
-            fontSize: "var(--text-sm)",
-            textDecoration: "none",
-            borderBottom: "1px solid var(--color-accent-dim)",
-            paddingBottom: "var(--space-1)",
-          }}
-        >
-          ~/work &rarr; See the case studies
-        </Link>
-      </div>
-
       <TypingTestGate />
 
       <Reveal delay={100}>
@@ -361,12 +339,6 @@ export default async function Home() {
                 flexWrap: "wrap",
               }}
             >
-              <Link
-                href="/work"
-                className="contact-link-primary"
-              >
-                View work
-              </Link>
               <a
                 href="/resume"
                 target="_blank"
