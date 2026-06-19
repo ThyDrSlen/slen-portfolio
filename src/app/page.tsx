@@ -6,7 +6,6 @@ import {
   proofRailItems,
   siteConfig,
   skillCategories,
-  lookingFor,
   experienceEntries,
 } from "@/content/site";
 import { InteractiveTerminal } from "@/components/home/InteractiveTerminal";
@@ -310,55 +309,6 @@ export default async function Home() {
       </Reveal>
 
       <TypingTestGate />
-
-      <Reveal delay={100}>
-        <section style={{ padding: "var(--space-16) 0" }}>
-          <div
-            className="container"
-            style={{ textAlign: "center" }}
-          >
-            <h2 style={{ marginBottom: "var(--space-4)" }}>
-              <TypeOnReveal text="Want to work together?" tag="span" />
-            </h2>
-            <p
-              style={{
-                color: "var(--color-text-secondary)",
-                maxWidth: "36rem",
-                margin: "0 auto var(--space-8)",
-                lineHeight: 1.7,
-              }}
-            >
-              {lookingFor}
-            </p>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                gap: "var(--space-4)",
-                flexWrap: "wrap",
-              }}
-            >
-              <a
-                href="/resume"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="contact-link"
-                aria-label="View resume, opens in a new tab"
-              >
-                View resume
-              </a>
-              <a
-                href={`mailto:${siteConfig.email}`}
-                className="contact-link"
-                aria-label="Email Fabrizio"
-              >
-                Email me
-              </a>
-            </div>
-          </div>
-        </section>
-      </Reveal>
     </>
   );
 }
