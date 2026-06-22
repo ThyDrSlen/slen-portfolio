@@ -22,7 +22,8 @@ I launched `slen.win` to show my work through proof, not just a resume: enterpri
 
 - Portfolio: <https://slen.win>
 - Backend-focused · Distributed Systems · Developer Tooling
-- Currently building Go services, CI feedback acceleration, and operational analytics at Palo Alto Networks.
+- Built Go services, CI feedback acceleration, and operational analytics at Palo Alto Networks through June 2026.
+- Beginning a new Senior SWE role at ??? in NYC in July 2026.
 - Building Form Factor with ARKit body tracking and Apple HealthKit.
 - Selected work spans product engineering, systems automation, and enterprise platform work.
 
@@ -56,7 +57,7 @@ I launched `slen.win` to show my work through proof, not just a resume: enterpri
 
 - Check it out: <https://slen.win>
 - Feedback welcome.
-- Open to backend/platform engineering conversations.
+- Open to backend/platform engineering conversations and builder feedback.
 - If you are building developer tooling, distributed systems, or platform infrastructure, I would love to connect.
 
 ## Notes / Guardrails

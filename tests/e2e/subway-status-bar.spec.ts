@@ -26,9 +26,9 @@ test.describe("Subway status bar", () => {
     const hasStatus = await bar.evaluate((el) => {
       const text = el.textContent ?? "";
       return (
-        text.includes("open to new opportunities") ||
+        text.includes("incoming senior swe @ ??? · nyc") ||
         text.includes("building Form Factor") ||
-        text.includes("shipping Go services") ||
+        text.includes("backend systems · platform tooling") ||
         text.includes("nyc roots")
       );
     });

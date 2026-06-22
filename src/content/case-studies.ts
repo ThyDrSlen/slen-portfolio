@@ -172,9 +172,9 @@ export const caseStudies: CaseStudy[] = [
     slug: "palo-alto",
     title: "Enterprise Platform Engineering",
     summary:
-      "Backend-focused platform engineering on scalable distributed systems at Palo Alto Networks. Building Go services, CI feedback acceleration, and operational analytics.",
+      "Backend-focused platform engineering on scalable distributed systems at Palo Alto Networks. Built Go services, CI feedback acceleration, and operational analytics.",
     role: "Software Engineer",
-    period: "Aug 2024 – Present",
+    period: "Aug 2024 – Jun 2026",
     techStack: [
       "Go",
       "gRPC",
@@ -242,6 +242,7 @@ export const caseStudies: CaseStudy[] = [
       anonymizationLevel: "none",
       allowedClaims: [
         "Software Engineer at Palo Alto Networks",
+        "Role ended in June 2026",
         "Go-based distributed agent simulator",
         "CI feedback acceleration and deterministic validation",
         "Agentic MCP platform for incident triage",

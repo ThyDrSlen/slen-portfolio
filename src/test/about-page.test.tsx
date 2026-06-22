@@ -215,7 +215,7 @@ describe("About page", () => {
     expect(jsonLd["@type"]).toBe("Person");
     expect(jsonLd.name).toBe(siteConfig.name);
     expect(jsonLd.url).toBe(siteConfig.url);
-    expect(jsonLd.jobTitle).toBe("Software Engineer");
+    expect(jsonLd.jobTitle).toBe(experienceEntries[0].role);
     // sameAs should include non-email social links
     const expectedSameAs = siteConfig.socialLinks
       .filter((l) => l.platform !== "email")

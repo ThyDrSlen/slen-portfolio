@@ -50,14 +50,14 @@ export const neofetchOutput = [
 
 export const virtualFs: Record<string, string | Record<string, string>> = {
   "~": "home",
-  about: "Backend-focused software engineer building scalable distributed systems, developer tooling, and platform capabilities. Currently at Palo Alto Networks.",
+  about: "Backend-focused software engineer building scalable distributed systems, developer tooling, and platform capabilities. Incoming Senior SWE at ??? in NYC starting July 2026 after platform engineering work at Palo Alto Networks.",
   work: {
     "form-factor":
       "Form Factor — Mobile fitness app with ARKit body tracking and Apple HealthKit. React Native, Expo, TypeScript, Supabase.",
     "orwell-scraper":
       "Orwell Web Scraper — Async scraping pipeline, 26k labeled assets, ~90% access rate. Python, Playwright, aiohttp.",
     "palo-alto":
-      "Enterprise Platform Engineering — Go services, CI feedback acceleration, agentic MCP platform at Palo Alto Networks.",
+      "Enterprise Platform Engineering — Go services, CI feedback acceleration, agentic MCP platform at Palo Alto Networks. Role ended Jun 2026.",
     "portus":
       "Portus — Rust daemon for port collision prevention. Lease-based IPC, MCP server for AI agents, TUI dashboard.",
   },
@@ -92,9 +92,9 @@ export const terminalHints = [
 /* ── Subway Status Bar ── */
 export const subwayConfig = {
   statusMessages: [
-    "open to new opportunities",
+    "incoming senior swe @ ??? · nyc",
     "building Form Factor",
-    "shipping Go services @ PANW",
+    "backend systems · platform tooling",
     "nyc roots · bay area based",
   ],
   lineColor: "#FF6319",
