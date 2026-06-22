@@ -42,6 +42,14 @@ test.describe("About page", () => {
     await expect(page.locator('iframe[title="Fabrizio Corrales resume"]')).toBeVisible();
   });
 
+  test("mobile resume route skips boot overlay", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/resume", { waitUntil: "domcontentloaded" });
+
+    await expect(page.getByTestId("boot-sequence")).toHaveCount(0);
+    await expect(page.locator('iframe[title="Fabrizio Corrales resume"]')).toBeVisible();
+  });
+
   test("about page has no form elements", async ({ page }) => {
     await page.goto("/about");
     const forms = page.locator("form");
