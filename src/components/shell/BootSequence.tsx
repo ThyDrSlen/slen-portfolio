@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import { useSessionFlag } from "@/hooks/useSessionFlag";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { bootLines, motionConfig } from "@/content/system";
@@ -9,12 +10,14 @@ const FADE_DURATION_MS = 500;
 const SKIP_BOOT_IN_DEVELOPMENT = process.env.NODE_ENV === "development";
 
 export function BootSequence() {
+  const pathname = usePathname();
   const [seen, setFlag] = useSessionFlag("boot-seen");
   const prefersReducedMotion = usePrefersReducedMotion();
   const [visibleCount, setVisibleCount] = useState(0);
   const [fadingOut, setFadingOut] = useState(false);
   const [unmounted, setUnmounted] = useState(false);
   const overlayRef = useRef<HTMLDivElement>(null);
+  const skipForResumeRoute = pathname === "/resume";
 
   const dismiss = useCallback(() => {
     setFadingOut(true);
@@ -29,7 +32,7 @@ export function BootSequence() {
   }, [prefersReducedMotion, setFlag]);
 
   useEffect(() => {
-    if (seen || prefersReducedMotion || unmounted) {
+    if (seen || prefersReducedMotion || skipForResumeRoute || unmounted) {
       return;
     }
 
@@ -44,10 +47,10 @@ export function BootSequence() {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [dismiss, prefersReducedMotion, seen, unmounted]);
+  }, [dismiss, prefersReducedMotion, seen, skipForResumeRoute, unmounted]);
 
   useEffect(() => {
-    if (seen || prefersReducedMotion) return;
+    if (seen || prefersReducedMotion || skipForResumeRoute) return;
 
     const timers: ReturnType<typeof setTimeout>[] = [];
 
@@ -73,9 +76,17 @@ export function BootSequence() {
     );
 
     return () => timers.forEach(clearTimeout);
-  }, [seen, prefersReducedMotion, setFlag]);
+  }, [seen, prefersReducedMotion, setFlag, skipForResumeRoute]);
 
-  if (SKIP_BOOT_IN_DEVELOPMENT || seen || prefersReducedMotion || unmounted) return null;
+  if (
+    SKIP_BOOT_IN_DEVELOPMENT ||
+    seen ||
+    prefersReducedMotion ||
+    skipForResumeRoute ||
+    unmounted
+  ) {
+    return null;
+  }
 
   return (
     <section
