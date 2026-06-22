@@ -37,6 +37,7 @@ test.describe("About page", () => {
     page,
   }) => {
     await page.goto("/resume");
+    await expect(page.getByTestId("boot-sequence")).toHaveCount(0);
     await expect(page).toHaveTitle(/Resume/);
     await expect(page.locator('iframe[title="Fabrizio Corrales resume"]')).toBeVisible();
   });
