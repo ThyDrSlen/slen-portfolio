@@ -23,6 +23,7 @@ const COMMANDS = Object.keys(terminalHelp);
 type TerminalResult = {
   state: TerminalState;
   navigate?: string;
+  clientEffect?: "revealTypingTest";
 };
 
 export function createInitialState(): TerminalState {
@@ -107,7 +108,13 @@ function withOutput(
   state: TerminalState,
   input: string,
   lines: TerminalLine[],
-  options?: { cwd?: string; history?: string[]; clear?: boolean; navigate?: string }
+  options?: {
+    cwd?: string;
+    history?: string[];
+    clear?: boolean;
+    navigate?: string;
+    clientEffect?: "revealTypingTest";
+  }
 ): TerminalResult {
   const nextOutput: TerminalLine[] = options?.clear
     ? []
@@ -120,6 +127,7 @@ function withOutput(
       output: nextOutput,
     },
     navigate: options?.navigate,
+    clientEffect: options?.clientEffect,
   };
 }
 
@@ -315,6 +323,19 @@ export function executeCommand(state: TerminalState, input: string): TerminalRes
       return withOutput(state, trimmedInput, [], { clear: true });
     case "echo":
       return withOutput(state, trimmedInput, [{ text: argText, type: "output" }], { history });
+    case "type":
+    case "typing":
+      return withOutput(
+        state,
+        trimmedInput,
+        [
+          {
+            text: "typing test unlocked. keyboard deck online.",
+            type: "system",
+          },
+        ],
+        { history, clientEffect: "revealTypingTest" }
+      );
     default:
       return withOutput(
         state,

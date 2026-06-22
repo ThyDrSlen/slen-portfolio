@@ -173,7 +173,7 @@ export function CursorTrail() {
       style={{
         position: "fixed",
         inset: 0,
-        zIndex: 10,
+        zIndex: 100,
         pointerEvents: "none",
         background: "transparent",
       }}

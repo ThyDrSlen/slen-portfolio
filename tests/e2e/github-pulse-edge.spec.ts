@@ -1,24 +1,31 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type Page } from "@playwright/test";
+
+async function openWorkPage(page: Page) {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.addInitScript(() => {
+    window.sessionStorage.setItem("boot-seen", "1");
+  });
+  await page.goto("/work", { waitUntil: "domcontentloaded" });
+  await page.getByTestId("github-commit-pulse").waitFor({
+    state: "attached",
+    timeout: 10000,
+  });
+}
 
 test.describe("GitHub pulse edge cases", () => {
   test("fallback renders when GitHub API is blocked", async ({ page }) => {
     await page.route("**/api.github.com/**", (route) => route.abort());
-    await page.goto("/", { waitUntil: "domcontentloaded" });
-    await page.getByTestId("boot-sequence").waitFor({ state: "hidden", timeout: 10000 });
+    await openWorkPage(page);
 
     const pulse = page.getByTestId("github-commit-pulse");
-    await pulse.scrollIntoViewIfNeeded();
-    await expect(pulse).toBeVisible();
 
     await expect(pulse).toContainText("github.com/ThyDrSlen");
   });
 
   test("commit count is a non-negative number", async ({ page }) => {
-    await page.goto("/", { waitUntil: "domcontentloaded" });
-    await page.getByTestId("boot-sequence").waitFor({ state: "hidden", timeout: 10000 });
+    await openWorkPage(page);
 
     const pulse = page.getByTestId("github-commit-pulse");
-    await pulse.scrollIntoViewIfNeeded();
 
     const commitText = await pulse.evaluate((el) => {
       const divs = el.querySelectorAll("div");
@@ -37,11 +44,9 @@ test.describe("GitHub pulse edge cases", () => {
   });
 
   test("SVG has exactly 7 data points for days", async ({ page }) => {
-    await page.goto("/", { waitUntil: "domcontentloaded" });
-    await page.getByTestId("boot-sequence").waitFor({ state: "hidden", timeout: 10000 });
+    await openWorkPage(page);
 
     const pulse = page.getByTestId("github-commit-pulse");
-    await pulse.scrollIntoViewIfNeeded();
 
     const svg = pulse.locator("svg");
     if ((await svg.count()) > 0) {
@@ -52,11 +57,9 @@ test.describe("GitHub pulse edge cases", () => {
   });
 
   test("streak value is formatted with d suffix", async ({ page }) => {
-    await page.goto("/", { waitUntil: "domcontentloaded" });
-    await page.getByTestId("boot-sequence").waitFor({ state: "hidden", timeout: 10000 });
+    await openWorkPage(page);
 
     const pulse = page.getByTestId("github-commit-pulse");
-    await pulse.scrollIntoViewIfNeeded();
 
     const hasStreak = await pulse.evaluate((el) => {
       const text = el.textContent ?? "";
@@ -67,11 +70,9 @@ test.describe("GitHub pulse edge cases", () => {
   });
 
   test("last push date is a valid date string", async ({ page }) => {
-    await page.goto("/", { waitUntil: "domcontentloaded" });
-    await page.getByTestId("boot-sequence").waitFor({ state: "hidden", timeout: 10000 });
+    await openWorkPage(page);
 
     const pulse = page.getByTestId("github-commit-pulse");
-    await pulse.scrollIntoViewIfNeeded();
 
     const hasDate = await pulse.evaluate((el) => {
       const text = el.textContent ?? "";

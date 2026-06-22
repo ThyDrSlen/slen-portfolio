@@ -29,6 +29,20 @@ vi.mock("next/navigation", () => ({
   },
 }));
 
+vi.mock("@/components/work/ArchitectureDiagramWrapper", () => ({
+  __esModule: true,
+  default: ({ caption }: { caption?: string }) => (
+    <div data-testid="project-diagram" role="img" aria-label={caption || "Architecture diagram"}>
+      <svg aria-hidden="true" />
+      <span>Portus Daemon</span>
+    </div>
+  ),
+}));
+
+vi.mock("@/components/home/GitHubCommitPulse", () => ({
+  GitHubCommitPulse: () => <div data-testid="github-commit-pulse" />,
+}));
+
 import WorkIndex from "@/app/work/page";
 import CaseStudyPage from "@/app/work/[slug]/page";
 
@@ -93,6 +107,26 @@ describe("Work listing page", () => {
     );
     const badges = screen.queryAllByText("Anonymized");
     expect(badges.length).toBe(anonymizedStudies.length);
+  });
+
+  it("renders the flagship project with a mini architecture preview", () => {
+    render(<WorkIndex />);
+    const formFactorCard = screen.getByTestId("case-study-card-form-factor");
+    expect(formFactorCard).toHaveAccessibleName("View Form Factor case study");
+    expect(within(formFactorCard).getByText("Flagship Project")).toBeInTheDocument();
+    expect(screen.getByTestId("work-diagram-preview")).toBeInTheDocument();
+  });
+
+  it("places telemetry at the bottom of the work page", () => {
+    render(<WorkIndex />);
+
+    const workGrid = screen.getByTestId("work-grid");
+    const telemetry = screen.getByTestId("work-telemetry");
+
+    expect(telemetry).toContainElement(screen.getByTestId("github-commit-pulse"));
+    expect(workGrid.compareDocumentPosition(telemetry)).toBe(
+      Node.DOCUMENT_POSITION_FOLLOWING
+    );
   });
 });
 
@@ -177,6 +211,17 @@ describe("Case study detail page (portus)", () => {
     const jsonLd = JSON.parse(script!.textContent!);
     expect(jsonLd.name).toBe(cs.title);
     expect(jsonLd.description).toBe(cs.summary);
+  });
+
+  it("renders structured project diagrams as accessible architecture visuals", async () => {
+    await renderCaseStudy(slug);
+    const media = screen.getByTestId("case-study-media");
+    const diagram = within(media).getByTestId("project-diagram");
+    expect(diagram).toHaveAccessibleName(
+      "Portus — daemon architecture with IPC and MCP integration"
+    );
+    expect(diagram.querySelector("svg")).toBeInTheDocument();
+    expect(within(media).getByText(/Portus daemon/i)).toBeInTheDocument();
   });
 });
 

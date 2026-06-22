@@ -41,8 +41,8 @@ export default function ResumePage() {
           </p>
           <h1 style={{ marginBottom: "var(--space-2)" }}>Fabrizio Corrales</h1>
           <p style={{ color: "var(--color-text-secondary)", maxWidth: "42rem" }}>
-            Embedded PDF viewer with a direct download fallback, so the resume opens
-            in a real site page and keeps the correct favicon.
+            Resume access from a real site page, keeping the portfolio favicon,
+            title, and metadata available alongside direct PDF access.
           </p>
         </div>
 
@@ -51,6 +51,7 @@ export default function ResumePage() {
           target="_blank"
           rel="noopener noreferrer"
           className="steel-button"
+          aria-label="Open resume PDF directly in a new tab"
         >
           Open PDF directly
         </a>

@@ -33,6 +33,20 @@ test.describe("Case study template", () => {
     await expect(page).toHaveURL(/\/work\/form-factor$/);
   });
 
+  test("structured project diagram renders as an accessible architecture visual", async ({
+    page,
+  }) => {
+    await page.goto("/work/portus");
+    const media = page.getByTestId("case-study-media");
+    await expect(media).toBeVisible();
+    await expect(
+      media.getByRole("img", {
+        name: "Portus — daemon architecture with IPC and MCP integration",
+      })
+    ).toBeVisible();
+    await expect(media.locator('[data-testid="project-diagram"]')).toBeVisible();
+  });
+
   test("unknown slug - /work/not-a-real-project returns not-found", async ({
     page,
   }) => {

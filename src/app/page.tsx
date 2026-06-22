@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import { headers } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
@@ -7,43 +6,13 @@ import {
   proofRailItems,
   siteConfig,
   skillCategories,
-  lookingFor,
   experienceEntries,
 } from "@/content/site";
-import { TypingTest } from "@/components/TypingTest";
 import { InteractiveTerminal } from "@/components/home/InteractiveTerminal";
-import { GitHubCommitPulse } from "@/components/home/GitHubCommitPulse";
+import { TypingTestGate } from "@/components/home/TypingTestGate";
 import { Reveal } from "@/components/motion/Reveal";
 import { CountUpMetric } from "@/components/motion/CountUpMetric";
 import { TypeOnReveal } from "@/components/motion/TypeOnReveal";
-
-function GitHubCommitPulseSkeleton() {
-  return (
-    <>
-      <style>{`
-        .pulse-skeleton {
-          background: var(--color-surface);
-          animation: pulse-skeleton-fade 1.8s ease-in-out infinite;
-        }
-
-        @keyframes pulse-skeleton-fade {
-          0%, 100% { opacity: 0.55; }
-          50% { opacity: 0.9; }
-        }
-      `}</style>
-      <div
-        className="pulse-skeleton"
-        aria-hidden="true"
-        style={{
-          padding: "var(--space-8)",
-          minHeight: "20rem",
-          border: "1px solid var(--color-border)",
-          borderRadius: "var(--radius-lg)",
-        }}
-      />
-    </>
-  );
-}
 
 export default async function Home() {
   const nonce = (await headers()).get("x-nonce") ?? undefined;
@@ -85,7 +54,7 @@ export default async function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteJsonLd) }}
       />
 
-      <section style={{ paddingTop: "var(--space-16)", marginBottom: "var(--space-8)" }}>
+      <section className="hero-section" style={{ marginBottom: "var(--space-8)" }}>
         <div
           className="container"
           style={{
@@ -149,22 +118,21 @@ export default async function Home() {
               <Link
                 href={heroContent.cta.href}
                 data-testid="primary-cta"
+                className="contact-link-primary"
                 style={{
-                  display: "inline-flex",
                   alignItems: "center",
                   gap: "var(--space-2)",
-                  padding: "var(--space-3) var(--space-6)",
-                  background: "var(--color-accent)",
-                  color: "var(--color-bg)",
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "var(--text-sm)",
-                  fontWeight: 600,
-                  borderRadius: "var(--radius-md)",
-                  textDecoration: "none",
                 }}
               >
                 {heroContent.cta.label} &rarr;
               </Link>
+              <a
+                href={`mailto:${siteConfig.email}`}
+                className="contact-link"
+                aria-label="Email Fabrizio"
+              >
+                Email me
+              </a>
               {siteConfig.socialLinks
                 .filter((l) => l.platform === "linkedin")
                 .map((link) => (
@@ -173,16 +141,10 @@ export default async function Home() {
                     href={link.url}
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label={`${link.label} profile, opens in a new tab`}
+                    className="contact-link"
                     style={{
-                      display: "inline-flex",
                       alignItems: "center",
-                      padding: "var(--space-3) var(--space-6)",
-                      border: "1px solid var(--color-border)",
-                      fontFamily: "var(--font-mono)",
-                      fontSize: "var(--text-sm)",
-                      borderRadius: "var(--radius-md)",
-                      textDecoration: "none",
-                      color: "var(--color-text-secondary)",
                     }}
                   >
                     {link.label}
@@ -211,8 +173,6 @@ export default async function Home() {
           </div>
         </div>
       </section>
-
-      <InteractiveTerminal />
 
       <Reveal>
         <section style={{ marginBottom: "var(--space-12)" }}>
@@ -280,6 +240,8 @@ export default async function Home() {
         </section>
       </Reveal>
 
+      <InteractiveTerminal />
+
       <Reveal delay={100}>
         <section style={{ marginBottom: "var(--space-16)" }}>
           <div className="container">
@@ -346,124 +308,7 @@ export default async function Home() {
         </section>
       </Reveal>
 
-      <div
-        className="container"
-        style={{
-          textAlign: "center",
-          padding: "var(--space-8) 0 var(--space-12)",
-        }}
-      >
-        <Link
-          href="/work"
-          className="mono"
-          style={{
-            color: "var(--color-accent)",
-            fontSize: "var(--text-sm)",
-            textDecoration: "none",
-            borderBottom: "1px solid var(--color-accent-dim)",
-            paddingBottom: "var(--space-1)",
-          }}
-        >
-          ~/work &rarr; See the case studies
-        </Link>
-      </div>
-
-      <section style={{ marginBottom: "var(--space-12)" }}>
-        <div className="container">
-          <TypingTest />
-        </div>
-      </section>
-
-      <Reveal>
-        <section style={{ marginBottom: "var(--space-12)" }}>
-          <div className="container">
-            <Suspense fallback={<GitHubCommitPulseSkeleton />}>
-              <GitHubCommitPulse />
-            </Suspense>
-          </div>
-        </section>
-      </Reveal>
-
-      <Reveal delay={100}>
-        <section style={{ padding: "var(--space-16) 0" }}>
-          <div
-            className="container"
-            style={{ textAlign: "center" }}
-          >
-            <h2 style={{ marginBottom: "var(--space-4)" }}>
-              <TypeOnReveal text="Want to work together?" tag="span" />
-            </h2>
-            <p
-              style={{
-                color: "var(--color-text-secondary)",
-                maxWidth: "36rem",
-                margin: "0 auto var(--space-8)",
-                lineHeight: 1.7,
-              }}
-            >
-              {lookingFor}
-            </p>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                gap: "var(--space-4)",
-                flexWrap: "wrap",
-              }}
-            >
-              <Link
-                href="/work"
-                style={{
-                  display: "inline-flex",
-                  padding: "var(--space-3) var(--space-6)",
-                  background: "var(--color-accent)",
-                  color: "var(--color-bg)",
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "var(--text-sm)",
-                  fontWeight: 600,
-                  borderRadius: "var(--radius-md)",
-                  textDecoration: "none",
-                }}
-              >
-                ls ./work
-              </Link>
-              <a
-                href="/resume"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: "inline-flex",
-                  padding: "var(--space-3) var(--space-6)",
-                  border: "1px solid var(--color-border)",
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "var(--text-sm)",
-                  borderRadius: "var(--radius-md)",
-                  textDecoration: "none",
-                  color: "var(--color-text-secondary)",
-                }}
-              >
-                cat resume.pdf
-              </a>
-              <a
-                href={`mailto:${siteConfig.email}`}
-                style={{
-                  display: "inline-flex",
-                  padding: "var(--space-3) var(--space-6)",
-                  border: "1px solid var(--color-border)",
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "var(--text-sm)",
-                  borderRadius: "var(--radius-md)",
-                  textDecoration: "none",
-                  color: "var(--color-text-secondary)",
-                }}
-              >
-                mail -s &quot;hey&quot;
-              </a>
-            </div>
-          </div>
-        </section>
-      </Reveal>
+      <TypingTestGate />
     </>
   );
 }

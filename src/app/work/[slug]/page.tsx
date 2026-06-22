@@ -3,6 +3,7 @@ import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import ArchitectureDiagramWrapper from "@/components/work/ArchitectureDiagramWrapper";
 import {
   getCaseStudyBySlug,
   getAllSlugs,
@@ -192,7 +193,7 @@ export default async function CaseStudyPage({
             style={{
               fontSize: "var(--text-xs)",
               fontWeight: 600,
-              color: "var(--color-steel)",
+              color: "var(--color-warning)",
               marginBottom: "var(--space-2)",
               textTransform: "uppercase",
               letterSpacing: "0.05em",
@@ -239,7 +240,7 @@ export default async function CaseStudyPage({
           className="mono"
           style={{
             fontSize: "var(--text-sm)",
-            color: "var(--color-steel)",
+            color: "var(--color-warning)",
             marginBottom: "var(--space-4)",
           }}
         >
@@ -319,7 +320,14 @@ export default async function CaseStudyPage({
                   {m.content}
                 </p>
               )}
-              {m.type === "diagram" && m.content && (
+              {m.type === "diagram" && m.diagramNodes && m.diagramEdges && (
+                <ArchitectureDiagramWrapper
+                  nodes={m.diagramNodes}
+                  edges={m.diagramEdges}
+                  caption={m.caption || "Architecture diagram"}
+                />
+              )}
+              {m.type === "diagram" && (!m.diagramNodes || !m.diagramEdges) && m.content && (
                 <pre
                   className="mono"
                   role="img"
@@ -347,7 +355,7 @@ export default async function CaseStudyPage({
                   }}
                 />
               )}
-              {m.caption && (
+              {m.caption && m.type !== "diagram" && (
                 <p
                   id={`diagram-caption-${i}`}
                   className="mono"

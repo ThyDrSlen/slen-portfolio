@@ -21,6 +21,12 @@ test.describe("Metadata", () => {
     const ogTitle = page.locator('meta[property="og:title"]');
     await expect(ogTitle).toHaveAttribute("content", /.+/);
 
+    const appleTouchIcon = page.locator('link[rel="apple-touch-icon"]');
+    await expect(appleTouchIcon).toHaveAttribute(
+      "href",
+      "/icons/apple-touch-icon.png"
+    );
+
     // JSON-LD
     const jsonLd = page.locator('script[type="application/ld+json"]');
     await expect(jsonLd.first()).toBeAttached();
@@ -39,6 +45,15 @@ test.describe("Metadata", () => {
     await expect(resumeCanonical).toHaveAttribute(
       "href",
       "https://slen.win/resume"
+    );
+
+    const resumeSvgIcon = page.locator('link[rel="icon"][href="/favicon.svg"]');
+    await expect(resumeSvgIcon).toHaveAttribute("type", "image/svg+xml");
+
+    const resumeAppleTouchIcon = page.locator('link[rel="apple-touch-icon"]');
+    await expect(resumeAppleTouchIcon).toHaveAttribute(
+      "href",
+      "/icons/apple-touch-icon.png"
     );
 
     // Case study
@@ -65,6 +80,7 @@ test.describe("Metadata", () => {
     expect(body).toContain("https://slen.win/work/form-factor");
     expect(body).toContain("https://slen.win/work/orwell-scraper");
     expect(body).toContain("https://slen.win/work/palo-alto");
+    expect(body).toContain("https://slen.win/work/portus");
 
     // Should not contain non-existent routes
     expect(body).not.toContain("not-a-real-project");

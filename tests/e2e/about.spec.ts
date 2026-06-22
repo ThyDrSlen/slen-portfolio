@@ -8,10 +8,11 @@ test.describe("About page", () => {
     await expect(page.getByTestId("about-page-title")).toBeVisible();
     await expect(page.getByTestId("journey-timeline")).toBeVisible();
 
-    // Resume download
+    // Resume view path
     const resumeLink = page.getByTestId("about-resume-download");
     await expect(resumeLink).toBeVisible();
     await expect(resumeLink).toHaveAttribute("href", "/resume");
+    await expect(resumeLink).toHaveAccessibleName("View resume, opens in a new tab");
 
     // Email CTA
     const emailLink = page.getByTestId("contact-email-link");

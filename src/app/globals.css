@@ -4,6 +4,7 @@
   --color-bg: #0a0a0a;
   --color-bg-elevated: #111111;
   --color-bg-surface: #1a1a1a;
+  --color-surface: var(--color-bg-surface);
   --color-text: #e0e0e0;
   --color-text-secondary: #b3b3b3;
   --color-text-muted: #adadad;
@@ -15,6 +16,7 @@
   --color-border-light: #1a1a1a;
   --color-error: #ff4444;
   --color-warning: #ffaa00;
+  --color-steel: var(--color-warning);
 
   /* Typography scale */
   --font-display: "Space Grotesk", system-ui, sans-serif;
@@ -119,6 +121,14 @@ body {
     /* biome-ignore lint/complexity/noImportantStyles: custom cursor must override component-level cursor styles */
     cursor: none !important;
   }
+
+  input,
+  textarea,
+  select,
+  [contenteditable="true"] {
+    /* biome-ignore lint/complexity/noImportantStyles: native text-edit cursors improve usability */
+    cursor: text !important;
+  }
 }
 
 /* ── Skip Link ── */
@@ -222,6 +232,25 @@ a {
   text-shadow: 0 0 8px var(--color-accent-glow);
 }
 
+@media (max-width: 480px) {
+  .site-header-inner {
+    align-items: flex-start;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .site-logo,
+  .site-nav a {
+    font-size: var(--text-xs);
+  }
+
+  .site-nav {
+    justify-content: flex-end;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+  }
+}
+
 /* ── Main ── */
 .site-main {
   flex: 1;
@@ -323,6 +352,8 @@ a {
 /* ── Contact Links ── */
 .contact-link {
   display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: var(--space-3) var(--space-6);
   border: 1px solid var(--color-border);
   font-family: var(--font-mono);
@@ -351,6 +382,8 @@ a {
 
 .contact-link-primary {
   display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: var(--space-3) var(--space-6);
   background: var(--color-text);
   color: var(--color-bg);
@@ -403,6 +436,33 @@ a {
   border-color: var(--color-accent-dim);
   box-shadow: 0 0 20px var(--color-accent-glow),
     inset 0 0 20px var(--color-accent-glow);
+}
+
+.card-action {
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-accent);
+  font-size: var(--text-sm);
+  text-decoration: none;
+  transition: text-shadow var(--duration-fast) var(--easing),
+    transform var(--duration-fast) var(--easing);
+}
+
+.card-action:hover,
+.card-action:focus-visible,
+.matrix-card:hover .card-action {
+  text-shadow: 0 0 10px var(--color-accent-glow);
+  transform: translateX(2px);
+}
+
+.hero-section {
+  padding-top: var(--space-8);
+}
+
+@media (min-width: 768px) {
+  .hero-section {
+    padding-top: var(--space-12);
+  }
 }
 
 /* ── Typing Test ── */

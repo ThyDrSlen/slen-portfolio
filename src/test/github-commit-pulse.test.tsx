@@ -67,27 +67,25 @@ describe("GitHubCommitPulse", () => {
     expect(screen.getByTestId("last-active")).toHaveTextContent("2025-04-07");
   });
 
-  it("renders fallback UI when fetchGitHubPulse returns null", async () => {
+  it("renders zero-state dashboard when fetchGitHubPulse returns null", async () => {
     mockFetchGitHubPulse.mockResolvedValue(null);
 
     const Component = await GitHubCommitPulse();
     render(Component);
 
-    expect(screen.getByTestId("github-commit-pulse")).toBeInTheDocument();
-    expect(screen.queryByTestId("pulse-dashboard-mock")).not.toBeInTheDocument();
-    expect(screen.getByText(/signal unavailable/)).toBeInTheDocument();
+    expect(screen.getByTestId("pulse-dashboard-mock")).toBeInTheDocument();
+    expect(screen.getByTestId("event-count")).toHaveTextContent("0");
+    expect(screen.getByTestId("last-active")).toHaveTextContent("no recent activity");
   });
 
-  it("renders fallback link pointing to GitHub profile", async () => {
+  it("keeps the dashboard mounted when GitHub data is unavailable", async () => {
     mockFetchGitHubPulse.mockResolvedValue(null);
 
     const Component = await GitHubCommitPulse();
     render(Component);
 
-    const link = screen.getByRole("link");
-    expect(link).toHaveAttribute("href", "https://github.com/ThyDrSlen");
-    expect(link).toHaveAttribute("target", "_blank");
-    expect(link).toHaveAttribute("rel", "noopener noreferrer");
+    expect(screen.getByTestId("pulse-dashboard-mock")).toBeInTheDocument();
+    expect(screen.getByTestId("last-active")).toHaveTextContent("no recent activity");
   });
 
   it("renders fallback UI (does not crash) when fetchGitHubPulse throws", async () => {
@@ -110,12 +108,12 @@ describe("GitHubCommitPulse", () => {
     expect(mockFetchGitHubPulse).toHaveBeenCalledTimes(1);
   });
 
-  it("fallback UI contains data-testid github-commit-pulse", async () => {
+  it("fallback dashboard passes an empty event list", async () => {
     mockFetchGitHubPulse.mockResolvedValue(null);
 
     const Component = await GitHubCommitPulse();
     render(Component);
 
-    expect(screen.getByTestId("github-commit-pulse")).toBeInTheDocument();
+    expect(screen.getByTestId("event-count")).toHaveTextContent("0");
   });
 });

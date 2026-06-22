@@ -30,9 +30,20 @@ export const siteConfig: SiteConfig = {
 
 export const experienceEntries: ExperienceEntry[] = [
   {
+    company: "???",
+    role: "Incoming Senior SWE",
+    period: "Starting July 2026",
+    description:
+      "Beginning a new Senior SWE role in NYC in July 2026; company details intentionally held as a placeholder until public.",
+    highlights: [
+      "Continuing to focus on backend systems, platform engineering, and developer tooling",
+      "Keeping the company placeholder public as ??? until the role can be announced",
+    ],
+  },
+  {
     company: "Palo Alto Networks",
     role: "Software Engineer",
-    period: "Aug 2024 – Present",
+    period: "Aug 2024 – Jun 2026",
     description:
       "Backend-focused platform engineering on scalable distributed systems, developer tooling, and experimentation-friendly platform capabilities.",
     highlights: [
@@ -49,9 +60,9 @@ export const experienceEntries: ExperienceEntry[] = [
     description:
       "Mobile fitness app with real-time form analysis using ARKit body tracking and Apple HealthKit integration.",
     highlights: [
-      "Integrated Apple HealthKit to sync heart-rate, step, and body-composition data into workout logs",
-      "Used ARKit body tracking to record joint/pose metrics for form analysis",
-      "Designed backend schemas in Supabase/Postgres for health and pose data",
+      "Integrating Apple HealthKit to sync heart-rate, step, and body-composition data into workout logs",
+      "Using ARKit body tracking to record joint/pose metrics for form analysis",
+      "Designing backend schemas in Supabase/Postgres for health and pose data",
     ],
   },
   {
@@ -73,7 +84,7 @@ export const experienceEntries: ExperienceEntry[] = [
 export const heroContent = {
   headline: "Fabrizio Corrales",
   subhead:
-    "Backend-focused software engineer building scalable distributed systems, developer tooling, and platform capabilities. Currently at Palo Alto Networks.",
+    "Backend-focused software engineer building scalable distributed systems, developer tooling, and platform capabilities. Incoming Senior SWE at ??? in NYC starting July 2026 after platform engineering work at Palo Alto Networks.",
   cta: {
     label: "See the work",
     href: "/work",
@@ -82,13 +93,14 @@ export const heroContent = {
 
 export const aboutContent = {
   intro:
-    "I'm a backend-focused software engineer with a non-traditional path: Hunter College to the Marcy Lab School fellowship to enterprise platform engineering at Palo Alto Networks. I build scalable distributed systems, developer tooling, and experimentation-friendly platform capabilities. I care about shipping things that work at scale and proving it with measurable outcomes.",
+    "I'm a backend-focused software engineer with a non-traditional path: Hunter College to the Marcy Lab School fellowship to enterprise platform engineering at Palo Alto Networks, with a new Senior SWE role starting at ??? in NYC in July 2026. I build scalable distributed systems, developer tooling, and experimentation-friendly platform capabilities. I care about shipping things that work at scale and proving it with measurable outcomes.",
   introSections: [
     "I'm a backend-focused software engineer with a non-traditional path — Hunter College to the Marcy Lab School fellowship to enterprise platform engineering at Palo Alto Networks.",
+    "I ended my Palo Alto Networks role in June 2026 and begin a new Senior SWE role at ??? in NYC in July 2026.",
     "I build scalable distributed systems, developer tooling, and experimentation-friendly platform capabilities. I care about shipping things that work at scale and proving it with measurable outcomes.",
   ],
   currentFocus:
-    "Currently building Go services, CI feedback acceleration, and operational analytics at Palo Alto Networks, while shipping Form Factor, a mobile fitness app with real-time ARKit body tracking and Apple HealthKit integration.",
+    "Preparing to begin a new Senior SWE role at ??? in NYC in July 2026 while continuing to build Form Factor, a mobile fitness app with real-time ARKit body tracking and Apple HealthKit integration.",
 };
 
 export const proofRailItems = [
@@ -112,9 +124,9 @@ export const proofRailItems = [
   },
   {
     metric: null,
-    label: "Solo-built Form Factor",
+    label: "Building Form Factor solo",
     detail:
-      "Shipped a mobile product using ARKit body tracking and Apple HealthKit integration.",
+      "Building a mobile product using ARKit body tracking and Apple HealthKit integration.",
   },
 ];
 
@@ -144,4 +156,4 @@ export const skillCategories = [
 ];
 
 export const lookingFor =
-  "I'm looking for backend and platform engineering roles where I can work on distributed systems, developer tooling, and infrastructure at scale. I thrive in environments that value ownership, measurable impact, and shipping things that work under pressure.";
+  "I'm focused on backend and platform engineering work where I can build distributed systems, developer tooling, and infrastructure at scale. I thrive in environments that value ownership, measurable impact, and shipping things that work under pressure.";

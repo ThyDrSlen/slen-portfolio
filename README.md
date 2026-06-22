@@ -14,7 +14,7 @@ Next.js 16 · React 19 · TypeScript · Vanilla CSS · Vercel
 - 4-mode typing test (code / snippets / leetcode / systems) with WPM tracking and personal bests
 - Boot sequence overlay, cursor trail, scroll reveals, and matrix card hover effects
 - GitHub commit pulse — live SVG heartbeat from real activity data
-- Status bar with live NYC time and F-train indicator
+- Status bar with live PT time and F-train indicator
 
 ## Development
 
@@ -26,6 +26,7 @@ pnpm dev
 ## Testing
 
 ```bash
+pnpm ci:actions-metrics  # GitHub Actions runtime vs PR churn
 pnpm lint          # ESLint
 pnpm typecheck     # TypeScript
 pnpm test          # Vitest unit tests
@@ -33,6 +34,16 @@ pnpm test:e2e      # Playwright (Chromium)
 ```
 
 A husky pre-push hook runs lint → typecheck → unit tests → build before every push.
+
+## CI Metrics
+
+```bash
+pnpm ci:actions-metrics
+pnpm ci:actions-metrics --pr 210
+python3 scripts/ci/actions_metrics.py --run-id 25121442097 --pr 210 --format markdown
+```
+
+This reports GitHub Actions runtime, rounded job minutes, failed minutes, and cost normalized by PR churn.
 
 ## License
 

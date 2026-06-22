@@ -22,6 +22,8 @@ import {
   type TerminalState,
 } from "@/lib/terminal";
 
+export const REVEAL_TYPING_TEST_EVENT = "slen:reveal-typing-test";
+
 type TerminalAction = {
   type: "replace";
   state: TerminalState;
@@ -149,6 +151,10 @@ export function InteractiveTerminal() {
 
     if (result.navigate) {
       router.push(result.navigate);
+    }
+
+    if (result.clientEffect === "revealTypingTest") {
+      window.dispatchEvent(new CustomEvent(REVEAL_TYPING_TEST_EVENT));
     }
   };
 
